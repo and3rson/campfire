@@ -1,0 +1,23 @@
+{
+    "width": 32,
+    "height": 64,
+    "origin": {
+        "x": 16,
+        "y": 64
+    },
+    "texture": "atlas.png",
+    "animations": {
+        "idle": {
+            "fps": 1,
+            "frames": [
+                [64, 0]
+            ]
+        },
+        "walk": {
+            "fps": 8,
+            "frames": [
+                [0, 0], [32, 0], [64, 0], [96, 0]
+            ]
+        }
+    }
+}

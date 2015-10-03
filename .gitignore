@@ -26,3 +26,16 @@
 *.exe
 *.out
 *.app
+
+# Qt
+
+/build-app-*
+*.pro.user
+*.pro.user.*
+Makefile*
+ui_*.h
+moc_*.cpp
+qrc_*.cpp
+
+# Third-party
+/sdk
