@@ -1,1 +1,3 @@
-# campfire
+# Campfire
+
+`SFML` rocks!
