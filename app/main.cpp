@@ -4,7 +4,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
-// #include "SteamAdapter.h"
+#include "SteamAdapter.h"
 #include "GameEngine.h"
 
 using namespace std;
@@ -14,10 +14,10 @@ using namespace std;
 
 int main()
 {
-//    SteamAdapter steamAdapter;
-//    if (!steamAdapter.initialize()) {
-//        return 1;
-//    }
+    SteamAdapter steamAdapter;
+    if (!steamAdapter.initialize()) {
+        return 1;
+    }
 
     cout << "Hello World!" << endl;
 

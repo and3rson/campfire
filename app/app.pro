@@ -23,7 +23,7 @@ if (mingw): QMAKE_CXXFLAGS = -DSFML_SYSTEM_EXPORTS -O2 -g -pipe -Wall -Wp,-D_FOR
 
 if (linux-g++): QMAKE_LFLAGS += -Xlinker ../sdk/redistributable_bin/linux64/libsteam_api.so -lsfml-graphics -lsfml-system -lsfml-window -lX11
 
-if (mingw): QMAKE_LIBS += $${QMAKE_CXXFLAGS} -lsfml-graphics -lsfml-window -lsfml-system -lsfml-main -lglew32 -lopengl32 -lwinmm -ljpeg -lfreetype -lgdi32
+if (mingw): QMAKE_LIBS += -L ../sdk/redistributable_bin/ -lsteam_api -lsfml-graphics -lsfml-window -lsfml-system -lsfml-main -lglew32 -lopengl32 -lwinmm -ljpeg -lfreetype -lgdi32
 
 HEADERS += \
     SteamAdapter.h \
