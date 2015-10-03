@@ -28,23 +28,16 @@ void GameEngine::start()
 
     this->player = new Creature(this->camera);
     this->player->setPosition(sf::Vector2f(400, 300));
-    this->player->moveTo(sf::Vector2f(450, 350));
 
     this->enemy = new Creature(this->camera);
     this->enemy->setPosition(sf::Vector2f(200, 200));
+    this->enemy->moveTo(sf::Vector2f(random() % 100 + 100, random() % 100 + 100));
 
     this->camera->attachTo(this->player);
 
     this->moveVector = sf::Vector2f(0, 0);
 
-#ifdef __linux__
-    dpy = XOpenDisplay(0);
-    root_window = XRootWindow(dpy, 0);
-#endif
-
     sf::Mouse::setPosition(sf::Vector2i(window->getPosition().x + window->getSize().x / 2, window->getPosition().y + window->getSize().y / 2));
-
-    //    this->enemy->moveTo(sf::Vector2i(window->getSize().x - 10, window->getSize().y - 10));
 }
 
 void GameEngine::tick()
@@ -105,17 +98,15 @@ void GameEngine::tick()
         }
     }
 
-//    sf::Mouse::setPosition(sf::Vector2i(window->getPosition().x + window->getSize().x / 2, window->getPosition().y + window->getSize().y / 2));
-    if (this->lastMousePos != NULL) {
-//        this->lastMousePos->x = window->getPosition().x + window->getSize().x / 2;
-//        this->lastMousePos->y = window->getPosition().y + window->getSize().y / 2;
-    }
+    static sf::Clock testClock;
 
-#ifdef __linux__
-    //    XSelectInput(dpy, root_window, KeyReleaseMask);
-    //    XWarpPointer(dpy, None, root_window, 0, 0, 0, 0, window->getPosition().x + window->getSize().x / 2, window->getPosition().y + window->getSize().y / 2);
-    //    XFlush(dpy);
-#endif
+    if (testClock.getElapsedTime().asMilliseconds() > 1000) {
+        testClock.restart();
+        sf::Vector2f target = sf::Vector2f(random() % 100 + 100, random() % 100 + 100);
+//        srand(testClock.getElapsedTime().asMicroseconds());
+//        std::cerr << this->enemy->position.x << "//" << target.x << "/" << target.y;
+        this->enemy->moveTo(target);
+    }
 
     window->clear();
 

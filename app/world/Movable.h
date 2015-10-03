@@ -19,10 +19,13 @@ public:
     void startMove(sf::Vector2f vector);
     void stopMove();
 
+    virtual void moveStarted() = 0;
+    virtual void moveStopped() = 0;
+
     void update();
 
 protected:
-    int moveSpeed = 100;
+    int moveSpeed = 200;
 
 private:
     sf::Vector2f source;

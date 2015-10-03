@@ -13,6 +13,10 @@ public:
     Creature(Camera *camera = 0);
 
     void update();
+    void moveTo(sf::Vector2f);
+
+    virtual void moveStarted();
+    virtual void moveStopped();
 
     sf::Sprite getDrawable();
 

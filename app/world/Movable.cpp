@@ -10,8 +10,14 @@ void Movable::moveTo(sf::Vector2f target)
 {
     this->source = sf::Vector2f(this->position);
     this->target = sf::Vector2f(target);
+    sf::Vector2f vector = this->target - this->source;
+
+    // Face the direction of movement
+    this->rotation = atan2(vector.y, vector.x) + M_PI / 2;
+
     this->clock.restart();
     this->isMoving = true;
+    this->moveStarted();
 }
 
 void Movable::update()
@@ -34,6 +40,8 @@ void Movable::update()
 
             float pointsPassed = (float) this->moveSpeed * ((float) clock.getElapsedTime().asMilliseconds() / 1000);
 
+            // TODO: Change "rotation" here
+
 //            std::cerr << "Passed units: " << pointsPassed << " " << x << "/" << y;
 
             this->position += sf::Vector2f(x * pointsPassed, y * pointsPassed);
@@ -55,8 +63,7 @@ void Movable::update()
                 this->position = this->source + vector;
             } else {
                 this->position = this->target;
-                this->isMoving = false;
-                this->moveVector = NULL;
+                this->stopMove();
             }
         }
     }
@@ -68,9 +75,11 @@ void Movable::startMove(sf::Vector2f vector) {
     this->clock.restart();
     this->isMoving = true;
     this->moveVector = new sf::Vector2f(vector);
+    this->moveStarted();
 }
 
 void Movable::stopMove() {
     this->isMoving = false;
     this->moveVector = false;
+    this->moveStopped();
 }

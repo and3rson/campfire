@@ -18,3 +18,13 @@ void Camera::update()
     this->position = this->target->position;
     this->rotation = this->target->rotation;
 }
+
+void Camera::moveStarted()
+{
+
+}
+
+void Camera::moveStopped()
+{
+
+}

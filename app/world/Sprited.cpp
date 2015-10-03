@@ -34,7 +34,9 @@ Sprited::Sprited(const char *spriteName, Camera *camera = 0) : Movable(camera)
         }
 
         animations[animationsIterator.key().asString()] = animation;
-        this->currentAnimation = animation;
+        if (!this->currentAnimation) {
+            this->currentAnimation = animation;
+        }
     }
 
     std::string texturePath = "./res/textures/";
@@ -46,10 +48,17 @@ Sprited::Sprited(const char *spriteName, Camera *camera = 0) : Movable(camera)
     this->sprite.setOrigin(root["origin"]["x"].asInt(), root["origin"]["y"].asInt());
 }
 
-void Sprited::setAnimation(const char *name) {
-    this->currentAnimation = this->animations[name];
-    this->clock.restart();
-    this->currentFrame = 0;
+void Sprited::setAnimation(const char *name, bool reset) {
+    if (this->currentAnimation != this->animations[name] || reset) {
+        // Set new animation
+        this->currentAnimation = this->animations[name];
+        this->clock.restart();
+        this->currentFrame = 0;
+
+        // Force redraw sprite
+        sf::Vector2i shift = this->currentAnimation->frames[this->currentFrame];
+        this->sprite.setTextureRect(sf::IntRect(shift.x, shift.y, this->width, this->height));
+    }
 }
 
 void Sprited::update()
@@ -58,9 +67,10 @@ void Sprited::update()
 
     if (this->clock.getElapsedTime().asMilliseconds() > 1000 / this->currentAnimation->fps) {
         // Update animation
-
         this->clock.restart();
         this->currentFrame = (this->currentFrame + 1) % this->currentAnimation->frames.size();
+
+        // Scroll sprite
         sf::Vector2i shift = this->currentAnimation->frames[this->currentFrame];
         this->sprite.setTextureRect(sf::IntRect(shift.x, shift.y, this->width, this->height));
     }
@@ -68,10 +78,11 @@ void Sprited::update()
     this->sprite.setRotation((this->rotation - this->camera->rotation) / (2 * M_PI) * 360); // + this->rotation / (2 * M_PI) * 360);
 
     if (this->camera) {
+        // Transform sprite position based on camera position & rotation
         sf::Vector2f pos = this->applyCameraTransformation(this->position);
         this->sprite.setPosition(400 + pos.x, 320 + pos.y);
-        //        std::cerr << angle << std::endl;
     } else {
+        // No camera set, meaning this object's position is not affected by camera.
         this->sprite.setPosition(this->position.x, this->position.y);
     }
 }

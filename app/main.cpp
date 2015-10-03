@@ -23,6 +23,7 @@ int main()
 
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML App", sf::Style::Titlebar | sf::Style::Close);
     window.setVerticalSyncEnabled(true);
+    window.setKeyRepeatEnabled(false);
 
     sf::VideoMode videoMode = sf::VideoMode::getDesktopMode();
 

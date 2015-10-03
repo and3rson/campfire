@@ -13,6 +13,9 @@ public:
     void attachTo(WorldObject *target);
     void update();
 
+    virtual void moveStarted();
+    virtual void moveStopped();
+
 private:
     WorldObject *target;
 };

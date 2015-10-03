@@ -18,7 +18,7 @@ class Sprited : public Movable
 {
 public:
     Sprited(const char *, Camera *camera);
-    void setAnimation(const char *);
+    void setAnimation(const char *, bool reset = false);
     void update();
 
 protected:
