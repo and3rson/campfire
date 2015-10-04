@@ -79,8 +79,7 @@ void Sprited::update()
 
     if (this->camera) {
         // Transform sprite position based on camera position & rotation
-        sf::Vector2f pos = this->applyCameraTransformation(this->position);
-        this->sprite.setPosition(400 + pos.x, 320 + pos.y);
+        this->sprite.setPosition(this->applyCameraTransformation(this->position));
     } else {
         // No camera set, meaning this object's position is not affected by camera.
         this->sprite.setPosition(this->position.x, this->position.y);

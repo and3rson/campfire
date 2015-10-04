@@ -26,16 +26,20 @@ void GameEngine::start()
 
     this->camera = new Camera();
 
-    this->player = new Creature(this->camera);
+    this->player = new Creature("bob", this->camera);
     this->player->setPosition(sf::Vector2f(400, 300));
 
-    this->enemy = new Creature(this->camera);
+    this->enemy = new Creature("bob", this->camera);
     this->enemy->setPosition(sf::Vector2f(200, 200));
     this->enemy->moveTo(sf::Vector2f(random() % 100 + 100, random() % 100 + 100));
 
     this->camera->attachTo(this->player);
+//    this->camera->update();
+    std::cerr << "POS:" << this->camera->position.x;
 
     this->moveVector = sf::Vector2f(0, 0);
+
+    this->grid = new Grid(this->camera, this->window);
 
     sf::Mouse::setPosition(sf::Vector2i(window->getPosition().x + window->getSize().x / 2, window->getPosition().y + window->getSize().y / 2));
 }
@@ -114,8 +118,12 @@ void GameEngine::tick()
     this->camera->update();
     this->enemy->update();
 
+    this->grid->draw();
     window->draw(this->player->getDrawable());
     window->draw(this->enemy->getDrawable());
+
+    window->draw(this->player->getBoundsDrawable());
+    window->draw(this->enemy->getBoundsDrawable());
 
     window->display();
 }

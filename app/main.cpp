@@ -21,7 +21,10 @@ int main()
 
     cout << "Hello World!" << endl;
 
-    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML App", sf::Style::Titlebar | sf::Style::Close);
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 8;
+    //    settings.attributeFlags = sf::ContextSettings::Debug;
+    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML App", sf::Style::Titlebar | sf::Style::Close, settings);
     window.setVerticalSyncEnabled(true);
     window.setKeyRepeatEnabled(false);
 

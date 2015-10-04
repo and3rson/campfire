@@ -2,7 +2,7 @@
 
 #include "WorldObject.h"
 
-Camera::Camera()
+Camera::Camera() : Movable()
 {
 
 }

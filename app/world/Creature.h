@@ -10,7 +10,7 @@
 class Creature : public Sprited
 {
 public:
-    Creature(Camera *camera = 0);
+    Creature(const char *, Camera *camera = 0);
 
     void update();
     void moveTo(sf::Vector2f);
@@ -19,6 +19,7 @@ public:
     virtual void moveStopped();
 
     sf::Sprite getDrawable();
+    sf::RectangleShape getBoundsDrawable();
 
 private:
     Camera *camera = 0;

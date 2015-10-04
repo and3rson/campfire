@@ -11,7 +11,8 @@ SOURCES += main.cpp \
     world/Movable.cpp \
     types/Animation.cpp \
     world/Camera.cpp \
-    jsoncpp/jsoncpp.cpp
+    jsoncpp/jsoncpp.cpp \
+    world/Grid.cpp
 
 include(deployment.pri)
 qtcAddDeployment()
@@ -33,4 +34,5 @@ HEADERS += \
     world/Creature.h \
     world/Movable.h \
     types/Animation.h \
-    world/Camera.h
+    world/Camera.h \
+    world/Grid.h

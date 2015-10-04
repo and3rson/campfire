@@ -11,6 +11,7 @@
 
 #include "world/Camera.h"
 #include "world/Creature.h"
+#include "world/Grid.h"
 
 #ifdef __linux__
 #include <X11/Xlib.h>
@@ -36,6 +37,7 @@ private:
     sf::Sprite sprite;
     Creature *player;
     Creature *enemy;
+    Grid *grid;
 
     sf::Vector2i *lastMousePos;
 

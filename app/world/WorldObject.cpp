@@ -3,7 +3,7 @@
 
 WorldObject::WorldObject(Camera *camera) : camera(camera)
 {
-
+    this->position = sf::Vector2f(0, 0);
 }
 
 void WorldObject::update()
@@ -28,5 +28,5 @@ sf::Vector2f WorldObject::applyCameraTransformation(sf::Vector2f pos)
     int x = vector.x * cs - vector.y * sn;
     int y = vector.x * sn + vector.y * cs;
 
-    return sf::Vector2f(x, y);
+    return sf::Vector2f(x + 400, y + 320);
 }
