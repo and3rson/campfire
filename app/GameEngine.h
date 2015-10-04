@@ -17,6 +17,10 @@
 #include <X11/Xlib.h>
 #endif
 
+#ifdef _WIN32
+//#include <random>
+#endif
+
 using namespace std;
 
 
@@ -26,6 +30,7 @@ public:
     GameEngine(sf::RenderWindow *window);
     void start();
     void tick();
+    int _dbgRandom();
 
 private:
     sf::RenderWindow *window;

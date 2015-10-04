@@ -13,7 +13,6 @@
 #include "Movable.h"
 #include "Camera.h"
 
-
 class Sprited : public Movable
 {
 public:

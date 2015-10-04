@@ -7,17 +7,17 @@ GameEngine::GameEngine(sf::RenderWindow *window) : window(window)
 void GameEngine::start()
 {
     sf::Texture texture;
-//    if (texture.loadFromFile("./res/textures/ground.jpg")) {
-//        cerr << "Failed to load sprite!";
-//    }
+    //    if (texture.loadFromFile("./res/textures/ground.jpg")) {
+    //        cerr << "Failed to load sprite!";
+    //    }
 
     this->worldClock.restart();
     this->frameClock.restart();
 
-//    groundSprite.setTexture(*texture);
-//    groundSprite.setOrigin(texture->getSize().x, texture->getSize().y);
-//    groundSprite.setPosition(sf::Vector2f(0, 0));
-//    groundSprite.setColor(sf::Color(0, 128, 255));
+    //    groundSprite.setTexture(*texture);
+    //    groundSprite.setOrigin(texture->getSize().x, texture->getSize().y);
+    //    groundSprite.setPosition(sf::Vector2f(0, 0));
+    //    groundSprite.setColor(sf::Color(0, 128, 255));
 
     int width = window->getSize().x;
     int height = window->getSize().y;
@@ -31,10 +31,10 @@ void GameEngine::start()
 
     this->enemy = new Creature("bob", this->camera);
     this->enemy->setPosition(sf::Vector2f(200, 200));
-    this->enemy->moveTo(sf::Vector2f(random() % 100 + 100, random() % 100 + 100));
+    this->enemy->moveTo(sf::Vector2f(_dbgRandom(), _dbgRandom()));
 
     this->camera->attachTo(this->player);
-//    this->camera->update();
+    //    this->camera->update();
     std::cerr << "POS:" << this->camera->position.x;
 
     this->moveVector = sf::Vector2f(0, 0);
@@ -106,9 +106,9 @@ void GameEngine::tick()
 
     if (testClock.getElapsedTime().asMilliseconds() > 1000) {
         testClock.restart();
-        sf::Vector2f target = sf::Vector2f(random() % 100 + 100, random() % 100 + 100);
-//        srand(testClock.getElapsedTime().asMicroseconds());
-//        std::cerr << this->enemy->position.x << "//" << target.x << "/" << target.y;
+        sf::Vector2f target = sf::Vector2f(_dbgRandom(), _dbgRandom());
+        //        srand(testClock.getElapsedTime().asMicroseconds());
+        //        std::cerr << this->enemy->position.x << "//" << target.x << "/" << target.y;
         this->enemy->moveTo(target);
     }
 
@@ -126,4 +126,13 @@ void GameEngine::tick()
     window->draw(this->enemy->getBoundsDrawable());
 
     window->display();
+}
+
+int GameEngine::_dbgRandom()
+{
+#ifdef __linux__
+    return random() % 100 + 100;
+#else
+    return rand() % 100 + 100;
+#endif
 }
