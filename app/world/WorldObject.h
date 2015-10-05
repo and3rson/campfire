@@ -16,9 +16,10 @@ class WorldObject
 public:
     WorldObject(Camera *camera = 0);
 
-    void update();
+    virtual void update();
     void setPosition(sf::Vector2f);
     sf::Vector2f applyCameraTransformation(sf::Vector2f pos);
+    virtual void draw(sf::RenderWindow *window) = 0;
 
 public:
     sf::Vector2f position;

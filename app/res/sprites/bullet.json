@@ -1,11 +1,11 @@
 {
-    "width": 128,
-    "height": 128,
+    "width": 8,
+    "height": 16,
     "origin": {
-        "x": 64,
-        "y": 64
+        "x": 4,
+        "y": 8
     },
-    "texture": "girl.png",
+    "texture": "bullet.png",
     "animations": {
         "idle": {
             "fps": 1,
@@ -16,7 +16,7 @@
         "walk": {
             "fps": 8,
             "frames": [
-                [0, 0], [0, 0], [0, 0], [0, 0]
+                [0, 0]
             ]
         }
     }

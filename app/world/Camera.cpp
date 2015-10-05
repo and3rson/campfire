@@ -2,7 +2,7 @@
 
 #include "WorldObject.h"
 
-Camera::Camera() : Movable()
+Camera::Camera() : AMovable()
 {
 
 }
@@ -14,9 +14,10 @@ void Camera::attachTo(WorldObject *target)
 
 void Camera::update()
 {
-    Movable::update();
+    AMovable::update();
     this->position = this->target->position;
-    this->rotation = this->target->rotation;
+    float rotDiff = this->target->rotation - this->rotation;
+    this->rotation += rotDiff / 4;
 }
 
 void Camera::moveStarted()

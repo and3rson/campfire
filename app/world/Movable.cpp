@@ -1,12 +1,12 @@
 #include "Movable.h"
 #include "Camera.h"
 
-Movable::Movable(Camera *camera) : WorldObject(camera)
+AMovable::AMovable(Camera *camera) : WorldObject(camera)
 {
     this->moveVector = NULL;
 }
 
-void Movable::moveTo(sf::Vector2f target)
+void AMovable::moveTo(sf::Vector2f target)
 {
     this->source = sf::Vector2f(this->position);
     this->target = sf::Vector2f(target);
@@ -20,7 +20,7 @@ void Movable::moveTo(sf::Vector2f target)
     this->moveStarted();
 }
 
-void Movable::update()
+void AMovable::update()
 {
     if (this->isMoving) {
         if (this->moveVector != NULL) {
@@ -71,15 +71,15 @@ void Movable::update()
     WorldObject::update();
 }
 
-void Movable::startMove(sf::Vector2f vector) {
+void AMovable::startMove(sf::Vector2f vector) {
     this->clock.restart();
     this->isMoving = true;
     this->moveVector = new sf::Vector2f(vector);
     this->moveStarted();
 }
 
-void Movable::stopMove() {
+void AMovable::stopMove() {
     this->isMoving = false;
-    this->moveVector = false;
+    this->moveVector = 0;
     this->moveStopped();
 }

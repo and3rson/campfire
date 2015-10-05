@@ -6,6 +6,9 @@
 
 #include "SteamAdapter.h"
 #include "GameEngine.h"
+#include "scenes/SplashScene.h"
+#include "scenes/MainMenuScene.h"
+#include "effects/NoiseEffect.h"
 
 using namespace std;
 
@@ -27,6 +30,7 @@ int main()
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML App", sf::Style::Titlebar | sf::Style::Close, settings);
     window.setVerticalSyncEnabled(true);
     window.setKeyRepeatEnabled(false);
+    window.setMouseCursorVisible(false);
 
     sf::VideoMode videoMode = sf::VideoMode::getDesktopMode();
 
@@ -38,6 +42,10 @@ int main()
 
     GameEngine *engine = new GameEngine(&window);
     engine->start();
+
+    engine->setScene(new MainMenuScene(engine));
+//    engine->setScene(new SplashScene(engine));
+//    engine->setEffect(new NoiseEffect(engine));
 
     while (window.isOpen()) {
         engine->tick();

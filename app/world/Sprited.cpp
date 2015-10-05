@@ -1,6 +1,6 @@
 #include "Sprited.h"
 
-Sprited::Sprited(const char *spriteName, Camera *camera = 0) : Movable(camera)
+Sprited::Sprited(const char *spriteName, Camera *camera = 0) : AMovable(camera)
 {
     std::string path = "./res/sprites/";
     path += spriteName;
@@ -43,6 +43,7 @@ Sprited::Sprited(const char *spriteName, Camera *camera = 0) : Movable(camera)
     texturePath += root["texture"].asString();
 
     this->texture.loadFromFile(texturePath.c_str());
+    this->texture.setSmooth(true);
     this->sprite = sf::Sprite(this->texture);
     this->sprite.setTextureRect(sf::IntRect(0, 0, this->width, this->height));
     this->sprite.setOrigin(root["origin"]["x"].asInt(), root["origin"]["y"].asInt());
@@ -63,7 +64,7 @@ void Sprited::setAnimation(const char *name, bool reset) {
 
 void Sprited::update()
 {
-    Movable::update();
+    AMovable::update();
 
     if (this->clock.getElapsedTime().asMilliseconds() > 1000 / this->currentAnimation->fps) {
         // Update animation
@@ -84,4 +85,19 @@ void Sprited::update()
         // No camera set, meaning this object's position is not affected by camera.
         this->sprite.setPosition(this->position.x, this->position.y);
     }
+}
+
+void Sprited::draw(sf::RenderWindow *window)
+{
+    window->draw(this->sprite);
+
+//    static sf::RectangleShape rect;
+//    rect.setFillColor(sf::Color::Transparent);
+//    rect.setOutlineThickness(1);
+//    rect.setOutlineColor(sf::Color::Red);
+//    rect.setOrigin(this->sprite.getOrigin());
+//    rect.setPosition(this->sprite.getPosition());
+//    rect.setRotation(this->sprite.getRotation());
+//    rect.setSize(sf::Vector2f(this->sprite.getTextureRect().width, this->sprite.getTextureRect().height));
+//    window->draw(rect);
 }

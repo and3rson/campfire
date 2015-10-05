@@ -9,9 +9,8 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Transformable.hpp>
 
-#include "world/Camera.h"
-#include "world/Creature.h"
-#include "world/Grid.h"
+#include "scenes/AScene.h"
+#include "effects/AEffect.h"
 
 #ifdef __linux__
 #include <X11/Xlib.h>
@@ -30,27 +29,18 @@ public:
     GameEngine(sf::RenderWindow *window);
     void start();
     void tick();
-    int _dbgRandom();
+
+    void setScene(AScene *);
+    void setEffect(AEffect *);
+
+    sf::RenderWindow *getWindow();
+
+protected:
+    sf::RenderWindow *window;
 
 private:
-    sf::RenderWindow *window;
-    sf::View mapLayer;
-    sf::View playerLayer;
-    sf::View guiLayer;
-    sf::Clock worldClock;
-    sf::Clock frameClock;
-    sf::Sprite sprite;
-    Creature *player;
-    Creature *enemy;
-    Grid *grid;
-
-    sf::Vector2i *lastMousePos;
-
-    sf::Sprite groundSprite;
-
-    Camera *camera;
-
-    sf::Vector2f moveVector;
+    AScene *scene;
+    AEffect *effect;
 
 #ifdef __linux__
     Display *dpy;

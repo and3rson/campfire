@@ -11,10 +11,10 @@
 class Camera;
 
 
-class Movable : public WorldObject
+class AMovable : public WorldObject
 {
 public:
-    Movable(Camera *camera = 0);
+    AMovable(Camera *camera = 0);
     void moveTo(sf::Vector2f target);
     void startMove(sf::Vector2f vector);
     void stopMove();
@@ -22,7 +22,7 @@ public:
     virtual void moveStarted() = 0;
     virtual void moveStopped() = 0;
 
-    void update();
+    virtual void update();
 
 protected:
     int moveSpeed = 200;

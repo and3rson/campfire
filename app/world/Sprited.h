@@ -13,12 +13,13 @@
 #include "Movable.h"
 #include "Camera.h"
 
-class Sprited : public Movable
+class Sprited : public AMovable
 {
 public:
     Sprited(const char *, Camera *camera);
     void setAnimation(const char *, bool reset = false);
-    void update();
+    virtual void update();
+    virtual void draw(sf::RenderWindow *window);
 
 protected:
     sf::Texture texture;

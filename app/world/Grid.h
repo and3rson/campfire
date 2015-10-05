@@ -13,11 +13,10 @@
 class Grid : public WorldObject
 {
 public:
-    Grid(Camera *, sf::RenderWindow *);
-    void draw();
+    Grid(Camera *);
+    virtual void draw(sf::RenderWindow *window);
 
 private:
-    sf::RenderWindow *window;
     sf::Font font;
 };
 

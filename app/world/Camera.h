@@ -6,15 +6,16 @@
 class WorldObject;
 
 
-class Camera : public Movable
+class Camera : public AMovable
 {
 public:
     Camera();
     void attachTo(WorldObject *target);
-    void update();
+    virtual void update();
 
     virtual void moveStarted();
     virtual void moveStopped();
+    virtual void draw(sf::RenderWindow *) {}
 
 private:
     WorldObject *target;
