@@ -3,8 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "scenes/AScene.h"
-#include "world/Camera.h"
+#include "../scenes/AScene.h"
+#include "../world/Camera.h"
 #include "world/Creature.h"
 #include "world/Grid.h"
 #include "world/Projectile.h"

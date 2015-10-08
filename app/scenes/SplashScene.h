@@ -1,7 +1,7 @@
 #ifndef SPLASHSCENE_H
 #define SPLASHSCENE_H
 
-#include "GameEngine.h"
+#include "../GameEngine.h"
 #include "AScene.h"
 
 class SplashScene : public AScene

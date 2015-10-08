@@ -5,6 +5,7 @@
 #include "Movable.h"
 #include "Sprited.h"
 #include "Camera.h"
+#include "Item.h"
 
 
 class Creature : public Sprited
@@ -19,6 +20,7 @@ public:
 
 private:
     Camera *camera = 0;
+    Item *armedItem;
 };
 
 #endif // CREATURE_H

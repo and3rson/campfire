@@ -39,3 +39,6 @@ qrc_*.cpp
 
 # Third-party
 /sdk
+
+# CMake & CLion
+.idea

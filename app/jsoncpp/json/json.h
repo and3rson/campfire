@@ -79,7 +79,7 @@ license you like.
 /// If defined, indicates that the source file is amalgated
 /// to prevent private header inclusion.
 #define JSON_IS_AMALGATED
-#warning Using amalgated jsoncpp library
+//#warning Using amalgated jsoncpp library
 
 // //////////////////////////////////////////////////////////////////////
 // Beginning of content of file: include/json/config.h

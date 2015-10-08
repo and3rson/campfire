@@ -3,7 +3,7 @@
 
 #define JSON_IS_AMALGAMATION
 
-#include "jsoncpp/json/json.h"
+#include "../jsoncpp/json/json.h"
 
 // //////////////////////////////////////////////////////////////////////
 // Beginning of content of file: LICENSE
