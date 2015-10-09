@@ -1,3 +1,4 @@
+#include <world/Pistol.h>
 #include "MainMenuScene.h"
 #include "GameEngine.h"
 
@@ -19,9 +20,11 @@ MainMenuScene::MainMenuScene(GameEngine *engine) : AScene(engine)
 
     this->player = new Creature("bob", this->camera);
     this->player->setPosition(sf::Vector2f(400, 300));
+    this->player->arm(new Pistol(this->camera));
     this->objects.push_back(this->player);
 
-    this->enemy = new Creature("girl", this->camera);
+//    this->enemy = new Creature("girl", this->camera);
+    this->enemy = new Creature("bob", this->camera);
     this->enemy->setPosition(sf::Vector2f(200, 200));
     this->enemy->moveTo(sf::Vector2f(_dbgRandom(), _dbgRandom()));
     this->objects.push_back(this->enemy);
@@ -105,12 +108,12 @@ void MainMenuScene::tick()
 
             this->player->startMove(this->moveVector);
         } else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
-            Projectile *projectile = new Projectile(this->camera);
-            projectile->setPosition(sf::Vector2f(this->player->position));
-            projectile->rotation = this->player->rotation;
-            projectile->startMove(sf::Vector2f(0, 1));
-            std::cerr << "SHOOT" << std::endl;
-            this->objects.push_back(projectile);
+//            Projectile *projectile = new Projectile(this->camera);
+//            projectile->setPosition(sf::Vector2f(this->player->position));
+//            projectile->rotation = this->player->rotation;
+//            projectile->startMove(sf::Vector2f(0, 1));
+//            std::cerr << "SHOOT" << std::endl;
+//            this->objects.push_back(projectile);
         }
     }
 

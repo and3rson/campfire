@@ -42,6 +42,6 @@ set(SOURCE_FILES
     GameEngine.h
     main.cpp
     SteamAdapter.cpp
-    SteamAdapter.h world/Item.cpp world/Item.h)
+    SteamAdapter.h world/Item.cpp world/Item.h world/Pistol.cpp world/Pistol.h)
 
 add_executable(app ${SOURCE_FILES})

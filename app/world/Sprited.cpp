@@ -4,7 +4,7 @@ Sprited::Sprited(const char *spriteName, Camera *camera = 0) : AMovable(camera)
 {
     std::string path = "./res/sprites/";
     path += spriteName;
-    path +=+ ".json";
+    path += ".json";
     std::ifstream file(path.c_str());
 
     Json::Value root;
@@ -51,6 +51,11 @@ Sprited::Sprited(const char *spriteName, Camera *camera = 0) : AMovable(camera)
 
 void Sprited::setAnimation(const char *name, bool reset) {
     if (this->currentAnimation != this->animations[name] || reset) {
+        if (this->animations.count(name) != 1) {
+            std::cerr << "Error: animation '" << name << "' not found!" << std::endl;
+            return;
+        }
+        std::cerr << "Animation set to " << name << std::endl;
         // Set new animation
         this->currentAnimation = this->animations[name];
         this->clock.restart();

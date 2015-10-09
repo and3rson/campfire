@@ -1,0 +1,23 @@
+{
+    "width": 128,
+    "height": 128,
+    "origin": {
+        "x": 64,
+        "y": 64
+    },
+    "texture": "pistol.png",
+    "animations": {
+        "ground": {
+            "fps": 1,
+            "frames": [
+                [0, 0]
+            ]
+        },
+        "armed": {
+            "fps": 1,
+            "frames": [
+                [0, 128]
+            ]
+        }
+    }
+}

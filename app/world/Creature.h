@@ -5,22 +5,25 @@
 #include "Movable.h"
 #include "Sprited.h"
 #include "Camera.h"
-#include "Item.h"
 
+class Item;
 
 class Creature : public Sprited
 {
 public:
     Creature(const char *, Camera *camera = 0);
 
-    void moveTo(sf::Vector2f);
+    virtual void update();
+    virtual void draw(sf::RenderWindow *window);
 
     virtual void moveStarted();
     virtual void moveStopped();
 
+    void arm(Item *item);
+
 private:
     Camera *camera = 0;
-    Item *armedItem;
+    Item *armedItem = 0;
 };
 
 #endif // CREATURE_H
