@@ -114,6 +114,7 @@ void MainMenuScene::tick()
 //            projectile->startMove(sf::Vector2f(0, 1));
 //            std::cerr << "SHOOT" << std::endl;
 //            this->objects.push_back(projectile);
+            this->player->useArmedItem();
         }
     }
 

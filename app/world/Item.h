@@ -20,6 +20,8 @@ public:
     virtual void moveStarted() {};
     virtual void moveStopped() {};
 
+    virtual void use() = 0;
+
     enum EHoldStyle {
         ONE_HANDED,
         TWO_HANDED
@@ -27,7 +29,7 @@ public:
 
     EHoldStyle holdStyle = ONE_HANDED;
 
-private:
+protected:
     Creature *owner = 0;
 };
 

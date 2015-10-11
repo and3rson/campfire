@@ -20,6 +20,7 @@ public:
     virtual void moveStopped();
 
     void arm(Item *item);
+    void useArmedItem();
 
 private:
     Camera *camera = 0;

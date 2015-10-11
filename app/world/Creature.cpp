@@ -58,3 +58,9 @@ void Creature::arm(Item *item) {
     this->armedItem->setOwner(this);
     this->moveStopped(); // TODO: Refactor setAnimation to allow suffixes.
 }
+
+void Creature::useArmedItem() {
+    if (this->armedItem) {
+        this->armedItem->use();
+    }
+}

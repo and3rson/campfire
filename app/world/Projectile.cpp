@@ -2,7 +2,7 @@
 
 Projectile::Projectile(Camera *camera) : Sprited("bullet", camera)
 {
-    this->moveSpeed = 2000;
+    this->moveSpeed = 3000;
 }
 
 void Projectile::moveStarted()
