@@ -8,12 +8,12 @@ AMovable::AMovable(Camera *camera) : WorldObject(camera)
 
 void AMovable::moveTo(sf::Vector2f target)
 {
-    this->source = sf::Vector2f(this->position);
+    this->source = sf::Vector2f(this->wPosition);
     this->target = sf::Vector2f(target);
     sf::Vector2f vector = this->target - this->source;
 
     // Face the direction of movement
-    this->rotation = atan2(vector.y, vector.x) + M_PI / 2;
+    this->wRotation = atan2(vector.y, vector.x) + M_PI / 2;
 
     this->clock.restart();
     this->isMoving = true;
@@ -29,26 +29,26 @@ void AMovable::update()
                 return;
             }
 
-            float cs = cos(camera->rotation + M_PI);
-            float sn = sin(camera->rotation + M_PI);
+            float cs = cos(camera->wRotation + M_PI);
+            float sn = sin(camera->wRotation + M_PI);
 
             float x = (float) moveVector->x * cs - (float) moveVector->y * sn;
             float y = (float) moveVector->x * sn + (float) moveVector->y * cs;
 
-//            this->source = this->position;
-//            this->target = this->position + sf::Vector2i(x, y);
+//            this->source = this->wPosition;
+//            this->target = this->wPosition + sf::Vector2i(x, y);
 
             float pointsPassed = (float) this->moveSpeed * ((float) clock.getElapsedTime().asMilliseconds() / 1000);
 
-            // TODO: Change "rotation" here
+            // TODO: Change "wRotation" here
 
 //            std::cerr << "Passed units: " << pointsPassed << " " << x << "/" << y;
 
-            this->position += sf::Vector2f(x * pointsPassed, y * pointsPassed);
+            this->wPosition += sf::Vector2f(x * pointsPassed, y * pointsPassed);
             this->clock.restart();
         } else {
 
-            // Update position
+            // Update wPosition
 
             sf::Vector2f vector = this->target - this->source;
             int length = sqrt(vector.x * vector.x + vector.y * vector.y);
@@ -60,9 +60,9 @@ void AMovable::update()
                 vector.x *= k;
                 vector.y *= k;
 
-                this->position = this->source + vector;
+                this->wPosition = this->source + vector;
             } else {
-                this->position = this->target;
+                this->wPosition = this->target;
                 this->stopMove();
             }
         }

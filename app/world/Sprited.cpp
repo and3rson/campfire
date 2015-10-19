@@ -46,7 +46,15 @@ Sprited::Sprited(const char *spriteName, Camera *camera = 0) : AMovable(camera)
     this->texture.setSmooth(true);
     this->sprite = sf::Sprite(this->texture);
     this->sprite.setTextureRect(sf::IntRect(0, 0, this->width, this->height));
-    this->sprite.setOrigin(root["origin"]["x"].asInt(), root["origin"]["y"].asInt());
+
+    this->rOrigin = sf::Vector2f(root["origin"]["x"].asInt(), root["origin"]["y"].asInt());
+
+    this->sprite.setOrigin(this->rOrigin);
+
+    this->oHitbox.left = this->rOrigin.x + root["hitbox"][0].asFloat();
+    this->oHitbox.top = this->rOrigin.y + root["hitbox"][1].asFloat();
+    this->oHitbox.width = this->rOrigin.x + root["hitbox"][2].asFloat() - this->oHitbox.left;
+    this->oHitbox.height = this->rOrigin.y + root["hitbox"][3].asFloat() - this->oHitbox.top;
 }
 
 void Sprited::setAnimation(const char *name, bool reset) {
@@ -55,7 +63,7 @@ void Sprited::setAnimation(const char *name, bool reset) {
             std::cerr << "Error: animation '" << name << "' not found!" << std::endl;
             return;
         }
-        std::cerr << "Animation set to " << name << std::endl;
+//        std::cerr << "Animation set to " << name << std::endl;
         // Set new animation
         this->currentAnimation = this->animations[name];
         this->clock.restart();
@@ -81,14 +89,14 @@ void Sprited::update()
         this->sprite.setTextureRect(sf::IntRect(shift.x, shift.y, this->width, this->height));
     }
 
-    this->sprite.setRotation((this->rotation - this->camera->rotation) / (2 * M_PI) * 360); // + this->rotation / (2 * M_PI) * 360);
+    this->sprite.setRotation((this->wRotation - this->camera->wRotation) / (2 * M_PI) * 360); // + this->wRotation / (2 * M_PI) * 360);
 
     if (this->camera) {
-        // Transform sprite position based on camera position & rotation
-        this->sprite.setPosition(this->applyCameraTransformation(this->position));
+        // Transform sprite wPosition based on camera wPosition & wRotation
+        this->sprite.setPosition(this->applyCameraTransformation(this->wPosition));
     } else {
-        // No camera set, meaning this object's position is not affected by camera.
-        this->sprite.setPosition(this->position.x, this->position.y);
+        // No camera set, meaning this object's wPosition is not affected by camera.
+        this->sprite.setPosition(this->wPosition.x, this->wPosition.y);
     }
 }
 
@@ -96,13 +104,38 @@ void Sprited::draw(sf::RenderWindow *window)
 {
     window->draw(this->sprite);
 
-//    static sf::RectangleShape rect;
-//    rect.setFillColor(sf::Color::Transparent);
-//    rect.setOutlineThickness(1);
-//    rect.setOutlineColor(sf::Color::Red);
-//    rect.setOrigin(this->sprite.getOrigin());
-//    rect.setPosition(this->sprite.getPosition());
-//    rect.setRotation(this->sprite.getRotation());
-//    rect.setSize(sf::Vector2f(this->sprite.getTextureRect().width, this->sprite.getTextureRect().height));
-//    window->draw(rect);
+    static sf::RectangleShape origin;
+    origin.setOrigin(2, 2);
+    origin.setSize(sf::Vector2f(5, 5));
+    origin.setPosition(this->sprite.getPosition());
+    origin.setFillColor(sf::Color(255, 0, 0, 128));
+    window->draw(origin);
+
+    static sf::RectangleShape rect;
+    rect.setFillColor(sf::Color::Transparent);
+    rect.setOutlineThickness(1);
+    rect.setOutlineColor(sf::Color::Blue);
+    rect.setOrigin(this->sprite.getOrigin());
+    rect.setPosition(this->sprite.getPosition());
+    rect.setRotation(this->sprite.getRotation());
+    rect.setSize(sf::Vector2f(this->sprite.getTextureRect().width, this->sprite.getTextureRect().height));
+    window->draw(rect);
+
+//    sf::Vector2f hitboxOrigin = sf::Vector2f(
+//
+//    );
+//    sf::Vector2f hitboxPosition = sf::Vector2f(
+//            this->wPosition.x + this->oHitbox.left,
+//            this->wPosition.y + this->oHitbox.top
+//    );
+
+    static sf::RectangleShape hitboxRect;
+    hitboxRect.setFillColor(sf::Color::Transparent);
+    hitboxRect.setOutlineThickness(1);
+    hitboxRect.setOutlineColor(sf::Color::Red);
+    hitboxRect.setOrigin(this->sprite.getOrigin() - sf::Vector2f(this->oHitbox.left, this->oHitbox.top));
+    hitboxRect.setSize(sf::Vector2f(this->oHitbox.width, this->oHitbox.height));
+    hitboxRect.setPosition(this->applyCameraTransformation(this->wPosition));
+    hitboxRect.setRotation(-this->camera->wRotation / M_PI * 180);
+    window->draw(hitboxRect);
 }

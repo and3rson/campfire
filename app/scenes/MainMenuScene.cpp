@@ -31,7 +31,7 @@ MainMenuScene::MainMenuScene(GameEngine *engine) : AScene(engine)
 
     this->camera->attachTo(this->player);
     //    this->camera->update();
-    std::cerr << "POS:" << this->camera->position.x;
+    std::cerr << "POS:" << this->camera->wPosition.x << std::endl;
 
     this->moveVector = sf::Vector2f(0, 0);
 
@@ -54,7 +54,7 @@ void MainMenuScene::tick()
                 int dx = event.mouseMove.x - this->lastMousePos->x;
                 int dy = event.mouseMove.y - this->lastMousePos->y;
 
-                this->player->rotation += (float) dx / 300; // Sensitivity
+                this->player->wRotation += (float) dx / 300; // Sensitivity
             } else {
                 this->lastMousePos = new sf::Vector2i();
             }
@@ -69,11 +69,9 @@ void MainMenuScene::tick()
                     this->moveVector.y = -1;
                     break;
                 case sf::Keyboard::A:
-                    std::cerr << "PRESS A";
                     this->moveVector.x = 1;
                     break;
                 case sf::Keyboard::D:
-                    std::cerr << "PRESS D";
                     this->moveVector.x = -1;
                     break;
                 default:
@@ -93,12 +91,10 @@ void MainMenuScene::tick()
                     break;
                 case sf::Keyboard::A:
                     if (this->moveVector.x == 1) {
-                        std::cerr << "REL A";
                         this->moveVector.x = 0;
                     }
                 case sf::Keyboard::D:
                     if (this->moveVector.x == -1) {
-                        std::cerr << "REL D";
                         this->moveVector.x = 0;
                     }
                     break;
@@ -109,12 +105,36 @@ void MainMenuScene::tick()
             this->player->startMove(this->moveVector);
         } else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
 //            Projectile *projectile = new Projectile(this->camera);
-//            projectile->setPosition(sf::Vector2f(this->player->position));
-//            projectile->rotation = this->player->rotation;
+//            projectile->setPosition(sf::Vector2f(this->player->wPosition));
+//            projectile->wRotation = this->player->wRotation;
 //            projectile->startMove(sf::Vector2f(0, 1));
 //            std::cerr << "SHOOT" << std::endl;
 //            this->objects.push_back(projectile);
             this->player->useArmedItem();
+        } else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right) {
+            WorldObject *dropped = this->player->dropArmedItem();
+
+            sf::FloatRect wPlayerHitbox = this->player->getWHitbox();
+
+            std::cerr << "object count: " << this->objects.size() << std::endl;
+            std::vector<WorldObject *>::iterator it = this->objects.begin();
+            for(WorldObject *object = *it; it != this->objects.end(); object = *(++it)) {
+                std::cerr << " - " << ((Item *) object)->getType() << std::endl;
+                std::cerr << " - " << ((Item *) object)->getType() << std::endl;
+                if (object->getType() == "item") {
+                    std::cerr << "picking up " << ((Item *) object)->getType() << std::endl;
+                    if (wPlayerHitbox.intersects(object->getWHitbox())) {
+                        this->player->arm((Item *) object);
+                        this->objects.erase(it);
+                        break;
+                    }
+                }
+            }
+
+            if (dropped) {
+                std::cerr << " * dropped " << dropped->getType() << std::endl;
+                this->objects.push_back(dropped);
+            }
         }
     }
 
@@ -124,7 +144,7 @@ void MainMenuScene::tick()
         testClock.restart();
         sf::Vector2f target = sf::Vector2f(_dbgRandom(), _dbgRandom());
         //        srand(testClock.getElapsedTime().asMicroseconds());
-        //        std::cerr << this->enemy->position.x << "//" << target.x << "/" << target.y;
+        //        std::cerr << this->enemy->wPosition.x << "//" << target.x << "/" << target.y;
         this->enemy->moveTo(target);
     }
 

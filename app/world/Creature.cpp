@@ -56,6 +56,7 @@ void Creature::draw(sf::RenderWindow *window) {
 void Creature::arm(Item *item) {
     this->armedItem = item;
     this->armedItem->setOwner(this);
+    this->armedItem->setPosition(sf::Vector2f(0, 0));
     this->moveStopped(); // TODO: Refactor setAnimation to allow suffixes.
 }
 
@@ -63,4 +64,20 @@ void Creature::useArmedItem() {
     if (this->armedItem) {
         this->armedItem->use();
     }
+}
+
+std::string Creature::getType() {
+    return "creature";
+}
+
+WorldObject* Creature::dropArmedItem() {
+    if (this->armedItem) {
+        WorldObject *dropped = this->armedItem;
+        this->armedItem->setOwner(NULL);
+        this->armedItem->setPosition(this->wPosition);
+        this->armedItem = NULL;
+        this->moveStopped();
+        return dropped;
+    }
+    return NULL;
 }

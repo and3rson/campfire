@@ -17,6 +17,8 @@ public:
     virtual void moveStopped();
     virtual void draw(sf::RenderWindow *) {}
 
+    virtual std::string getType();
+
 private:
     WorldObject *target;
 };

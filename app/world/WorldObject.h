@@ -20,10 +20,15 @@ public:
     void setPosition(sf::Vector2f);
     sf::Vector2f applyCameraTransformation(sf::Vector2f pos);
     virtual void draw(sf::RenderWindow *window) = 0;
+    virtual std::string getType();
+
+    sf::FloatRect getWHitbox();
 
 public:
-    sf::Vector2f position;
-    float rotation = 0;
+    sf::FloatRect oHitbox;
+    sf::Vector2f wPosition;
+    sf::Vector2f rOrigin;
+    float wRotation = 0;
     Camera *camera = 0;
 };
 

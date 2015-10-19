@@ -11,8 +11,8 @@ Pistol::Pistol(Camera *camera) : Item("pistol", camera) {
 
 void Pistol::use() {
     this->projectile = new Projectile(this->camera);
-    projectile->setPosition(sf::Vector2f(this->owner->position));
-    projectile->rotation = this->owner->rotation;
+    projectile->setPosition(sf::Vector2f(this->owner->wPosition));
+    projectile->wRotation = this->owner->wRotation;
     projectile->startMove(sf::Vector2f(0, 1));
     std::cerr << "SHOOT" << std::endl;
     this->projectile = projectile;

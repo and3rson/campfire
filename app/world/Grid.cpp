@@ -8,7 +8,7 @@ Grid::Grid(Camera *camera) : WorldObject(camera)
 
 void Grid::draw(sf::RenderWindow *window)
 {
-    sf::Vector2f cameraPos = this->camera->position;
+    sf::Vector2f cameraPos = this->camera->wPosition;
     sf::Vector2u windowSize = window->getSize();
 
 //    std::cerr << cameraPos.x << "/" << cameraPos.y << "..." << windowSize.y;
@@ -18,7 +18,7 @@ void Grid::draw(sf::RenderWindow *window)
     sf::CircleShape cs(10);
     cs.setFillColor(sf::Color(0, 128, 255));
 
-    sf::Vector2f pos(camera->position);
+    sf::Vector2f pos(camera->wPosition);
 
     pos.x = ((int) pos.x / DENSITY) * DENSITY;
     pos.y = ((int) pos.y / DENSITY) * DENSITY;
@@ -43,7 +43,7 @@ void Grid::draw(sf::RenderWindow *window)
             sf::Text text(sf::String(textChar), this->font, 10);
             text.setColor(textColor);
             text.setPosition(this->applyCameraTransformation(sf::Vector2f(x + 5, y + 5)));
-            text.setRotation(- this->camera->rotation / M_PI * 180);
+            text.setRotation(- this->camera->wRotation / M_PI * 180);
             window->draw(text);
         }
     }

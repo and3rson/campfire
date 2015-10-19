@@ -15,9 +15,9 @@ void Camera::attachTo(WorldObject *target)
 void Camera::update()
 {
     AMovable::update();
-    this->position = this->target->position;
-    float rotDiff = this->target->rotation - this->rotation;
-    this->rotation += rotDiff / 4;
+    this->wPosition = this->target->wPosition;
+    float rotDiff = this->target->wRotation - this->wRotation;
+    this->wRotation += rotDiff / 4;
 }
 
 void Camera::moveStarted()
@@ -28,4 +28,8 @@ void Camera::moveStarted()
 void Camera::moveStopped()
 {
 
+}
+
+std::string Camera::getType() {
+    return "camera";
 }

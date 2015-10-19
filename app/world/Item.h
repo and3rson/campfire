@@ -22,6 +22,8 @@ public:
 
     virtual void use() = 0;
 
+    virtual std::string getType();
+
     enum EHoldStyle {
         ONE_HANDED,
         TWO_HANDED

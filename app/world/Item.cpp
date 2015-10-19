@@ -13,9 +13,11 @@ void Item::update() {
     Sprited::update();
 
     if (this->owner) {
-        this->sprite.setPosition(this->applyCameraTransformation(this->owner->position));
-        this->rotation = this->owner->rotation;
+        this->sprite.setPosition(this->applyCameraTransformation(this->owner->wPosition));
+        this->wRotation = this->owner->wRotation;
     } else {
+        this->sprite.setPosition(this->applyCameraTransformation(this->wPosition));
+//        this->wRotation = this->owner->wRotation;
     }
 }
 
@@ -24,8 +26,13 @@ void Item::setOwner(Creature *owner) {
 
     if (owner) {
         this->setAnimation("armed", true);
-        std::cerr << "ARMED";
+        std::cerr << "ARMED" << std::endl;
     } else {
         this->setAnimation("ground");
+        std::cerr << "GROUND" << std::endl;
     };
+}
+
+std::string Item::getType() {
+    return "item";
 }

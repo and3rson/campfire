@@ -19,8 +19,11 @@ public:
     virtual void moveStarted();
     virtual void moveStopped();
 
+    virtual std::string getType();
+
     void arm(Item *item);
     void useArmedItem();
+    WorldObject* dropArmedItem();
 
 private:
     Camera *camera = 0;
