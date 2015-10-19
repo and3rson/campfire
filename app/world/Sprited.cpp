@@ -35,7 +35,10 @@ Sprited::Sprited(const char *spriteName, Camera *camera = 0) : AMovable(camera)
 
         animations[animationsIterator.key().asString()] = animation;
         if (!this->currentAnimation) {
+//            this->setAnimation(animationsIterator.key().asCString());
             this->currentAnimation = animation;
+
+//            std::cerr << "Current animation: " << animationsIterator.key().asCString() << std::endl;
         }
     }
 
@@ -72,6 +75,8 @@ void Sprited::setAnimation(const char *name, bool reset) {
         // Force redraw sprite
         sf::Vector2i shift = this->currentAnimation->frames[this->currentFrame];
         this->sprite.setTextureRect(sf::IntRect(shift.x, shift.y, this->width, this->height));
+
+        this->currentAnimationName = name;
     }
 }
 
@@ -138,4 +143,17 @@ void Sprited::draw(sf::RenderWindow *window)
     hitboxRect.setPosition(this->applyCameraTransformation(this->wPosition));
     hitboxRect.setRotation(-this->camera->wRotation / M_PI * 180);
     window->draw(hitboxRect);
+}
+
+std::string Sprited::getAnimationWithoutSuffix() {
+    int i = 0;
+    char result[128];
+
+    while (result[i] = this->currentAnimationName[i++]) {
+        if (this->currentAnimationName[i] > '0' && this->currentAnimationName[i] < '9') {
+            result[i] = 0;
+            break;
+        }
+    }
+    return std::string(result);
 }

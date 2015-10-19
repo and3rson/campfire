@@ -27,12 +27,12 @@ public:
 protected:
     int moveSpeed = 200;
 
+    bool isMoving = false;
 private:
     sf::Vector2f source;
     sf::Vector2f target;
     sf::Clock clock;
     sf::Vector2f *moveVector = 0;
-    bool isMoving = false;
 };
 
 #endif // MOVABLE_H

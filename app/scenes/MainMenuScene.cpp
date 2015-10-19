@@ -1,4 +1,5 @@
 #include <world/Pistol.h>
+#include <world/Crate.h>
 #include "MainMenuScene.h"
 #include "GameEngine.h"
 
@@ -28,6 +29,13 @@ MainMenuScene::MainMenuScene(GameEngine *engine) : AScene(engine)
     this->enemy->setPosition(sf::Vector2f(200, 200));
     this->enemy->moveTo(sf::Vector2f(_dbgRandom(), _dbgRandom()));
     this->objects.push_back(this->enemy);
+
+    Crate *c1 = new Crate(this->camera);
+    c1->setPosition(sf::Vector2f(300, 400));
+    this->objects.push_back(c1);
+    Crate *c2 = new Crate(this->camera);
+    c2->setPosition(sf::Vector2f(200, 300));
+    this->objects.push_back(c2);
 
     this->camera->attachTo(this->player);
     //    this->camera->update();

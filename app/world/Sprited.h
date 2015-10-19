@@ -18,6 +18,7 @@ class Sprited : public AMovable
 public:
     Sprited(const char *, Camera *camera);
     void setAnimation(const char *, bool reset = false);
+    std::string getAnimationWithoutSuffix();
     virtual void update();
     virtual void draw(sf::RenderWindow *window);
 
@@ -34,6 +35,7 @@ private:
     Animation *currentAnimation = 0;
     sf::Clock clock;
     int currentFrame = 0;
+    const char *currentAnimationName;
 };
 
 #endif // SPRITED_H

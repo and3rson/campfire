@@ -6,7 +6,7 @@
 #include "Creature.h"
 
 Item::Item(const char *definition, Camera *camera) : Sprited(definition, camera) {
-
+    this->setAnimation("ground");
 }
 
 void Item::update() {
@@ -26,10 +26,10 @@ void Item::setOwner(Creature *owner) {
 
     if (owner) {
         this->setAnimation("armed", true);
-        std::cerr << "ARMED" << std::endl;
+        std::cerr << "attached" << std::endl;
     } else {
         this->setAnimation("ground");
-        std::cerr << "GROUND" << std::endl;
+        std::cerr << "detached" << std::endl;
     };
 }
 

@@ -14,6 +14,7 @@ void Creature::moveStarted()
                 break;
             case Item::TWO_HANDED:
                 // TODO: Implement this
+                this->setAnimation("walk2");
                 break;
         }
     } else {
@@ -29,6 +30,7 @@ void Creature::moveStopped()
                 this->setAnimation("idle1");
                 break;
             case Item::TWO_HANDED:
+                this->setAnimation("idle2");
                 // TODO: Implement this
                 break;
         }
@@ -76,7 +78,15 @@ WorldObject* Creature::dropArmedItem() {
         this->armedItem->setOwner(NULL);
         this->armedItem->setPosition(this->wPosition);
         this->armedItem = NULL;
-        this->moveStopped();
+
+        if (this->isMoving) {
+            this->moveStarted();
+        } else {
+            this->moveStopped();
+        }
+
+//        this->moveStopped();
+
         return dropped;
     }
     return NULL;
