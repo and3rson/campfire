@@ -1,5 +1,6 @@
 #include <world/Pistol.h>
 #include <world/Crate.h>
+#include <effects/NoiseEffect.h>
 #include "MainMenuScene.h"
 #include "GameEngine.h"
 
@@ -44,6 +45,8 @@ MainMenuScene::MainMenuScene(GameEngine *engine) : AScene(engine)
     this->moveVector = sf::Vector2f(0, 0);
 
     sf::Mouse::setPosition(sf::Vector2i(window->getPosition().x + window->getSize().x / 2, window->getPosition().y + window->getSize().y / 2));
+
+//    this->engine->setEffect(new NoiseEffect(this->engine));
 }
 
 void MainMenuScene::tick()
@@ -51,23 +54,40 @@ void MainMenuScene::tick()
     int msPassed = this->frameClock.getElapsedTime().asMilliseconds();
     this->frameClock.restart();
 
+    GEEvent *geEvent;
+
+    while (geEvent = this->engine->getEvent()) {
+//        if (this->lastMousePos != NULL) {
+//            int dx = geEvent->dx - this->lastMousePos->x;
+//            int dy = geEvent->dy - this->lastMousePos->y;
+
+            this->player->wRotation += (float) geEvent->dx / 300; // Sensitivity
+//        } else {
+//            this->lastMousePos = new sf::Vector2i();
+//        }
+//        this->lastMousePos->x = geEvent->dx;
+//        this->lastMousePos->y = geEvent->dy;
+
+        delete geEvent;
+    }
+
     sf::Event event;
     while (window->pollEvent(event)) {
         if (event.type == sf::Event::Closed) {
             if (event.type == sf::Event::Closed) {
                 window->close();
             }
-        } else if (event.type == sf::Event::MouseMoved) {
-            if (this->lastMousePos != NULL) {
-                int dx = event.mouseMove.x - this->lastMousePos->x;
-                int dy = event.mouseMove.y - this->lastMousePos->y;
-
-                this->player->wRotation += (float) dx / 300; // Sensitivity
-            } else {
-                this->lastMousePos = new sf::Vector2i();
-            }
-            this->lastMousePos->x = event.mouseMove.x;
-            this->lastMousePos->y = event.mouseMove.y;
+//        } else if (event.type == sf::Event::MouseMoved) {
+//            if (this->lastMousePos != NULL) {
+//                int dx = event.mouseMove.x - this->lastMousePos->x;
+//                int dy = event.mouseMove.y - this->lastMousePos->y;
+//
+//                this->player->wRotation += (float) dx / 300; // Sensitivity
+//            } else {
+//                this->lastMousePos = new sf::Vector2i();
+//            }
+//            this->lastMousePos->x = event.mouseMove.x;
+//            this->lastMousePos->y = event.mouseMove.y;
         } else if (event.type == sf::Event::KeyPressed) {
             switch (event.key.code) {
                 case sf::Keyboard::W:
