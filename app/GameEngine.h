@@ -29,8 +29,11 @@ using namespace std;
 
 class GameEngine
 {
-public:
+private:
     GameEngine(sf::RenderWindow *window);
+public:
+    static void initialize(sf::RenderWindow *window);
+    static GameEngine* getInstance();
     void start();
     void tick();
 
@@ -42,11 +45,12 @@ public:
     GEEvent* getEvent();
 
 protected:
+    static GameEngine* instance;
     sf::RenderWindow *window;
 
 private:
     AScene *scene;
-    AEffect *effect;
+    AEffect *effect = 0;
     std::vector<GEEvent *> events;
     int lastX = -1, lastY = -1;
 

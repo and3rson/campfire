@@ -12,8 +12,8 @@
 
 using namespace std;
 
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 640
+#define WINDOW_WIDTH 1200
+#define WINDOW_HEIGHT 800
 
 int main()
 {
@@ -34,13 +34,14 @@ int main()
 
     sf::VideoMode videoMode = sf::VideoMode::getDesktopMode();
 
-    window.setPosition(sf::Vector2i((videoMode.width - WINDOW_WIDTH) / 2 + videoMode.width, (videoMode.height - WINDOW_HEIGHT) / 2));
+    window.setPosition(sf::Vector2i((videoMode.width - WINDOW_WIDTH) / 2, (videoMode.height - WINDOW_HEIGHT) / 2));
 
     sf::Clock frameClock;
     int frameCount = 0;
     char title[64];
 
-    GameEngine *engine = new GameEngine(&window);
+    GameEngine::initialize(&window);
+    GameEngine *engine = GameEngine::getInstance();
     engine->start();
 
     engine->setScene(new MainMenuScene(engine));

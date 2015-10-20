@@ -1,3 +1,4 @@
+#include <GameEngine.h>
 #include "Sprited.h"
 
 Sprited::Sprited(const char *spriteName, Camera *camera = 0) : AMovable(camera)
@@ -109,40 +110,40 @@ void Sprited::draw(sf::RenderWindow *window)
 {
     window->draw(this->sprite);
 
-    static sf::RectangleShape origin;
-    origin.setOrigin(2, 2);
-    origin.setSize(sf::Vector2f(5, 5));
-    origin.setPosition(this->sprite.getPosition());
-    origin.setFillColor(sf::Color(255, 0, 0, 128));
-    window->draw(origin);
-
-    static sf::RectangleShape rect;
-    rect.setFillColor(sf::Color::Transparent);
-    rect.setOutlineThickness(1);
-    rect.setOutlineColor(sf::Color::Blue);
-    rect.setOrigin(this->sprite.getOrigin());
-    rect.setPosition(this->sprite.getPosition());
-    rect.setRotation(this->sprite.getRotation());
-    rect.setSize(sf::Vector2f(this->sprite.getTextureRect().width, this->sprite.getTextureRect().height));
-    window->draw(rect);
-
-//    sf::Vector2f hitboxOrigin = sf::Vector2f(
+//    static sf::RectangleShape origin;
+//    origin.setOrigin(2, 2);
+//    origin.setSize(sf::Vector2f(5, 5));
+//    origin.setPosition(this->sprite.getPosition());
+//    origin.setFillColor(sf::Color(255, 0, 0, 128));
+//    window->draw(origin);
 //
-//    );
-//    sf::Vector2f hitboxPosition = sf::Vector2f(
-//            this->wPosition.x + this->oHitbox.left,
-//            this->wPosition.y + this->oHitbox.top
-//    );
-
-    static sf::RectangleShape hitboxRect;
-    hitboxRect.setFillColor(sf::Color::Transparent);
-    hitboxRect.setOutlineThickness(1);
-    hitboxRect.setOutlineColor(sf::Color::Red);
-    hitboxRect.setOrigin(this->sprite.getOrigin() - sf::Vector2f(this->oHitbox.left, this->oHitbox.top));
-    hitboxRect.setSize(sf::Vector2f(this->oHitbox.width, this->oHitbox.height));
-    hitboxRect.setPosition(this->applyCameraTransformation(this->wPosition));
-    hitboxRect.setRotation(-this->camera->wRotation / M_PI * 180);
-    window->draw(hitboxRect);
+//    static sf::RectangleShape rect;
+//    rect.setFillColor(sf::Color::Transparent);
+//    rect.setOutlineThickness(1);
+//    rect.setOutlineColor(sf::Color::Blue);
+//    rect.setOrigin(this->sprite.getOrigin());
+//    rect.setPosition(this->sprite.getPosition());
+//    rect.setRotation(this->sprite.getRotation());
+//    rect.setSize(sf::Vector2f(this->sprite.getTextureRect().width, this->sprite.getTextureRect().height));
+//    window->draw(rect);
+//
+////    sf::Vector2f hitboxOrigin = sf::Vector2f(
+////
+////    );
+////    sf::Vector2f hitboxPosition = sf::Vector2f(
+////            this->wPosition.x + this->oHitbox.left,
+////            this->wPosition.y + this->oHitbox.top
+////    );
+//
+//    static sf::RectangleShape hitboxRect;
+//    hitboxRect.setFillColor(sf::Color::Transparent);
+//    hitboxRect.setOutlineThickness(1);
+//    hitboxRect.setOutlineColor(sf::Color::Red);
+//    hitboxRect.setOrigin(this->sprite.getOrigin() - sf::Vector2f(this->oHitbox.left, this->oHitbox.top));
+//    hitboxRect.setSize(sf::Vector2f(this->oHitbox.width, this->oHitbox.height));
+//    hitboxRect.setPosition(this->applyCameraTransformation(this->wPosition));
+//    hitboxRect.setRotation(-this->camera->wRotation / M_PI * 180);
+//    window->draw(hitboxRect);
 }
 
 std::string Sprited::getAnimationWithoutSuffix() {

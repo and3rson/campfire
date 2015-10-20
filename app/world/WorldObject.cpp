@@ -1,3 +1,4 @@
+#include <GameEngine.h>
 #include "WorldObject.h"
 #include "Camera.h"
 
@@ -28,7 +29,9 @@ sf::Vector2f WorldObject::applyCameraTransformation(sf::Vector2f pos)
     int x = vector.x * cs - vector.y * sn;
     int y = vector.x * sn + vector.y * cs;
 
-    return sf::Vector2f(x + 400, y + 320);
+    sf::Vector2u windowSize = GameEngine::getInstance()->getWindow()->getSize();
+
+    return sf::Vector2f(x + windowSize.x / 2, y + windowSize.y / 2);
 }
 
 sf::FloatRect WorldObject::getWHitbox() {

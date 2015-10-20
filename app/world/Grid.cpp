@@ -31,6 +31,15 @@ void Grid::draw(sf::RenderWindow *window)
     sf::Color gridColor(255, 255, 255, 32);
     sf::Color textColor(128, 192, 255, 196);
 
+    sf::Vertex line[] = {
+            sf::Vertex(this->applyCameraTransformation(sf::Vector2f(-1000, -1000)), gridColor),
+            sf::Vertex(this->applyCameraTransformation(sf::Vector2f(1000, 1000)), gridColor),
+    };
+    window->draw(line, 2, sf::Lines);
+
+    sf::Vector2f tr = this->applyCameraTransformation(sf::Vector2f(-1000, -1000));
+    std::cout << tr.x << " / " << tr.y << std::endl;
+
     for (int x = pos.x - DENSITY * 20; x < pos.x + DENSITY * 20; x += DENSITY) {
         sf::Vertex line[] = {
             sf::Vertex(this->applyCameraTransformation(sf::Vector2f(x, pos.y - windowSize.y)), gridColor),

@@ -1,5 +1,7 @@
 #include "GameEngine.h"
 
+GameEngine* GameEngine::instance = 0;
+
 GameEngine::GameEngine(sf::RenderWindow *window) : window(window)
 {
     Director::getInstance();
@@ -102,3 +104,13 @@ GEEvent* GameEngine::getEvent() {
 //    this.x = x;
 //    this.y = y;
 //}
+GameEngine *GameEngine::getInstance() {
+    if (!GameEngine::instance) {
+        std::cerr << "GameEngine needs to be initialized first!";
+    }
+    return GameEngine::instance;
+}
+
+void GameEngine::initialize(sf::RenderWindow *window) {
+    GameEngine::instance = new GameEngine(window);
+}
