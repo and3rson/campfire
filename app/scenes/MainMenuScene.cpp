@@ -114,8 +114,8 @@ void MainMenuScene::tick()
             WorldObjectList::iterator it = this->objects.begin();
             for(WorldObject *object = *it; it != this->objects.end(); object = *(++it)) {
                 if (object->getType() == "item") {
-                    std::cerr << " * picking up " << ((Item *) object)->getType() << std::endl;
                     if (wPlayerHitbox.intersects(object->getWHitbox())) {
+                        std::cerr << " * picking up " << ((Item *) object)->getType() << std::endl;
                         this->player->arm((Item *) object);
                         this->objects.erase(it);
                         break;

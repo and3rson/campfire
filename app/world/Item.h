@@ -15,7 +15,6 @@ public:
     Item(const char *definition, Camera *camera);
 
     virtual void update();
-    void setOwner(Creature *owner);
 
     virtual void moveStarted() {};
     virtual void moveStopped() {};
