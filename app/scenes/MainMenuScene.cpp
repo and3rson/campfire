@@ -28,7 +28,9 @@ MainMenuScene::MainMenuScene(GameEngine *engine) : AScene(engine)
 //    this->enemy = new Creature("girl", this->camera);
     this->enemy = new Creature("bob", this->camera);
     this->enemy->setPosition(sf::Vector2f(200, 200));
-    this->enemy->moveTo(sf::Vector2f(_dbgRandom(), _dbgRandom()));
+//    this->enemy->moveTo(sf::Vector2f(_dbgRandom(), _dbgRandom()));
+    this->enemy->startMove(sf::Vector2f(0, -1), false);
+    this->enemy->arm(new Pistol(this->camera));
     this->objects.push_back(this->enemy);
 
     Crate *c1 = new Crate(this->camera);
@@ -91,38 +93,38 @@ void MainMenuScene::tick()
         } else if (event.type == sf::Event::KeyPressed) {
             switch (event.key.code) {
                 case sf::Keyboard::W:
-                    this->moveVector.y = 1;
-                    break;
-                case sf::Keyboard::S:
                     this->moveVector.y = -1;
                     break;
+                case sf::Keyboard::S:
+                    this->moveVector.y = 1;
+                    break;
                 case sf::Keyboard::A:
-                    this->moveVector.x = 1;
+                    this->moveVector.x = -1;
                     break;
                 case sf::Keyboard::D:
-                    this->moveVector.x = -1;
+                    this->moveVector.x = 1;
                     break;
                 default:
                     break;
             }
-            this->player->startMove(this->moveVector);
+            this->player->startMove(this->moveVector, true);
         } else if (event.type == sf::Event::KeyReleased) {
             switch (event.key.code) {
                 case sf::Keyboard::W:
-                    if (this->moveVector.y == 1) {
+                    if (this->moveVector.y == -1) {
                         this->moveVector.y = 0;
                     }
                 case sf::Keyboard::S:
-                    if (this->moveVector.y == -1) {
+                    if (this->moveVector.y == 1) {
                         this->moveVector.y = 0;
                     }
                     break;
                 case sf::Keyboard::A:
-                    if (this->moveVector.x == 1) {
+                    if (this->moveVector.x == -1) {
                         this->moveVector.x = 0;
                     }
                 case sf::Keyboard::D:
-                    if (this->moveVector.x == -1) {
+                    if (this->moveVector.x == 1) {
                         this->moveVector.x = 0;
                     }
                     break;
@@ -130,7 +132,7 @@ void MainMenuScene::tick()
                     break;
             }
 
-            this->player->startMove(this->moveVector);
+            this->player->startMove(this->moveVector, true);
         } else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
 //            Projectile *projectile = new Projectile(this->camera);
 //            projectile->setPosition(sf::Vector2f(this->player->wPosition));
@@ -168,12 +170,15 @@ void MainMenuScene::tick()
 
     static sf::Clock testClock;
 
-    if (testClock.getElapsedTime().asMilliseconds() > 1000) {
+    if (testClock.getElapsedTime().asMilliseconds() > 500) {
         testClock.restart();
-        sf::Vector2f target = sf::Vector2f(_dbgRandom(), _dbgRandom());
-        //        srand(testClock.getElapsedTime().asMicroseconds());
-        //        std::cerr << this->enemy->wPosition.x << "//" << target.x << "/" << target.y;
-        this->enemy->moveTo(target);
+        this->enemy->wRotation += M_PI / 4;
+        this->enemy->startMove(WorldObject::rotateVector(sf::Vector2f(0, -1), this->enemy->wRotation), false);
+        this->enemy->useArmedItem();
+//        sf::Vector2f target = sf::Vector2f(_dbgRandom(), _dbgRandom());
+//        //        srand(testClock.getElapsedTime().asMicroseconds());
+//        //        std::cerr << this->enemy->wPosition.x << "//" << target.x << "/" << target.y;
+//        this->enemy->moveTo(target);
     }
 
 //    window->clear();

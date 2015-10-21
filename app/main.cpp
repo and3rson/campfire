@@ -34,7 +34,7 @@ int main()
 
     sf::VideoMode videoMode = sf::VideoMode::getDesktopMode();
 
-    window.setPosition(sf::Vector2i((videoMode.width - WINDOW_WIDTH) / 2, (videoMode.height - WINDOW_HEIGHT) / 2));
+    window.setPosition(sf::Vector2i((videoMode.width - WINDOW_WIDTH) / 2 + videoMode.width, (videoMode.height - WINDOW_HEIGHT) / 2));
 
     sf::Clock frameClock;
     int frameCount = 0;

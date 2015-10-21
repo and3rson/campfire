@@ -16,7 +16,7 @@ class AMovable : public WorldObject
 public:
     AMovable(Camera *camera = 0);
     void moveTo(sf::Vector2f target);
-    void startMove(sf::Vector2f vector);
+    void startMove(sf::Vector2f vector, bool relative);
     void stopMove();
 
     virtual void moveStarted() = 0;
@@ -33,6 +33,7 @@ private:
     sf::Vector2f target;
     sf::Clock clock;
     sf::Vector2f *moveVector = 0;
+    bool relative;
 };
 
 #endif // MOVABLE_H

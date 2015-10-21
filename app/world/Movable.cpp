@@ -29,11 +29,11 @@ void AMovable::update()
                 return;
             }
 
-            float cs = cos(camera->wRotation + M_PI);
-            float sn = sin(camera->wRotation + M_PI);
-
-            float x = (float) moveVector->x * cs - (float) moveVector->y * sn;
-            float y = (float) moveVector->x * sn + (float) moveVector->y * cs;
+//            float cs = cos(camera->wRotation + M_PI);
+//            float sn = sin(camera->wRotation + M_PI);
+//
+//            float x = (float) moveVector->x * cs - (float) moveVector->y * sn;
+//            float y = (float) moveVector->x * sn + (float) moveVector->y * cs;
 
 //            this->source = this->wPosition;
 //            this->target = this->wPosition + sf::Vector2i(x, y);
@@ -44,7 +44,13 @@ void AMovable::update()
 
 //            std::cerr << "Passed units: " << pointsPassed << " " << x << "/" << y;
 
-            this->wPosition += sf::Vector2f(x * pointsPassed, y * pointsPassed);
+            sf::Vector2f shift = sf::Vector2f(moveVector->x * pointsPassed, moveVector->y * pointsPassed);
+
+            if (this->relative) {
+                shift = WorldObject::rotateVector(shift, this->wRotation);
+            }
+            this->wPosition += shift;
+//            this->wPosition += sf::Vector2f(moveVector->x * pointsPassed, moveVector->y * pointsPassed);
             this->clock.restart();
         } else {
 
@@ -71,10 +77,11 @@ void AMovable::update()
     WorldObject::update();
 }
 
-void AMovable::startMove(sf::Vector2f vector) {
+void AMovable::startMove(sf::Vector2f vector, bool relative = false) {
     this->clock.restart();
     this->isMoving = true;
     this->moveVector = new sf::Vector2f(vector);
+    this->relative = relative;
     this->moveStarted();
 }
 
