@@ -50,10 +50,13 @@ set(
         world/Pistol.h
         world/Crate.cpp
         world/Crate.h
-        duktape/duktape.c
+        duktape/duktape.cpp
         duktape/duktape.h
         Director.cpp
         Director.h
-        GEEvent.cpp GEEvent.h customtypes.h)
+        GEEvent.cpp
+        GEEvent.h
+        customtypes.h
+)
 
 add_executable(app ${SOURCE_FILES})
