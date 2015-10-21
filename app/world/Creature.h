@@ -27,7 +27,6 @@ public:
 
 private:
     Camera *camera = 0;
-    Item *armedItem = 0;
 };
 
 #endif // CREATURE_H

@@ -11,9 +11,6 @@ MainMenuScene::MainMenuScene(GameEngine *engine) : AScene(engine)
 
     this->window = this->engine->getWindow();
 
-    int width = this->window->getSize().x;
-    int height = this->window->getSize().y;
-
     this->lastMousePos = NULL;
 
     this->camera = new Camera();
@@ -23,12 +20,11 @@ MainMenuScene::MainMenuScene(GameEngine *engine) : AScene(engine)
     this->player = new Creature("bob", this->camera);
     this->player->setPosition(sf::Vector2f(400, 300));
     this->player->arm(new Pistol(this->camera));
+    this->player->setAsCurrent();
     this->objects.push_back(this->player);
 
-//    this->enemy = new Creature("girl", this->camera);
     this->enemy = new Creature("bob", this->camera);
     this->enemy->setPosition(sf::Vector2f(200, 200));
-//    this->enemy->moveTo(sf::Vector2f(_dbgRandom(), _dbgRandom()));
     this->enemy->startMove(sf::Vector2f(0, -1), false);
     this->enemy->arm(new Pistol(this->camera));
     this->objects.push_back(this->enemy);
@@ -41,14 +37,10 @@ MainMenuScene::MainMenuScene(GameEngine *engine) : AScene(engine)
     this->objects.push_back(c2);
 
     this->camera->attachTo(this->player);
-    //    this->camera->update();
-    std::cerr << "POS:" << this->camera->wPosition.x << std::endl;
 
     this->moveVector = sf::Vector2f(0, 0);
 
     sf::Mouse::setPosition(sf::Vector2i(window->getPosition().x + window->getSize().x / 2, window->getPosition().y + window->getSize().y / 2));
-
-//    this->engine->setEffect(new NoiseEffect(this->engine));
 }
 
 void MainMenuScene::tick()
@@ -59,17 +51,7 @@ void MainMenuScene::tick()
     GEEvent *geEvent;
 
     while (geEvent = this->engine->getEvent()) {
-//        if (this->lastMousePos != NULL) {
-//            int dx = geEvent->dx - this->lastMousePos->x;
-//            int dy = geEvent->dy - this->lastMousePos->y;
-
-            this->player->wRotation += (float) geEvent->dx / 300; // Sensitivity
-//        } else {
-//            this->lastMousePos = new sf::Vector2i();
-//        }
-//        this->lastMousePos->x = geEvent->dx;
-//        this->lastMousePos->y = geEvent->dy;
-
+        this->player->wRotation += (float) geEvent->dx / 300; // Sensitivity
         delete geEvent;
     }
 
@@ -79,17 +61,6 @@ void MainMenuScene::tick()
             if (event.type == sf::Event::Closed) {
                 window->close();
             }
-//        } else if (event.type == sf::Event::MouseMoved) {
-//            if (this->lastMousePos != NULL) {
-//                int dx = event.mouseMove.x - this->lastMousePos->x;
-//                int dy = event.mouseMove.y - this->lastMousePos->y;
-//
-//                this->player->wRotation += (float) dx / 300; // Sensitivity
-//            } else {
-//                this->lastMousePos = new sf::Vector2i();
-//            }
-//            this->lastMousePos->x = event.mouseMove.x;
-//            this->lastMousePos->y = event.mouseMove.y;
         } else if (event.type == sf::Event::KeyPressed) {
             switch (event.key.code) {
                 case sf::Keyboard::W:
@@ -134,25 +105,16 @@ void MainMenuScene::tick()
 
             this->player->startMove(this->moveVector, true);
         } else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
-//            Projectile *projectile = new Projectile(this->camera);
-//            projectile->setPosition(sf::Vector2f(this->player->wPosition));
-//            projectile->wRotation = this->player->wRotation;
-//            projectile->startMove(sf::Vector2f(0, 1));
-//            std::cerr << "SHOOT" << std::endl;
-//            this->objects.push_back(projectile);
             this->player->useArmedItem();
         } else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right) {
             WorldObject *dropped = this->player->dropArmedItem();
 
             sf::FloatRect wPlayerHitbox = this->player->getWHitbox();
 
-            std::cerr << "object count: " << this->objects.size() << std::endl;
-            std::vector<WorldObject *>::iterator it = this->objects.begin();
+            WorldObjectList::iterator it = this->objects.begin();
             for(WorldObject *object = *it; it != this->objects.end(); object = *(++it)) {
-                std::cerr << " - " << ((Item *) object)->getType() << std::endl;
-                std::cerr << " - " << ((Item *) object)->getType() << std::endl;
                 if (object->getType() == "item") {
-                    std::cerr << "picking up " << ((Item *) object)->getType() << std::endl;
+                    std::cerr << " * picking up " << ((Item *) object)->getType() << std::endl;
                     if (wPlayerHitbox.intersects(object->getWHitbox())) {
                         this->player->arm((Item *) object);
                         this->objects.erase(it);
@@ -175,28 +137,62 @@ void MainMenuScene::tick()
         this->enemy->wRotation += M_PI / 4;
         this->enemy->startMove(WorldObject::rotateVector(sf::Vector2f(0, -1), this->enemy->wRotation), false);
         this->enemy->useArmedItem();
-//        sf::Vector2f target = sf::Vector2f(_dbgRandom(), _dbgRandom());
-//        //        srand(testClock.getElapsedTime().asMicroseconds());
-//        //        std::cerr << this->enemy->wPosition.x << "//" << target.x << "/" << target.y;
-//        this->enemy->moveTo(target);
     }
 
-//    window->clear();
-
     this->camera->update();
-//    this->player->update();
-//    this->enemy->update();
 
     this->grid->update();
     this->grid->draw(window);
 
-    for (WorldObject *object: this->objects) {
-        object->update();
-        object->draw(window);
+    WorldObjectList collidables;
+
+    int i = 0;
+
+    for (WorldObject *top: this->objects) {
+        WorldObjectList bunch = this->walk(top);
+
+        for (WorldObject *object: bunch) {
+            object->update();
+            object->draw(this->window);
+
+            if (object->isCollidable()) {
+                sf::FloatRect wHitbox = object->getWHitbox();
+
+                if (! collidables.empty()) {
+                    for (WorldObject *other : collidables) {
+                        if (other->isCollidable() && other->isCollidable()) {
+                            bool isColliding = object->isColliding(other);
+                            bool intersects = wHitbox.intersects(other->getWHitbox());
+                            if (!isColliding && intersects) {
+                                object->collisionStarted(other);
+                                other->collisionStarted(object);
+                                object->addCollision(other);
+                                other->addCollision(object);
+                            } else if(isColliding && !intersects) {
+                                object->collisionStopped(other);
+                                other->collisionStopped(object);
+                                object->removeCollision(other);
+                                other->removeCollision(object);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        collidables.insert(collidables.end(), bunch.begin(), bunch.end());
+    }
+}
+
+WorldObjectList MainMenuScene::walk(WorldObject *object) {
+    WorldObjectList discovered;
+
+    discovered.push_back(object);
+
+    for (WorldObject *child : object->getChildren()) {
+        WorldObjectList children = this->walk(child);
+        discovered.insert(discovered.end(), children.begin(), children.end());
     }
 
-//    player->draw(window);
-//    enemy->draw(window);
-
-//    window->display();
+    return discovered;
 }

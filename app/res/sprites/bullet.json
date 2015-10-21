@@ -1,11 +1,14 @@
 {
     "width": 8,
-    "height": 16,
+    "height": 32,
     "origin": {
         "x": 4,
         "y": 8
     },
-    "texture": "bullet.png",
+    "hitbox": [
+        -8, -8, 8, 8
+    ],
+    "texture": "bullet2.png",
     "animations": {
         "idle": {
             "fps": 1,

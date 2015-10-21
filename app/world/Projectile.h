@@ -12,7 +12,12 @@ public:
 
     void moveStarted();
     void moveStopped();
-//    virtual void draw(sf::RenderWindow *window);
+
+    virtual bool collisionStarted(WorldObject *other);
+    virtual bool collisionStopped(WorldObject *other);
+    virtual bool isCollidable();
+
+    virtual std::string getType();
 };
 
 #endif // PROJECTILE_H

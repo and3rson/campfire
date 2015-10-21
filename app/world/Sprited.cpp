@@ -55,10 +55,12 @@ Sprited::Sprited(const char *spriteName, Camera *camera = 0) : AMovable(camera)
 
     this->sprite.setOrigin(this->rOrigin);
 
-    this->oHitbox.left = this->rOrigin.x + root["hitbox"][0].asFloat();
-    this->oHitbox.top = this->rOrigin.y + root["hitbox"][1].asFloat();
-    this->oHitbox.width = this->rOrigin.x + root["hitbox"][2].asFloat() - this->oHitbox.left;
-    this->oHitbox.height = this->rOrigin.y + root["hitbox"][3].asFloat() - this->oHitbox.top;
+    this->oHitbox.left = root["hitbox"][0].asFloat();
+    this->oHitbox.top = root["hitbox"][1].asFloat();
+    this->oHitbox.width = root["hitbox"][2].asFloat() - this->oHitbox.left;
+    this->oHitbox.height = root["hitbox"][3].asFloat() - this->oHitbox.top;
+
+//    std::cout << this->oHitbox.left << "/" << this->oHitbox.top << "/" << this->oHitbox.width << "/" << this->oHitbox.height;
 }
 
 void Sprited::setAnimation(const char *name, bool reset) {
@@ -127,20 +129,13 @@ void Sprited::draw(sf::RenderWindow *window)
 //    rect.setSize(sf::Vector2f(this->sprite.getTextureRect().width, this->sprite.getTextureRect().height));
 //    window->draw(rect);
 //
-////    sf::Vector2f hitboxOrigin = sf::Vector2f(
-////
-////    );
-////    sf::Vector2f hitboxPosition = sf::Vector2f(
-////            this->wPosition.x + this->oHitbox.left,
-////            this->wPosition.y + this->oHitbox.top
-////    );
-//
+//    sf::FloatRect wHitbox = this->getWHitbox();
 //    static sf::RectangleShape hitboxRect;
 //    hitboxRect.setFillColor(sf::Color::Transparent);
 //    hitboxRect.setOutlineThickness(1);
 //    hitboxRect.setOutlineColor(sf::Color::Red);
-//    hitboxRect.setOrigin(this->sprite.getOrigin() - sf::Vector2f(this->oHitbox.left, this->oHitbox.top));
-//    hitboxRect.setSize(sf::Vector2f(this->oHitbox.width, this->oHitbox.height));
+//    hitboxRect.setOrigin(sf::Vector2f(wHitbox.width / 2, wHitbox.height / 2));
+//    hitboxRect.setSize(sf::Vector2f(wHitbox.width, wHitbox.height));
 //    hitboxRect.setPosition(this->applyCameraTransformation(this->wPosition));
 //    hitboxRect.setRotation(-this->camera->wRotation / M_PI * 180);
 //    window->draw(hitboxRect);

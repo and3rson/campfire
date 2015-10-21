@@ -54,6 +54,6 @@ set(
         duktape/duktape.h
         Director.cpp
         Director.h
-        GEEvent.cpp GEEvent.h)
+        GEEvent.cpp GEEvent.h customtypes.h)
 
 add_executable(app ${SOURCE_FILES})

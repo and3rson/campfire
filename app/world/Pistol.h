@@ -17,8 +17,17 @@ public:
     virtual void update();
     virtual void draw(sf::RenderWindow *window);
 
-private:
-    Projectile *projectile = 0;
+    virtual std::string getType();
+    virtual bool isCollidable();
+
+    int ammo = 12;
+
+    sf::Font font;
+    int maxAmmo = 12;
+
+    sf::Text ammoText;
+
+    void updateAmmoGUI();
 };
 
 

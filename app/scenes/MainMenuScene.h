@@ -2,6 +2,7 @@
 #define MAINMENUSCENE_H
 
 #include <SFML/Graphics.hpp>
+#include <customtypes.h>
 
 #include "../scenes/AScene.h"
 #include "../world/Camera.h"
@@ -16,6 +17,7 @@ class MainMenuScene : public AScene
 public:
     MainMenuScene(GameEngine *);
     virtual void tick();
+    WorldObjectList walk(WorldObject *object);
 
 private:
     sf::Clock worldClock;
@@ -36,7 +38,7 @@ private:
 
     sf::RenderWindow *window;
 
-    std::vector<WorldObject *> objects;
+    WorldObjectList objects;
 
     int _dbgRandom()
     {

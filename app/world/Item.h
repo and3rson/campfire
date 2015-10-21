@@ -30,9 +30,6 @@ public:
     };
 
     EHoldStyle holdStyle = ONE_HANDED;
-
-protected:
-    Creature *owner = 0;
 };
 
 
