@@ -5,7 +5,7 @@ NoiseEffect::NoiseEffect(GameEngine *engine) : AEffect(engine)
     this->window = this->engine->getWindow();
 }
 
-void NoiseEffect::tick()
+bool NoiseEffect::tick()
 {
     int maxW = this->window->getSize().x;
     int maxH = this->window->getSize().x;

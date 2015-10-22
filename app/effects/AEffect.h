@@ -7,7 +7,7 @@ class AEffect
 {
 public:
     AEffect(GameEngine *engine);
-    virtual void tick() = 0;
+    virtual bool tick() = 0;
 
 protected:
     GameEngine *engine;

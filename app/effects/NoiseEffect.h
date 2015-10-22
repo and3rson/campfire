@@ -9,7 +9,7 @@ class NoiseEffect : public AEffect
 public:
     NoiseEffect(GameEngine *);
 
-    void tick();
+    virtual bool tick();
 
     int random(int max)
     {

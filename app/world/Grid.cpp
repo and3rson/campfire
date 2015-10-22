@@ -45,12 +45,18 @@ void Grid::draw(sf::RenderWindow *window)
     sf::Vector2f tr = this->applyCameraTransformation(sf::Vector2f(-1000, -1000));
 //    std::cout << tr.x << " / " << tr.y << std::endl;
 
+    bool odd = false;
+    sf::Color color1(255, 255, 255, 16);
+    sf::Color color2(255, 255, 255, 32);
+
     for (int x = pos.x - DENSITY * 20; x < pos.x + DENSITY * 20; x += DENSITY) {
-        sf::Vertex line[] = {
-            sf::Vertex(this->applyCameraTransformation(sf::Vector2f(x, pos.y - windowSize.y)), gridColor),
-            sf::Vertex(this->applyCameraTransformation(sf::Vector2f(x, pos.y + windowSize.y)), gridColor),
-        };
-        window->draw(line, 2, sf::Lines);
+//        sf::Vertex line[] = {
+//            sf::Vertex(this->applyCameraTransformation(sf::Vector2f(x, pos.y - windowSize.y)), gridColor),
+//            sf::Vertex(this->applyCameraTransformation(sf::Vector2f(x, pos.y + windowSize.y)), gridColor),
+//        };
+//
+//        window->draw(line, 2, sf::Lines);
+
         for (int y = pos.y - DENSITY * 20; y < pos.y + DENSITY * 20; y += DENSITY) {
             char textChar[32];
             sprintf(textChar, "%d:%d", x, y);
@@ -59,13 +65,21 @@ void Grid::draw(sf::RenderWindow *window)
             text.setPosition(this->applyCameraTransformation(sf::Vector2f(x + 5, y + 5)));
             text.setRotation(- this->camera->wRotation / M_PI * 180);
             window->draw(text);
+
+//            sf::RectangleShape rect(sf::Vector2f(DENSITY, DENSITY));
+//            rect.setFillColor((x + y) % (DENSITY * 2) == 0 ? color1 : color2);
+////            rect.setOrigin(DENSITY / 2, DENSITY / 2);
+//            rect.setOrigin(0, 0);
+//            rect.setRotation(- this->camera->wRotation / M_PI * 180);
+//            rect.setPosition(this->applyCameraTransformation(sf::Vector2f(x, y)));
+//            window->draw(rect);
         }
     }
     for (int y = pos.y - DENSITY * 10; y < pos.y + DENSITY * 10; y += DENSITY) {
-        sf::Vertex line[] = {
-            sf::Vertex(this->applyCameraTransformation(sf::Vector2f(pos.x - windowSize.x, y)), gridColor),
-            sf::Vertex(this->applyCameraTransformation(sf::Vector2f(pos.x + windowSize.x, y)), gridColor),
-        };
-        window->draw(line, 2, sf::Lines);
+//        sf::Vertex line[] = {
+//            sf::Vertex(this->applyCameraTransformation(sf::Vector2f(pos.x - windowSize.x, y)), gridColor),
+//            sf::Vertex(this->applyCameraTransformation(sf::Vector2f(pos.x + windowSize.x, y)), gridColor),
+//        };
+//        window->draw(line, 2, sf::Lines);
     }
 }

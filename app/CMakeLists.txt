@@ -57,6 +57,6 @@ set(
         GEEvent.cpp
         GEEvent.h
         customtypes.h
-        config.h)
+        config.h effects/PainEffect.cpp effects/PainEffect.h)
 
 add_executable(app ${SOURCE_FILES})

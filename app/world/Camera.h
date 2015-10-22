@@ -19,6 +19,8 @@ public:
 
     virtual std::string getType();
 
+    sf::Vector2f rShift;
+
 private:
     WorldObject *target;
 };

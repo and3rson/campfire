@@ -68,7 +68,9 @@ void GameEngine::tick()
 
     this->scene->tick();
     if (this->effect) {
-        this->effect->tick();
+        if (!this->effect->tick()) {
+            this->setEffect(NULL);
+        }
     }
     this->window->display();
 

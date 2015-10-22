@@ -1,6 +1,7 @@
 #include <world/Pistol.h>
 #include <world/Crate.h>
 #include <effects/NoiseEffect.h>
+#include <effects/PainEffect.h>
 #include "MainMenuScene.h"
 #include "GameEngine.h"
 

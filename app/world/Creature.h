@@ -19,14 +19,13 @@ public:
     virtual void moveStarted();
     virtual void moveStopped();
 
+    virtual bool collisionStarted(WorldObject *other);
+
     virtual std::string getType();
 
     void arm(Item *item);
     void useArmedItem();
     WorldObject* dropArmedItem();
-
-private:
-    Camera *camera = 0;
 };
 
 #endif // CREATURE_H
