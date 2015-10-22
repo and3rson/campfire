@@ -33,3 +33,11 @@ bool Projectile::isCollidable() {
 std::string Projectile::getType() {
     return "projectile";
 }
+
+void Projectile::update() {
+    Sprited::update();
+
+    if (this->distanceTraveled > 500) {
+        this->parent->removeChild(this);
+    }
+}

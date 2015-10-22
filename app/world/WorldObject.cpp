@@ -119,3 +119,7 @@ void WorldObject::setAsCurrent() {
 bool WorldObject::getIsCurrent() {
     return this->current;
 }
+
+bool WorldObject::isPickable() {
+    return false;
+}

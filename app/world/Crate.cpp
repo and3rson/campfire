@@ -33,3 +33,7 @@ void Crate::draw(sf::RenderWindow *window) {
 //        this->projectile->draw(window);
 //    }
 }
+
+std::string Crate::getType() {
+    return "crate";
+}

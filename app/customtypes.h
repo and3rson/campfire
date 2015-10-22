@@ -5,7 +5,7 @@
 #ifndef APP_CUSTOMTYPES_H
 #define APP_CUSTOMTYPES_H
 
-#import <vector>
+#include <vector>
 class WorldObject;
 
 typedef std::vector<WorldObject *> WorldObjectList;

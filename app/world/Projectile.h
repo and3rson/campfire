@@ -17,6 +17,8 @@ public:
     virtual bool collisionStopped(WorldObject *other);
     virtual bool isCollidable();
 
+    virtual void update();
+
     virtual std::string getType();
 };
 

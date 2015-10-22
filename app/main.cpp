@@ -1,6 +1,8 @@
 #include <iostream>
 #include <cstdio>
 
+#include "config.h"
+
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
@@ -12,8 +14,8 @@
 
 using namespace std;
 
-#define WINDOW_WIDTH 1200
-#define WINDOW_HEIGHT 800
+//#define WINDOW_WIDTH 1200
+//#define WINDOW_HEIGHT 800
 
 int main()
 {
@@ -22,19 +24,18 @@ int main()
         return 1;
     }
 
-    cout << "Hello World!" << endl;
-
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
     //    settings.attributeFlags = sf::ContextSettings::Debug;
-    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML App", sf::Style::Titlebar | sf::Style::Close, settings);
+    sf::VideoMode videoMode = sf::VideoMode::getDesktopMode();
+    int windowWidth = videoMode.width - 40;
+    int windowHeight = videoMode.height - 40;
+    sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "SFML App", sf::Style::Titlebar | sf::Style::Close, settings);
     window.setVerticalSyncEnabled(true);
     window.setKeyRepeatEnabled(false);
     window.setMouseCursorVisible(false);
 
-    sf::VideoMode videoMode = sf::VideoMode::getDesktopMode();
-
-    window.setPosition(sf::Vector2i((videoMode.width - WINDOW_WIDTH) / 2, (videoMode.height - WINDOW_HEIGHT) / 2));
+    window.setPosition(sf::Vector2i((videoMode.width - windowWidth) / 2 + videoMode.width, (videoMode.height - windowHeight) / 2));
 
     sf::Clock frameClock;
     int frameCount = 0;
@@ -57,7 +58,7 @@ int main()
 
         if (timeElapsed > 100) {
             int fps = 1000 / ((float) timeElapsed / frameCount);
-            sprintf(title, "SFML App [FPS: %d]", fps);
+            sprintf(title, "App [FPS: %d]", fps);
 
             window.setTitle(sf::String(title));
             frameCount = 0;

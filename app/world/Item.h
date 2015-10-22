@@ -23,6 +23,8 @@ public:
 
     virtual std::string getType();
 
+    virtual bool isPickable();
+
     enum EHoldStyle {
         ONE_HANDED,
         TWO_HANDED

@@ -113,7 +113,8 @@ void MainMenuScene::tick()
 
             WorldObjectList::iterator it = this->objects.begin();
             for(WorldObject *object = *it; it != this->objects.end(); object = *(++it)) {
-                if (object->getType() == "item") {
+                if (object->isPickable()) {
+                    std::cerr << " * picking up " << ((Item *) object)->getType() << std::endl;
                     if (wPlayerHitbox.intersects(object->getWHitbox())) {
                         std::cerr << " * picking up " << ((Item *) object)->getType() << std::endl;
                         this->player->arm((Item *) object);
@@ -141,6 +142,8 @@ void MainMenuScene::tick()
 
     this->camera->update();
 
+    this->player->update();
+
     this->grid->update();
     this->grid->draw(window);
 
@@ -152,7 +155,10 @@ void MainMenuScene::tick()
         WorldObjectList bunch = this->walk(top);
 
         for (WorldObject *object: bunch) {
-            object->update();
+            if (object != this->player) {
+                // Do not update player again
+                object->update();
+            }
             object->draw(this->window);
 
             if (object->isCollidable()) {
@@ -160,7 +166,7 @@ void MainMenuScene::tick()
 
                 if (! collidables.empty()) {
                     for (WorldObject *other : collidables) {
-                        if (other->isCollidable() && other->isCollidable()) {
+                        if (object->isCollidable() && other->isCollidable()) {
                             bool isColliding = object->isColliding(other);
                             bool intersects = wHitbox.intersects(other->getWHitbox());
                             if (!isColliding && intersects) {

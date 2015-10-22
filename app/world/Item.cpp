@@ -37,3 +37,7 @@ void Item::update() {
 std::string Item::getType() {
     return "item";
 }
+
+bool Item::isPickable() {
+    return !this->parent;
+}

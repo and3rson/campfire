@@ -46,6 +46,8 @@ void AMovable::update()
 
             sf::Vector2f shift = sf::Vector2f(moveVector->x * pointsPassed, moveVector->y * pointsPassed);
 
+            this->distanceTraveled += pointsPassed;
+
             if (this->relative) {
                 shift = WorldObject::rotateVector(shift, this->wRotation);
             }
@@ -82,11 +84,13 @@ void AMovable::startMove(sf::Vector2f vector, bool relative = false) {
     this->isMoving = true;
     this->moveVector = new sf::Vector2f(vector);
     this->relative = relative;
+    this->source = this->wPosition;
     this->moveStarted();
 }
 
 void AMovable::stopMove() {
     this->isMoving = false;
     this->moveVector = 0;
+    this->distanceTraveled = 0;
     this->moveStopped();
 }

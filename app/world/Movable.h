@@ -26,8 +26,9 @@ public:
 
 protected:
     int moveSpeed = 200;
-
     bool isMoving = false;
+    float distanceTraveled = 0;
+
 private:
     sf::Vector2f source;
     sf::Vector2f target;

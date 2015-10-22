@@ -1,12 +1,12 @@
 {
-    "width": 8,
-    "height": 32,
+    "width": 4,
+    "height": 24,
     "origin": {
-        "x": 4,
-        "y": 8
+        "x": 2,
+        "y": 12
     },
     "hitbox": [
-        -8, -8, 8, 8
+        -2, -2, 2, 2
     ],
     "texture": "bullet2.png",
     "animations": {

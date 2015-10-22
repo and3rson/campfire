@@ -51,7 +51,7 @@ void Grid::draw(sf::RenderWindow *window)
             sf::Vertex(this->applyCameraTransformation(sf::Vector2f(x, pos.y + windowSize.y)), gridColor),
         };
         window->draw(line, 2, sf::Lines);
-        for (int y = pos.y - DENSITY * 10; y < pos.y + DENSITY * 10; y += DENSITY) {
+        for (int y = pos.y - DENSITY * 20; y < pos.y + DENSITY * 20; y += DENSITY) {
             char textChar[32];
             sprintf(textChar, "%d:%d", x, y);
             sf::Text text(sf::String(textChar), this->font, 10);

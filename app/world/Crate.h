@@ -16,6 +16,8 @@ public:
     virtual void update();
     virtual void draw(sf::RenderWindow *window);
 
+    virtual std::string getType();
+
 //private:
 //    Projectile *projectile = 0;
 };

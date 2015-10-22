@@ -91,11 +91,14 @@ void Sprited::update()
         // Update animation
         this->clock.restart();
         this->currentFrame = (this->currentFrame + 1) % this->currentAnimation->frames.size();
-
-        // Scroll sprite
-        sf::Vector2i shift = this->currentAnimation->frames[this->currentFrame];
-        this->sprite.setTextureRect(sf::IntRect(shift.x, shift.y, this->width, this->height));
     }
+}
+
+void Sprited::draw(sf::RenderWindow *window)
+{
+    // Scroll sprite
+    sf::Vector2i shift = this->currentAnimation->frames[this->currentFrame];
+    this->sprite.setTextureRect(sf::IntRect(shift.x, shift.y, this->width, this->height));
 
     this->sprite.setRotation((this->wRotation - this->camera->wRotation) / (2 * M_PI) * 360); // + this->wRotation / (2 * M_PI) * 360);
 
@@ -106,12 +109,10 @@ void Sprited::update()
         // No camera set, meaning this object's wPosition is not affected by camera.
         this->sprite.setPosition(this->wPosition.x, this->wPosition.y);
     }
-}
 
-void Sprited::draw(sf::RenderWindow *window)
-{
     window->draw(this->sprite);
 
+#ifdef DEBUG
     static sf::RectangleShape origin;
     origin.setOrigin(2, 2);
     origin.setSize(sf::Vector2f(5, 5));
@@ -139,6 +140,7 @@ void Sprited::draw(sf::RenderWindow *window)
     hitboxRect.setPosition(this->applyCameraTransformation(this->wPosition));
     hitboxRect.setRotation(-this->camera->wRotation / M_PI * 180);
     window->draw(hitboxRect);
+#endif
 }
 
 std::string Sprited::getAnimationWithoutSuffix() {

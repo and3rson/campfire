@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <customtypes.h>
+#include "config.h"
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -44,6 +45,8 @@ public:
     void addCollision(WorldObject *other);
     void removeCollision(WorldObject *other);
     bool isColliding(WorldObject *other);
+
+    virtual bool isPickable();
 
     bool current = false;
 
