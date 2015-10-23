@@ -2,6 +2,7 @@
 #include <world/Crate.h>
 #include <effects/NoiseEffect.h>
 #include <effects/PainEffect.h>
+#include <world/Fence.h>
 #include "MainMenuScene.h"
 #include "GameEngine.h"
 
@@ -23,6 +24,9 @@ MainMenuScene::MainMenuScene(GameEngine *engine) : AScene(engine)
     this->player->arm(new Pistol(this->camera));
     this->player->setAsCurrent();
     this->objects.push_back(this->player);
+
+    Fence *fence = new Fence(this->camera);
+    this->objects.push_back(fence);
 
     this->enemy = new Creature("bob", this->camera);
     this->enemy->setPosition(sf::Vector2f(200, 200));

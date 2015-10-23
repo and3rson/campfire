@@ -1,0 +1,20 @@
+{
+    "width": 128,
+    "height": 32,
+    "origin": {
+        "x": 64,
+        "y": 16
+    },
+    "hitbox": [
+        -64, -16, 128, 32
+    ],
+    "texture": "fence.png",
+    "animations": {
+        "idle": {
+            "fps": 1,
+            "frames": [
+                [0, 0]
+            ]
+        }
+    }
+}

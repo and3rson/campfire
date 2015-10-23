@@ -35,7 +35,7 @@ int main()
     window.setKeyRepeatEnabled(false);
     window.setMouseCursorVisible(false);
 
-    window.setPosition(sf::Vector2i((videoMode.width - windowWidth) / 2 + videoMode.width, (videoMode.height - windowHeight) / 2));
+    window.setPosition(sf::Vector2i((videoMode.width - windowWidth) / 2 /*+ videoMode.width*/, (videoMode.height - windowHeight) / 2));
 
     sf::Clock frameClock;
     int frameCount = 0;

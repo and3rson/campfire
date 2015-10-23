@@ -5,6 +5,6 @@
 #ifndef APP_CONFIG_H_H
 #define APP_CONFIG_H_H
 
-#define DEBUG
+//#define DEBUG
 
 #endif //APP_CONFIG_H_H

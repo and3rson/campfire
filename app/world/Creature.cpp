@@ -87,10 +87,3 @@ WorldObject* Creature::dropArmedItem() {
     }
     return NULL;
 }
-
-bool Creature::collisionStarted(WorldObject *other) {
-    if (this->getIsCurrent()) {
-        GameEngine::getInstance()->setEffect(new PainEffect(GameEngine::getInstance(), this->camera, 30, 400));
-    }
-    return true;
-}

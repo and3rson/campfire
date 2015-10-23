@@ -1,3 +1,5 @@
+#include <GameEngine.h>
+#include <effects/PainEffect.h>
 #include "Projectile.h"
 
 Projectile::Projectile(Camera *camera) : Sprited("bullet", camera)
@@ -18,6 +20,9 @@ void Projectile::moveStopped()
 bool Projectile::collisionStarted(WorldObject *other) {
     std::cerr << "Object " << this->getType() << " collided with " << other->getType() << std::endl;
     this->parent->removeChild(this);
+    if (other->getType() == "creature" && other->getIsCurrent()) {
+        GameEngine::getInstance()->setEffect(new PainEffect(GameEngine::getInstance(), this->camera, 30, 400));
+    }
     return true;
 }
 
