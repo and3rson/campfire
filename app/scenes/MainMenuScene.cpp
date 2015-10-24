@@ -3,6 +3,8 @@
 #include <effects/NoiseEffect.h>
 #include <effects/PainEffect.h>
 #include <world/Fence.h>
+#include <world/GenericEnemy.h>
+#include <world/Bob.h>
 #include "MainMenuScene.h"
 #include "GameEngine.h"
 
@@ -19,7 +21,7 @@ MainMenuScene::MainMenuScene(GameEngine *engine) : AScene(engine)
 
     this->grid = new Grid(this->camera);
 
-    this->player = new Creature("bob", this->camera);
+    this->player = new Bob(this->camera);
     this->player->setPosition(sf::Vector2f(400, 300));
     this->player->arm(new Pistol(this->camera));
     this->player->setAsCurrent();
@@ -28,7 +30,7 @@ MainMenuScene::MainMenuScene(GameEngine *engine) : AScene(engine)
     Fence *fence = new Fence(this->camera);
     this->objects.push_back(fence);
 
-    this->enemy = new Creature("bob", this->camera);
+    this->enemy = new GenericEnemy(this->camera);
     this->enemy->setPosition(sf::Vector2f(200, 200));
     this->enemy->startMove(sf::Vector2f(0, -1), false);
     this->enemy->arm(new Pistol(this->camera));

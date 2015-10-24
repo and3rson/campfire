@@ -8,7 +8,7 @@
     "hitbox": [
         -32, -32, 32, 32
     ],
-    "texture": "bob.png",
+    "texture": "enemy.png",
     "animations": {
         "idle0": {
             "fps": 1,

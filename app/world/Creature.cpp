@@ -3,8 +3,8 @@
 #include "Creature.h"
 #include "Item.h"
 
-Creature::Creature(const char *templateName, Camera *camera) : Creature::Sprited(templateName, camera)
-{
+Creature::Creature(const char *spriteName, Camera *camera) : Sprited(spriteName, camera) {
+
 }
 
 void Creature::moveStarted()

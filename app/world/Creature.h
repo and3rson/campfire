@@ -11,7 +11,7 @@ class Item;
 class Creature : public Sprited
 {
 public:
-    Creature(const char *, Camera *camera = 0);
+    Creature(const char *spriteName, Camera *camera);
 
     virtual void update();
     virtual void draw(sf::RenderWindow *window);
