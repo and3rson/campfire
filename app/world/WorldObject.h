@@ -19,9 +19,17 @@ public:
     WorldObject(Camera *camera = 0);
 
     virtual void update();
-    void setPosition(sf::Vector2f);
+
+    void setWPosition(sf::Vector2f);
+    sf::Vector2f getWPosition();
+
+    void setWRotation(float rotation);
+    float getWRotation();
+
     sf::Vector2f applyCameraTransformation(sf::Vector2f pos);
+
     static sf::Vector2f rotateVector(sf::Vector2f vector, float angle);
+
     virtual void draw(sf::RenderWindow *window) = 0;
     virtual std::string getType();
 
@@ -32,12 +40,6 @@ public:
     sf::FloatRect getWHitbox();
 
     WorldObjectList getChildren();
-
-    sf::FloatRect oHitbox;
-    sf::Vector2f wPosition;
-    sf::Vector2f rOrigin;
-    float wRotation = 0;
-    Camera *camera = 0;
 
     void addChild(WorldObject *other);
     void removeChild(WorldObject *other);
@@ -54,9 +56,18 @@ public:
     bool getIsCurrent();
 
 protected:
+    Camera *camera = 0;
+
     WorldObject *parent = 0;
     WorldObjectList children;
     WorldObjectList collisions;
+
+    sf::FloatRect oHitbox;
+    sf::Vector2f rOrigin;
+
+private:
+    float wRotation = 0;
+    sf::Vector2f wPosition;
 };
 
 #endif // WORLDOBJECT_H

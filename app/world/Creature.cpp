@@ -2,6 +2,7 @@
 #include <effects/PainEffect.h>
 #include "Creature.h"
 #include "Item.h"
+#include "Projectile.h"
 
 Creature::Creature(const char *spriteName, Camera *camera) : Sprited(spriteName, camera) {
 
@@ -54,7 +55,7 @@ void Creature::arm(Item *item) {
 
     this->addChild(item);
     item->setAnimation("armed", true);
-//    item->setPosition(sf::Vector2f(0, 0));
+//    item->setWPosition(sf::Vector2f(0, 0));
     this->moveStopped(); // TODO: Refactor setAnimation to allow suffixes.
 }
 
@@ -71,7 +72,7 @@ std::string Creature::getType() {
 WorldObject* Creature::dropArmedItem() {
     if (this->children.size()) {
         WorldObject *dropped = this->children.front();
-        dropped->setPosition(this->wPosition);
+        dropped->setWPosition(this->getWPosition());
         ((Item *) dropped)->setAnimation("ground");
         this->removeChild(dropped);
 
@@ -86,4 +87,21 @@ WorldObject* Creature::dropArmedItem() {
         return dropped;
     }
     return NULL;
+}
+
+bool Creature::collisionStarted(WorldObject *other) {
+    if (other->getType() == "projectile") {
+        this->health -= ((Projectile *)other)->getDamage();
+    }
+
+    if (this->health <= 0) {
+        this->stopMove();
+        this->setAnimation("idle2");
+    }
+
+    return true;
+}
+
+bool Creature::isAlive() {
+    return this->health > 0;
 }

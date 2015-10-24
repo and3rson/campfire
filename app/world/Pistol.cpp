@@ -14,10 +14,11 @@ Pistol::Pistol(Camera *camera) : Item("pistol", camera) {
 void Pistol::use() {
     if (this->ammo > 0) {
         Projectile *projectile = new Projectile(this->camera);
-        // TODO: Move 12, -64 coordinates into JSON as some joint (e. g. "bullet_spawn_origin")
-        projectile->setPosition(sf::Vector2f(this->parent->wPosition) + this->rotateVector(sf::Vector2f(12, -72), this->parent->wRotation));
-        projectile->wRotation = this->parent->wRotation;
-        projectile->startMove(this->rotateVector(sf::Vector2f(0, -1), projectile->wRotation), false);
+        // TODO: Move 12, -72 coordinates into JSON as some joint (e. g. "bullet_spawn_origin")
+        projectile->setWPosition(
+            sf::Vector2f(this->parent->getWPosition()) + this->rotateVector(sf::Vector2f(12, -72), this->parent->getWRotation()));
+        projectile->setWRotation(this->parent->getWRotation());
+        projectile->startMove(this->rotateVector(sf::Vector2f(0, -1), projectile->getWRotation()), false);
         this->addChild(projectile);
 
         this->ammo--;

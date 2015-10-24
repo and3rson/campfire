@@ -22,7 +22,7 @@ MainMenuScene::MainMenuScene(GameEngine *engine) : AScene(engine)
     this->grid = new Grid(this->camera);
 
     this->player = new Bob(this->camera);
-    this->player->setPosition(sf::Vector2f(400, 300));
+    this->player->setWPosition(sf::Vector2f(400, 300));
     this->player->arm(new Pistol(this->camera));
     this->player->setAsCurrent();
     this->objects.push_back(this->player);
@@ -31,16 +31,16 @@ MainMenuScene::MainMenuScene(GameEngine *engine) : AScene(engine)
     this->objects.push_back(fence);
 
     this->enemy = new GenericEnemy(this->camera);
-    this->enemy->setPosition(sf::Vector2f(200, 200));
+    this->enemy->setWPosition(sf::Vector2f(200, 200));
     this->enemy->startMove(sf::Vector2f(0, -1), false);
     this->enemy->arm(new Pistol(this->camera));
     this->objects.push_back(this->enemy);
 
     Crate *c1 = new Crate(this->camera);
-    c1->setPosition(sf::Vector2f(300, 400));
+    c1->setWPosition(sf::Vector2f(300, 400));
     this->objects.push_back(c1);
     Crate *c2 = new Crate(this->camera);
-    c2->setPosition(sf::Vector2f(200, 300));
+    c2->setWPosition(sf::Vector2f(200, 300));
     this->objects.push_back(c2);
 
     this->camera->attachTo(this->player);
@@ -58,7 +58,7 @@ void MainMenuScene::tick()
     GEEvent *geEvent;
 
     while (geEvent = this->engine->getEvent()) {
-        this->player->wRotation += (float) geEvent->dx / 300; // Sensitivity
+        this->player->setWRotation(this->player->getWRotation() + (float) geEvent->dx / 300); // Sensitivity
         delete geEvent;
     }
 
@@ -140,10 +140,10 @@ void MainMenuScene::tick()
 
     static sf::Clock testClock;
 
-    if (testClock.getElapsedTime().asMilliseconds() > 500) {
+    if (testClock.getElapsedTime().asMilliseconds() > 500 && this->enemy->isAlive()) {
         testClock.restart();
-        this->enemy->wRotation += M_PI / 4;
-        this->enemy->startMove(WorldObject::rotateVector(sf::Vector2f(0, -1), this->enemy->wRotation), false);
+        this->enemy->setWRotation(this->enemy->getWRotation() + M_PI / 4);
+        this->enemy->startMove(WorldObject::rotateVector(sf::Vector2f(0, -1), this->enemy->getWRotation()), false);
         this->enemy->useArmedItem();
     }
 

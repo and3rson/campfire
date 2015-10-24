@@ -24,6 +24,14 @@ public:
     void arm(Item *item);
     void useArmedItem();
     WorldObject* dropArmedItem();
+
+    virtual bool collisionStarted(WorldObject *other);
+
+    bool isAlive();
+
+protected:
+    int health = 0;
+    int maxHealth = 0;
 };
 
 #endif // CREATURE_H

@@ -19,6 +19,8 @@ public:
 
     virtual void update();
 
+    virtual int getDamage();
+
     virtual std::string getType();
 };
 

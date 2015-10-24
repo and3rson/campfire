@@ -46,3 +46,7 @@ void Projectile::update() {
         this->parent->removeChild(this);
     }
 }
+
+int Projectile::getDamage() {
+    return 15;
+}

@@ -13,7 +13,7 @@ PainEffect::PainEffect(GameEngine *engine, Camera *camera, int power, int durati
 
 bool PainEffect::tick() {
 //    sf::Image capture = this->window->capture();
-    this->camera->wPosition -= this->camera->rShift;
+    this->camera->setWPosition(this->camera->getWPosition() - this->camera->rShift);
     float normal = ((float) this->clock.getElapsedTime().asMilliseconds()) / this->duration;
     float result = pow((normal - 1) , 4);
     int ampFull = ((float) this->power) * result;

@@ -8,12 +8,12 @@ AMovable::AMovable(Camera *camera) : WorldObject(camera)
 
 void AMovable::moveTo(sf::Vector2f target)
 {
-    this->source = sf::Vector2f(this->wPosition);
+    this->source = sf::Vector2f(this->getWPosition());
     this->target = sf::Vector2f(target);
     sf::Vector2f vector = this->target - this->source;
 
     // Face the direction of movement
-    this->wRotation = atan2(vector.y, vector.x) + M_PI / 2;
+    this->setWRotation(atan2(vector.y, vector.x) + M_PI / 2);
 
     this->clock.restart();
     this->isMoving = true;
@@ -49,9 +49,9 @@ void AMovable::update()
             this->distanceTraveled += pointsPassed;
 
             if (this->relative) {
-                shift = WorldObject::rotateVector(shift, this->wRotation);
+                shift = WorldObject::rotateVector(shift, this->getWRotation());
             }
-            this->wPosition += shift;
+            this->setWPosition(this->getWPosition() + shift);
 //            this->wPosition += sf::Vector2f(moveVector->x * pointsPassed, moveVector->y * pointsPassed);
             this->clock.restart();
         } else {
@@ -68,9 +68,9 @@ void AMovable::update()
                 vector.x *= k;
                 vector.y *= k;
 
-                this->wPosition = this->source + vector;
+                this->setWPosition(this->source + vector);
             } else {
-                this->wPosition = this->target;
+                this->setWPosition(this->target);
                 this->stopMove();
             }
         }
@@ -84,7 +84,7 @@ void AMovable::startMove(sf::Vector2f vector, bool relative = false) {
     this->isMoving = true;
     this->moveVector = new sf::Vector2f(vector);
     this->relative = relative;
-    this->source = this->wPosition;
+    this->source = this->getWPosition();
     this->moveStarted();
 }
 

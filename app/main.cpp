@@ -28,8 +28,8 @@ int main()
     settings.antialiasingLevel = 8;
     //    settings.attributeFlags = sf::ContextSettings::Debug;
     sf::VideoMode videoMode = sf::VideoMode::getDesktopMode();
-    int windowWidth = videoMode.width - 40;
-    int windowHeight = videoMode.height - 40;
+    int windowWidth = videoMode.width / 2 - 40;
+    int windowHeight = videoMode.height / 2 - 40;
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "SFML App", sf::Style::Titlebar | sf::Style::Close, settings);
     window.setVerticalSyncEnabled(true);
     window.setKeyRepeatEnabled(false);

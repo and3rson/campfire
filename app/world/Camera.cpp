@@ -15,10 +15,10 @@ void Camera::attachTo(WorldObject *target)
 void Camera::update()
 {
     AMovable::update();
-    this->wPosition = this->target->wPosition;
-    this->wPosition += this->rShift;
-    float rotDiff = this->target->wRotation - this->wRotation;
-    this->wRotation += rotDiff / 4;
+    this->setWPosition(this->target->getWPosition());
+    this->setWPosition(this->getWPosition() + this->rShift);
+    float rotDiff = this->target->getWRotation() - this->getWRotation();
+    this->setWRotation(this->getWRotation() + rotDiff / 4);
 }
 
 void Camera::moveStarted()

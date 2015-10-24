@@ -12,9 +12,13 @@ void WorldObject::update()
     // Nothing
 }
 
-void WorldObject::setPosition(sf::Vector2f pos)
+void WorldObject::setWPosition(sf::Vector2f pos)
 {
     this->wPosition = sf::Vector2f(pos);
+}
+
+sf::Vector2f WorldObject::getWPosition() {
+    return this->wPosition;
 }
 
 sf::Vector2f WorldObject::applyCameraTransformation(sf::Vector2f pos)
@@ -122,4 +126,12 @@ bool WorldObject::getIsCurrent() {
 
 bool WorldObject::isPickable() {
     return false;
+}
+
+void WorldObject::setWRotation(float rotation) {
+    this->wRotation = rotation;
+}
+
+float WorldObject::getWRotation() {
+    return this->wRotation;
 }

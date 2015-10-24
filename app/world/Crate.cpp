@@ -11,7 +11,7 @@ Crate::Crate(Camera *camera) : Item("crate", camera) {
 
 void Crate::use() {
 //    this->projectile = new Projectile(this->camera);
-//    projectile->setPosition(sf::Vector2f(this->owner->wPosition));
+//    projectile->setWPosition(sf::Vector2f(this->owner->wPosition));
 //    projectile->wRotation = this->owner->wRotation;
 //    projectile->startMove(sf::Vector2f(0, 1));
 //    std::cerr << "SHOOT" << std::endl;

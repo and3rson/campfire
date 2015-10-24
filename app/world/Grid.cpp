@@ -8,7 +8,7 @@ Grid::Grid(Camera *camera) : WorldObject(camera)
 
 void Grid::draw(sf::RenderWindow *window)
 {
-    sf::Vector2f cameraPos = this->camera->wPosition;
+    sf::Vector2f cameraPos = this->camera->getWPosition();
     sf::Vector2u windowSize = window->getSize();
 
 //    std::cerr << cameraPos.x << "/" << cameraPos.y << "..." << windowSize.y;
@@ -18,13 +18,13 @@ void Grid::draw(sf::RenderWindow *window)
     sf::CircleShape cs(10);
     cs.setFillColor(sf::Color(0, 128, 255));
 
-    sf::Vector2f pos(camera->wPosition);
+    sf::Vector2f pos(camera->getWPosition());
 
     pos.x = ((int) pos.x / DENSITY) * DENSITY;
     pos.y = ((int) pos.y / DENSITY) * DENSITY;
 
-//    cs.setPosition(this->applyCameraTransformation(pos));
-//    std::cerr << cs.getPosition().x;
+//    cs.setWPosition(this->applyCameraTransformation(pos));
+//    std::cerr << cs.getWPosition().x;
 
 //    window->draw(cs);
 
@@ -63,15 +63,15 @@ void Grid::draw(sf::RenderWindow *window)
             sf::Text text(sf::String(textChar), this->font, 10);
             text.setColor(textColor);
             text.setPosition(this->applyCameraTransformation(sf::Vector2f(x + 5, y + 5)));
-            text.setRotation(- this->camera->wRotation / M_PI * 180);
+            text.setRotation(- this->camera->getWRotation() / M_PI * 180);
             window->draw(text);
 
 //            sf::RectangleShape rect(sf::Vector2f(DENSITY, DENSITY));
 //            rect.setFillColor((x + y) % (DENSITY * 2) == 0 ? color1 : color2);
 ////            rect.setOrigin(DENSITY / 2, DENSITY / 2);
 //            rect.setOrigin(0, 0);
-//            rect.setRotation(- this->camera->wRotation / M_PI * 180);
-//            rect.setPosition(this->applyCameraTransformation(sf::Vector2f(x, y)));
+//            rect.setWRotation(- this->camera->wRotation / M_PI * 180);
+//            rect.setWPosition(this->applyCameraTransformation(sf::Vector2f(x, y)));
 //            window->draw(rect);
         }
     }

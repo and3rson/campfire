@@ -100,14 +100,14 @@ void Sprited::draw(sf::RenderWindow *window)
     sf::Vector2i shift = this->currentAnimation->frames[this->currentFrame];
     this->sprite.setTextureRect(sf::IntRect(shift.x, shift.y, this->width, this->height));
 
-    this->sprite.setRotation((this->wRotation - this->camera->wRotation) / (2 * M_PI) * 360); // + this->wRotation / (2 * M_PI) * 360);
+    this->sprite.setRotation((this->getWRotation() - this->camera->getWRotation()) / (2 * M_PI) * 360); // + this->wRotation / (2 * M_PI) * 360);
 
     if (this->camera) {
         // Transform sprite wPosition based on camera wPosition & wRotation
-        this->sprite.setPosition(this->applyCameraTransformation(this->wPosition));
+        this->sprite.setPosition(this->applyCameraTransformation(this->getWPosition()));
     } else {
         // No camera set, meaning this object's wPosition is not affected by camera.
-        this->sprite.setPosition(this->wPosition.x, this->wPosition.y);
+        this->sprite.setPosition(this->getWPosition().x, this->getWPosition().y);
     }
 
     window->draw(this->sprite);

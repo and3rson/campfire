@@ -5,5 +5,6 @@
 #include "Bob.h"
 
 Bob::Bob(Camera *camera) : Creature("bob", camera) {
-
+    this->maxHealth = 100;
+    this->health = this->maxHealth;
 }
