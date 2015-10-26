@@ -9,5 +9,6 @@
 class WorldObject;
 
 typedef std::vector<WorldObject *> WorldObjectList;
+typedef std::vector<sf::Vector2f> VectorList;
 
 #endif //APP_CUSTOMTYPES_H
