@@ -157,9 +157,10 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
 
 //    std::vector<point_t*> walls;
 
+    sf::Vector2f *first = 0;
     sf::Vector2f *last = 0;
     point_t *lastWall = 0;
-    int i = 0;
+    int i = -1;
 
     double lastAngle = -1;
 
@@ -169,8 +170,12 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
     for (point_t *point : points) {
         float closestDistance;
         sf::Vector2f *closestIntersection;
+        i++;
 
         for (int d = -1; d <= 1; d++) {
+            if (d == -1 && i == 0) {
+                continue;
+            }
             if (d == 0) {
                 closestDistance = WorldObject::getDistance(viewerPos, point->coords);
                 closestIntersection = &(point->coords);
@@ -195,6 +200,9 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
                         }
                     }
                 }
+                if (!first) {
+                    first = closestIntersection;
+                }
                 if (last) {
                     sf::Color color = sf::Color::White;
 //                    if (d == -1) {
@@ -204,13 +212,17 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
 //                    } else {
 //                        color = sf::Color::Blue;
 //                    }
+                    if (d == 1 && i == points.size() - 1) {
+                        closestIntersection = first;
+                    }
                     sf::ConvexShape shape;
                     shape.setPointCount(3);
                     shape.setPoint(0, viewer->applyCameraTransformation(viewerPos));
                     shape.setPoint(1, viewer->applyCameraTransformation(*last));
                     shape.setPoint(2, viewer->applyCameraTransformation(*closestIntersection));
                     shape.setFillColor(sf::Color(255, 255, 255, 32));
-                    shape.setOutlineThickness(0);
+                    shape.setOutlineColor(sf::Color(255, 255, 255, 64));
+                    shape.setOutlineThickness(1);
                     window->draw(shape);
 //                    sf::Vertex line[] = {
 //                        sf::Vertex(viewer->applyCameraTransformation(*last), color),
@@ -225,6 +237,8 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
         }
         points[0]->angle += M_PI * 2;
     }
+    sf::Texture img;
+    img.dr
 
     return result;
 }
