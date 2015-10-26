@@ -18,6 +18,7 @@ private:
     WorldObjectList objects;
 
     double getAngle(sf::Vector2f origin, sf::Vector2f other);
+    sf::Vector2f *getIntersection(sf::Vector2f p0, sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f p3);
 };
 
 
