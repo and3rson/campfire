@@ -39,7 +39,7 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
         }
 
         bool operator() (point_t *a, point_t *b) {
-            return getAngle(viewerPos, a->coords) > getAngle(viewerPos, b->coords);
+            return getAngle(viewerPos, a->coords) < getAngle(viewerPos, b->coords);
         }
     } sortStruct;
 
@@ -57,10 +57,10 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
     sf::Vector2f viewerPos = viewer->getWPosition();
 
     sf::Vector2f lines[] = {
-        viewerPos - sf::Vector2f(-300, -200),
-        viewerPos - sf::Vector2f(300, -200),
-        viewerPos - sf::Vector2f(300, 200),
-        viewerPos - sf::Vector2f(-300, 200)
+        viewerPos - sf::Vector2f(-500, -500),
+        viewerPos - sf::Vector2f(500, -500),
+        viewerPos - sf::Vector2f(500, 500),
+        viewerPos - sf::Vector2f(-500, 500)
     };
 
     for (int i = 0; i < 4; i++) {
@@ -161,38 +161,69 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
     point_t *lastWall = 0;
     int i = 0;
 
+    double lastAngle = -1;
+
     sf::Font font;
     font.loadFromFile("./res/fonts/DejaVuSansMono.ttf");
 
     for (point_t *point : points) {
-        float closestDistance = WorldObject::getDistance(viewerPos, point->coords);
-        sf::Vector2f *closestIntersection = &(point->coords);
+        float closestDistance;
+        sf::Vector2f *closestIntersection;
 
         for (int d = -1; d <= 1; d++) {
-            sf::Vector2f projectionRay = viewerPos + WorldObject::rotateVector(sf::Vector2f(1000, 0), point->angle);
+            if (d == 0) {
+                closestDistance = WorldObject::getDistance(viewerPos, point->coords);
+                closestIntersection = &(point->coords);
+            } else {
+                closestDistance = 0; // WorldObject::getDistance(viewerPos, point->coords);
+                closestIntersection = NULL; //&(point->coords);
+            }
+            double angle = point->angle + ((double) d) / 100;
+            if (angle > lastAngle) {
+                sf::Vector2f projectionRay = viewerPos + WorldObject::rotateVector(sf::Vector2f(1000, 0), angle);
 
-            for (point_t *other : points) {
-                sf::Vector2f *intersection = this->getIntersection(viewerPos, projectionRay, other->coords,
-                                                                   other->pair->coords);
-                if (intersection) {
-                    float distance = WorldObject::getDistance(viewerPos, *intersection);
-                    if (distance < closestDistance || !closestIntersection) {
-                        closestIntersection = intersection;
-                        closestDistance = distance;
-                    } else {
-                        delete intersection;
+                for (point_t *other : points) {
+                    sf::Vector2f *intersection = this->getIntersection(viewerPos, projectionRay, other->coords,
+                                                                       other->pair->coords);
+                    if (intersection) {
+                        float distance = WorldObject::getDistance(viewerPos, *intersection);
+                        if (distance < closestDistance || !closestIntersection) {
+                            closestIntersection = intersection;
+                            closestDistance = distance;
+                        } else {
+                            delete intersection;
+                        }
                     }
                 }
+                if (last) {
+                    sf::Color color = sf::Color::White;
+//                    if (d == -1) {
+//                        color = sf::Color::Red;
+//                    } else if (d == 0) {
+//                        color = sf::Color::Green;
+//                    } else {
+//                        color = sf::Color::Blue;
+//                    }
+                    sf::ConvexShape shape;
+                    shape.setPointCount(3);
+                    shape.setPoint(0, viewer->applyCameraTransformation(viewerPos));
+                    shape.setPoint(1, viewer->applyCameraTransformation(*last));
+                    shape.setPoint(2, viewer->applyCameraTransformation(*closestIntersection));
+                    shape.setFillColor(sf::Color(255, 255, 255, 32));
+                    shape.setOutlineThickness(0);
+                    window->draw(shape);
+//                    sf::Vertex line[] = {
+//                        sf::Vertex(viewer->applyCameraTransformation(*last), color),
+//                        sf::Vertex(viewer->applyCameraTransformation(*closestIntersection), color)
+//                    };
+//                    window->draw(line, 2, sf::Lines);
+                }
+                lastAngle = angle;
+                last = closestIntersection;
             }
-            if (last) {
-                sf::Vertex line[] = {sf::Vertex(viewer->applyCameraTransformation(*last), sf::Color::White),
-                                     sf::Vertex(viewer->applyCameraTransformation(*closestIntersection),
-                                                sf::Color::White)};
-                window->draw(line, 2, sf::Lines);
-            }
-            last = closestIntersection;
 //            lastWall = wall;
         }
+        points[0]->angle += M_PI * 2;
     }
 
     return result;
