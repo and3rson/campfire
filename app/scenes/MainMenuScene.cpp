@@ -198,7 +198,7 @@ void MainMenuScene::tick()
     }
 
     VisibilityTracer vt(this->objects);
-    VectorList points = vt.calculateVisibility(this->player);
+    VectorList points = vt.calculateVisibility(this->player, this->window);
     sf::Font font;
     int n = 0;
     sf::Vector2f previous;

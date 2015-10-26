@@ -135,3 +135,7 @@ void WorldObject::setWRotation(float rotation) {
 float WorldObject::getWRotation() {
     return this->wRotation;
 }
+
+float WorldObject::getDistance(sf::Vector2f a, sf::Vector2f b) {
+    return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
+}

@@ -29,6 +29,7 @@ public:
     sf::Vector2f applyCameraTransformation(sf::Vector2f pos);
 
     static sf::Vector2f rotateVector(sf::Vector2f vector, float angle);
+    static float getDistance(sf::Vector2f a, sf::Vector2f b);
 
     virtual void draw(sf::RenderWindow *window) = 0;
     virtual std::string getType();
