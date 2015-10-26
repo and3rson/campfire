@@ -237,8 +237,6 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
         }
         points[0]->angle += M_PI * 2;
     }
-    sf::Texture img;
-    img.dr
 
     return result;
 }
