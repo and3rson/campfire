@@ -56,11 +56,13 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
 
     sf::Vector2f viewerPos = viewer->getWPosition();
 
+    sf::Vector2u size = window->getSize();
+
     sf::Vector2f lines[] = {
-        viewerPos - sf::Vector2f(-500, -500),
-        viewerPos - sf::Vector2f(500, -500),
-        viewerPos - sf::Vector2f(500, 500),
-        viewerPos - sf::Vector2f(-500, 500)
+        viewerPos - sf::Vector2f(-size.x / 2, -size.y / 2),
+        viewerPos - sf::Vector2f(size.x / 2, -size.y / 2),
+        viewerPos - sf::Vector2f(size.x / 2, size.y / 2),
+        viewerPos - sf::Vector2f(-size.x / 2, size.y / 2)
     };
 
     for (int i = 0; i < 4; i++) {
@@ -185,7 +187,7 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
             }
             double angle = point->angle + ((double) d) / 100;
             if (angle > lastAngle) {
-                sf::Vector2f projectionRay = viewerPos + WorldObject::rotateVector(sf::Vector2f(1000, 0), angle);
+                sf::Vector2f projectionRay = viewerPos + WorldObject::rotateVector(sf::Vector2f(3000, 0), angle);
 
                 for (point_t *other : points) {
                     sf::Vector2f *intersection = this->getIntersection(viewerPos, projectionRay, other->coords,
