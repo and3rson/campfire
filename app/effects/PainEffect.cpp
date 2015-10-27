@@ -23,7 +23,6 @@ bool PainEffect::tick() {
                 this->random(ampFull) - ampHalf,
                 this->random(ampFull) - ampHalf
         );
-        std::cout << result * 64 << std::endl;
         sf::Color blood(128, 0, 0, result * 72);
         sf::RectangleShape filter(sf::Vector2f(this->engine->getWindow()->getSize()));
         filter.setFillColor(blood);

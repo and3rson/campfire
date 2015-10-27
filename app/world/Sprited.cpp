@@ -23,6 +23,7 @@ Sprited::Sprited(const char *spriteName, Camera *camera = 0) : AMovable(camera)
         Json::Value jAnimation = *animationsIterator;
 
         Animation *animation = new Animation(jAnimation["fps"].asInt());
+        this->hold(animation, TRACE);
 
         Json::Value jFrames = jAnimation["frames"];
 

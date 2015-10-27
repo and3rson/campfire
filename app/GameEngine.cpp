@@ -1,6 +1,8 @@
 #include "GameEngine.h"
+#include "customtypes.h"
 
 GameEngine* GameEngine::instance = 0;
+Registry GameEngine::recycler;
 
 GameEngine::GameEngine(sf::RenderWindow *window) : window(window)
 {
@@ -33,7 +35,6 @@ void GameEngine::tick()
 //    sf::Texture texture;
 //    texture.loadFromImage(img);
 //    sf::Sprite blur(texture);
-    this->window->clear();
 //    this->window->draw(blur);
 
     sf::Vector2i windowOrigin = this->window->getPosition();
@@ -70,9 +71,12 @@ void GameEngine::tick()
     if (this->effect) {
         if (!this->effect->tick()) {
             this->setEffect(NULL);
+            delete this->effect;
         }
     }
     this->window->display();
+
+    this->recycler.cleanUp();
 
 //    std::cout << win_x << "/" << win_y << std::endl;
 }
@@ -80,6 +84,7 @@ void GameEngine::tick()
 void GameEngine::setScene(AScene *scene)
 {
     this->scene = scene;
+    this->hold(scene, TRACE);
 }
 
 void GameEngine::setEffect(AEffect *effect)
@@ -115,4 +120,12 @@ GameEngine *GameEngine::getInstance() {
 
 void GameEngine::initialize(sf::RenderWindow *window) {
     GameEngine::instance = new GameEngine(window);
+}
+
+void GameEngine::recycle(Registry *object, const char *a, int b, const char *c) {
+    GameEngine::recycler.hold(object, a, b, c);
+}
+
+GameEngine::~GameEngine() {
+    delete this->dpy;
 }

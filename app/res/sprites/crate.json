@@ -6,7 +6,7 @@
         "y": 64
     },
     "hitbox": [
-        -16, -16, 16, 16
+        -12, -12, 12, 12
     ],
     "texture": "crate.png",
     "animations": {

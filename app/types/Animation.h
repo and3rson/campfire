@@ -3,9 +3,10 @@
 
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <Registry.h>
 
 
-class Animation
+class Animation : public Registry
 {
 public:
     Animation(int fps);

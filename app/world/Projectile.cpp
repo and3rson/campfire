@@ -18,11 +18,17 @@ void Projectile::moveStopped()
 }
 
 bool Projectile::collisionStarted(WorldObject *other) {
+    // "other" may mot exist
+    if (!other) {
+        return false;
+    }
+
     std::cerr << "Object " << this->getType() << " collided with " << other->getType() << std::endl;
     this->parent->removeChild(this);
     if (other->getType() == "creature" && other->getIsCurrent()) {
         GameEngine::getInstance()->setEffect(new PainEffect(GameEngine::getInstance(), this->camera, 30, 400));
     }
+    GameEngine::recycle(this, TRACE);
     return true;
 }
 
@@ -44,6 +50,7 @@ void Projectile::update() {
 
     if (this->distanceTraveled > 500) {
         this->parent->removeChild(this);
+        GameEngine::recycle(this, TRACE);
     }
 }
 

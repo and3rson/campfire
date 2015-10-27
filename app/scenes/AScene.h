@@ -2,10 +2,12 @@
 #define ASCENE_H
 
 
+#include <Registry.h>
+
 class GameEngine;
 
 
-class AScene
+class AScene : public Registry
 {
 public:
     AScene(GameEngine *);

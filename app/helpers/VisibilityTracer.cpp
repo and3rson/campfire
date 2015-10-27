@@ -11,20 +11,6 @@ VisibilityTracer::VisibilityTracer(WorldObjectList objects) : objects(objects) {
 }
 
 VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::RenderWindow *window) {
-    struct point_t {
-        sf::Vector2f coords;
-        bool isStart;
-        struct point_t *pair;
-        double angle;
-
-        point_t(sf::Vector2f _coords, double _angle) : coords(_coords), angle(_angle) {
-        }
-
-//        bool operator==(point_t *other) {
-//            return id == other->id;
-//        }
-    };
-
     struct {
         sf::Vector2f viewerPos;
 
@@ -69,32 +55,21 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
         point_t *startPoint = new point_t(start, angle1);
         point_t *endPoint = new point_t(end, angle2);
 
-        if (angle1 > angle2) {
-            point_t *temp = startPoint;
-            startPoint = endPoint;
-            endPoint = temp;
-        }
-
-        startPoint->isStart = true;
-        endPoint->isStart = false;
-
         startPoint->pair = endPoint;
         endPoint->pair = startPoint;
 
         points.push_back(startPoint);
         points.push_back(endPoint);
 
-        sf::Vertex line[] = {
-            sf::Vertex(viewer->applyCameraTransformation(startPoint->coords), sf::Color::Red),
-            sf::Vertex(viewer->applyCameraTransformation(endPoint->coords), sf::Color::Green)
-        };
-        window->draw(line, 2, sf::Lines);
+//        sf::Vertex line[] = {
+//            sf::Vertex(viewer->applyCameraTransformation(startPoint->coords), sf::Color::Red),
+//            sf::Vertex(viewer->applyCameraTransformation(endPoint->coords), sf::Color::Green)
+//        };
+//        window->draw(line, 2, sf::Lines);
 
 //                walls.push_back(wall);
     }
 
-    VectorList result;
-    int id = 0;
     for (WorldObject *object : this->objects) {
         if (object != viewer) {
             sf::FloatRect hitbox = object->getWHitbox();
@@ -116,26 +91,17 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
                 point_t *startPoint = new point_t(start, angle1);
                 point_t *endPoint = new point_t(end, angle2);
 
-                if (angle1 > angle2) {
-                    point_t *temp = startPoint;
-                    startPoint = endPoint;
-                    endPoint = temp;
-                }
-
-                startPoint->isStart = true;
-                endPoint->isStart = false;
-
                 startPoint->pair = endPoint;
                 endPoint->pair = startPoint;
 
                 points.push_back(startPoint);
                 points.push_back(endPoint);
 
-                sf::Vertex line[] = {
-                    sf::Vertex(viewer->applyCameraTransformation(startPoint->coords), sf::Color::Red),
-                    sf::Vertex(viewer->applyCameraTransformation(endPoint->coords), sf::Color::Green)
-                };
-                window->draw(line, 2, sf::Lines);
+//                sf::Vertex line[] = {
+//                    sf::Vertex(viewer->applyCameraTransformation(startPoint->coords), sf::Color::Red),
+//                    sf::Vertex(viewer->applyCameraTransformation(endPoint->coords), sf::Color::Green)
+//                };
+//                window->draw(line, 2, sf::Lines);
             }
         }
     }
@@ -150,18 +116,18 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
     sf::Vector2f *last = 0;
     point_t *lastWall = 0;
     int i = -1;
+    int tracedCount = 0;
 
     double lastAngle = -1;
 
-    sf::Font font;
-    font.loadFromFile("./res/fonts/DejaVuSansMono.ttf");
+    VectorList visionPoly;
 
     for (point_t *point : points) {
         float closestDistance;
         sf::Vector2f *closestIntersection;
-        i++;
 
         for (int d = -1; d <= 1; d++) {
+            i++;
             if (d == -1 && i == 0) {
                 continue;
             }
@@ -169,10 +135,10 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
                 closestDistance = WorldObject::getDistance(viewerPos, point->coords);
                 closestIntersection = &(point->coords);
             } else {
-                closestDistance = 0; // WorldObject::getDistance(viewerPos, point->coords);
-                closestIntersection = NULL; //&(point->coords);
+                closestDistance = 0;
+                closestIntersection = NULL;
             }
-            double angle = point->angle + ((double) d) / 100;
+            double angle = point->angle + ((double) d) / 1000;
             if (angle > lastAngle) {
                 sf::Vector2f projectionRay = viewerPos + WorldObject::rotateVector(sf::Vector2f(3000, 0), angle);
 
@@ -194,27 +160,12 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
                 }
                 if (last) {
                     sf::Color color = sf::Color::White;
-//                    if (d == -1) {
-//                        color = sf::Color::Red;
-//                    } else if (d == 0) {
-//                        color = sf::Color::Green;
-//                    } else {
-//                        color = sf::Color::Blue;
-//                    }
                     if (d == 1 && i == points.size() - 1) {
                         closestIntersection = first;
                     }
-//                    std::cerr << "DRAW " << i << std::endl;
                     if (closestIntersection) {
-                        sf::ConvexShape shape;
-                        shape.setPointCount(3);
-                        shape.setPoint(0, viewer->applyCameraTransformation(viewerPos));
-                        shape.setPoint(1, viewer->applyCameraTransformation(*last));
-                        shape.setPoint(2, viewer->applyCameraTransformation(*closestIntersection));
-                        shape.setFillColor(sf::Color(255, 255, 255, 32));
-                        shape.setOutlineColor(sf::Color(255, 255, 255, 64));
-                        shape.setOutlineThickness(1);
-                        window->draw(shape);
+                        tracedCount++;
+                        visionPoly.push_back(*closestIntersection);
                     }
                 }
                 lastAngle = angle;
@@ -224,7 +175,14 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
         points[0]->angle += M_PI * 2;
     }
 
-    return result;
+    points.pop_back();
+
+    while (!points.empty()) {
+        delete points.back();
+        points.pop_back();
+    }
+
+    return visionPoly;
 }
 
 double VisibilityTracer::getAngle(sf::Vector2f origin, sf::Vector2f other) {

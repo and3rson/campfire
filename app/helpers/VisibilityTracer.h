@@ -6,13 +6,24 @@
 #define APP_VISIBILITYTRACER_H
 
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Font.hpp>
+#include <Registry.h>
 #include "customtypes.h"
 
-class VisibilityTracer {
+class VisibilityTracer : public Registry {
 public:
     VisibilityTracer(WorldObjectList objects);
 
     VectorList calculateVisibility(WorldObject *viewer, sf::RenderWindow *window);
+
+    struct point_t {
+        sf::Vector2f coords;
+        struct point_t *pair;
+        double angle;
+
+        point_t(sf::Vector2f _coords, double _angle) : coords(_coords), angle(_angle) {
+        }
+    };
 
 private:
     WorldObjectList objects;

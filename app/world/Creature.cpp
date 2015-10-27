@@ -90,6 +90,11 @@ WorldObject* Creature::dropArmedItem() {
 }
 
 bool Creature::collisionStarted(WorldObject *other) {
+    // "other" may mot exist
+    if (!other) {
+        return false;
+    }
+
     if (other->getType() == "projectile") {
         this->health -= ((Projectile *)other)->getDamage();
     }

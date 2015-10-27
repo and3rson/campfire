@@ -15,6 +15,7 @@ class AMovable : public WorldObject
 {
 public:
     AMovable(Camera *camera = 0);
+    ~AMovable();
     void moveTo(sf::Vector2f target);
     void startMove(sf::Vector2f vector, bool relative);
     void stopMove();

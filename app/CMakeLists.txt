@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.3)
 project(app)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O2")
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/../sdk/public/steam/)
 
@@ -57,6 +57,6 @@ set(
         GEEvent.cpp
         GEEvent.h
         customtypes.h
-        config.h effects/PainEffect.cpp effects/PainEffect.h world/Fence.cpp world/Fence.h world/GenericEnemy.cpp world/GenericEnemy.h world/Bob.cpp world/Bob.h helpers/VisibilityTracer.cpp helpers/VisibilityTracer.h)
+        config.h effects/PainEffect.cpp effects/PainEffect.h world/Fence.cpp world/Fence.h world/GenericEnemy.cpp world/GenericEnemy.h world/Bob.cpp world/Bob.h helpers/VisibilityTracer.cpp helpers/VisibilityTracer.h Registry.cpp Registry.h)
 
 add_executable(app ${SOURCE_FILES})

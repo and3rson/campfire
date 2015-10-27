@@ -11,37 +11,47 @@
 
 MainMenuScene::MainMenuScene(GameEngine *engine) : AScene(engine)
 {
+    this->font.loadFromFile("./res/fonts/DejaVuSansMono.ttf");
+
     this->worldClock.restart();
     this->frameClock.restart();
 
     this->window = this->engine->getWindow();
 
-    this->lastMousePos = NULL;
+    this->hold(this->camera = new Camera(), TRACE);
 
-    this->camera = new Camera();
+    this->hold(this->grid = new Grid(this->camera), TRACE);
 
-    this->grid = new Grid(this->camera);
-
-    this->player = new Bob(this->camera);
+    this->hold(this->player = new Bob(this->camera), TRACE);
     this->player->setWPosition(sf::Vector2f(400, 300));
     this->player->arm(new Pistol(this->camera));
     this->player->setAsCurrent();
     this->objects.push_back(this->player);
 
     Fence *fence = new Fence(this->camera);
+    this->hold(fence, TRACE);
     this->objects.push_back(fence);
 
-    this->enemy = new GenericEnemy(this->camera);
+    Fence *fence2 = new Fence(this->camera);
+    this->hold(fence2, TRACE);
+    fence2->setWPosition(sf::Vector2f(128, 0));
+    this->objects.push_back(fence2);
+
+    this->hold(this->enemy = new GenericEnemy(this->camera), TRACE);
     this->enemy->setWPosition(sf::Vector2f(200, 200));
     this->enemy->startMove(sf::Vector2f(0, -1), false);
-    this->enemy->arm(new Pistol(this->camera));
+    Pistol *pistol = new Pistol(this->camera);
+    this->hold(pistol, TRACE);
+    this->enemy->arm(pistol);
     this->objects.push_back(this->enemy);
 
     Crate *c1 = new Crate(this->camera);
     c1->setWPosition(sf::Vector2f(300, 400));
+    this->hold(c1, TRACE);
     this->objects.push_back(c1);
     Crate *c2 = new Crate(this->camera);
     c2->setWPosition(sf::Vector2f(200, 300));
+    this->hold(c2, TRACE);
     this->objects.push_back(c2);
 
     this->camera->attachTo(this->player);
@@ -200,8 +210,33 @@ void MainMenuScene::tick()
     VisibilityTracer vt(this->objects);
     VectorList points = vt.calculateVisibility(this->player, this->window);
     sf::Font font;
-    int n = 0;
     sf::Vector2f previous;
+    int index = 0;
+
+    points.push_back(points.front());
+
+    for (sf::Vector2f point : points) {
+        if (index++) {
+            sf::ConvexShape shape;
+            shape.setPointCount(3);
+            shape.setPoint(0, this->player->applyCameraTransformation(this->player->getWPosition()));
+            shape.setPoint(1, this->player->applyCameraTransformation(previous));
+            shape.setPoint(2, this->player->applyCameraTransformation(point));
+            shape.setFillColor(sf::Color(255, 255, 255, 32));
+            shape.setOutlineColor(sf::Color(255, 255, 255, 64));
+            shape.setOutlineThickness(0);
+            window->draw(shape);
+
+            window->draw(shape);
+        }
+        previous = point;
+    }
+
+    char str[32];
+    sprintf(str, "Vertexes in vision poly: %d", points.size());
+    sf::Text t(str, this->font, 14);
+    t.setPosition(0, 40);
+    window->draw(t);
 }
 
 WorldObjectList MainMenuScene::walk(WorldObject *object) {

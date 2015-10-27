@@ -19,6 +19,8 @@ using namespace std;
 
 int main()
 {
+    Registry reg;
+
     SteamAdapter steamAdapter;
     if (!steamAdapter.initialize()) {
         return 1;
@@ -43,6 +45,7 @@ int main()
 
     GameEngine::initialize(&window);
     GameEngine *engine = GameEngine::getInstance();
+    reg.hold(engine, TRACE);
     engine->start();
 
     engine->setScene(new MainMenuScene(engine));
@@ -65,6 +68,8 @@ int main()
             frameClock.restart();
         }
     }
+
+//    reg.destroy();
 
     return 0;
 }

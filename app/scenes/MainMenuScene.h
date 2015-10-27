@@ -28,10 +28,6 @@ private:
     Creature *enemy;
     Grid *grid;
 
-    sf::Vector2i *lastMousePos;
-
-    sf::Sprite groundSprite;
-
     Camera *camera;
 
     sf::Vector2f moveVector;
@@ -48,6 +44,8 @@ private:
         return rand() % 100 + 100;
     #endif
     }
+
+    sf::Font font;
 };
 
 #endif // MAINMENUSCENE_H

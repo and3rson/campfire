@@ -1,9 +1,11 @@
 #ifndef AEFFECT_H
 #define AEFFECT_H
 
+#include <Registry.h>
+
 class GameEngine;
 
-class AEffect
+class AEffect : public Registry
 {
 public:
     AEffect(GameEngine *engine);

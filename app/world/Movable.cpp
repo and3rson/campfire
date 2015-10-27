@@ -90,7 +90,18 @@ void AMovable::startMove(sf::Vector2f vector, bool relative = false) {
 
 void AMovable::stopMove() {
     this->isMoving = false;
-    this->moveVector = 0;
+    if (this->moveVector) {
+        delete this->moveVector;
+        this->moveVector = 0;
+    } else {
+        std::cerr << "Cannot stopMove() - not moving!" << std::endl;
+    }
     this->distanceTraveled = 0;
     this->moveStopped();
+}
+
+AMovable::~AMovable() {
+    if (this->moveVector) {
+        delete this->moveVector;
+    }
 }

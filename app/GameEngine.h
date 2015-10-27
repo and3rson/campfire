@@ -27,7 +27,7 @@
 
 using namespace std;
 
-class GameEngine
+class GameEngine : public Registry
 {
 private:
     GameEngine(sf::RenderWindow *window);
@@ -44,7 +44,11 @@ public:
 
     GEEvent* getEvent();
 
+    static void recycle(Registry *, const char *, int, const char *);
+
 protected:
+    virtual ~GameEngine();
+
     static GameEngine* instance;
     sf::RenderWindow *window;
 
@@ -53,6 +57,8 @@ private:
     AEffect *effect = 0;
     std::vector<GEEvent *> events;
     int lastX = -1, lastY = -1;
+
+    static Registry recycler;
 
 #ifdef __linux__
     Display *dpy;

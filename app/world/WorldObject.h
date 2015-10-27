@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <customtypes.h>
 #include "config.h"
+#include "Registry.h"
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -13,7 +14,7 @@
 class Camera;
 
 
-class WorldObject
+class WorldObject : public Registry
 {
 public:
     WorldObject(Camera *camera = 0);
