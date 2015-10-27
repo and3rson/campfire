@@ -14,7 +14,7 @@ class VisibilityTracer : public Registry {
 public:
     VisibilityTracer(WorldObjectList objects);
 
-    VectorList calculateVisibility(WorldObject *viewer, sf::RenderWindow *window);
+    VectorList calculateVisibility(WorldObject *viewer, sf::RenderWindow *window, float fov = 0);
 
     struct point_t {
         sf::Vector2f coords;

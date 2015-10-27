@@ -6,6 +6,9 @@
         "y": 64
     },
     "hitbox": [
+        -16, -16, 16, 16
+    ],
+    "lightbox": [
         -12, -12, 12, 12
     ],
     "texture": "crate.png",

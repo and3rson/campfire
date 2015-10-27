@@ -61,6 +61,11 @@ Sprited::Sprited(const char *spriteName, Camera *camera = 0) : AMovable(camera)
     this->oHitbox.width = root["hitbox"][2].asFloat() - this->oHitbox.left;
     this->oHitbox.height = root["hitbox"][3].asFloat() - this->oHitbox.top;
 
+    this->oLightbox.left = root["lightbox"][0].asFloat();
+    this->oLightbox.top = root["lightbox"][1].asFloat();
+    this->oLightbox.width = root["lightbox"][2].asFloat() - this->oLightbox.left;
+    this->oLightbox.height = root["lightbox"][3].asFloat() - this->oLightbox.top;
+
 //    std::cout << this->oHitbox.left << "/" << this->oHitbox.top << "/" << this->oHitbox.width << "/" << this->oHitbox.height;
 }
 

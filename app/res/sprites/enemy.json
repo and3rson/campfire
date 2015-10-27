@@ -8,6 +8,9 @@
     "hitbox": [
         -32, -32, 32, 32
     ],
+    "lightbox": [
+        -16, -16, 16, 16
+    ],
     "texture": "enemy.png",
     "animations": {
         "idle0": {

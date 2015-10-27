@@ -40,6 +40,7 @@ public:
     virtual bool isCollidable();
 
     sf::FloatRect getWHitbox();
+    sf::FloatRect getWLightbox();
 
     WorldObjectList getChildren();
 
@@ -65,6 +66,7 @@ protected:
     WorldObjectList collisions;
 
     sf::FloatRect oHitbox;
+    sf::FloatRect oLightbox;
     sf::Vector2f rOrigin;
 
 private:

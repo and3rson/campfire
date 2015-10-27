@@ -8,6 +8,9 @@
     "hitbox": [
         -16, -16, 16, 16
     ],
+    "lightbox": [
+        -8, -8, 8, 8
+    ],
     "texture": "pistol.png",
     "animations": {
         "ground": {

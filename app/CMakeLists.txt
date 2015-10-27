@@ -5,7 +5,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O2")
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/../sdk/public/steam/)
 
-link_libraries(steam_api sfml-graphics sfml-window sfml-system X11 stdc++)
+link_libraries(steam_api sfml-graphics sfml-window sfml-system sfml-audio X11 stdc++)
 link_directories(${CMAKE_SOURCE_DIR}/../sdk/redistributable_bin/linux64)
 
 set(

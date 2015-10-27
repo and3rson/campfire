@@ -169,6 +169,8 @@ void MainMenuScene::tick()
 
     int i = 0;
 
+    WorldObjectList all;
+
     for (WorldObject *top: this->objects) {
         WorldObjectList bunch = this->walk(top);
 
@@ -177,7 +179,7 @@ void MainMenuScene::tick()
                 // Do not update player again
                 object->update();
             }
-            object->draw(this->window);
+            all.push_back(object);
 
             if (object->isCollidable()) {
                 sf::FloatRect wHitbox = object->getWHitbox();
@@ -208,7 +210,7 @@ void MainMenuScene::tick()
     }
 
     VisibilityTracer vt(this->objects);
-    VectorList points = vt.calculateVisibility(this->player, this->window);
+    VectorList points = vt.calculateVisibility(this->player, this->window, M_PI / 2);
     sf::Font font;
     sf::Vector2f previous;
     int index = 0;
@@ -226,10 +228,12 @@ void MainMenuScene::tick()
             shape.setOutlineColor(sf::Color(255, 255, 255, 64));
             shape.setOutlineThickness(0);
             window->draw(shape);
-
-            window->draw(shape);
         }
         previous = point;
+    }
+
+    for (WorldObject *object : all) {
+        object->draw(this->window);
     }
 
     char str[32];

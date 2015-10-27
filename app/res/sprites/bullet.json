@@ -8,6 +8,9 @@
     "hitbox": [
         -2, -2, 2, 2
     ],
+    "lightbox": [
+        -2, -2, 2, 2
+    ],
     "texture": "bullet2.png",
     "animations": {
         "idle": {

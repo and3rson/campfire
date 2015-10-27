@@ -9,6 +9,10 @@ Pistol::Pistol(Camera *camera) : Item("pistol", camera) {
     this->holdStyle = ONE_HANDED;
     this->font.loadFromFile("./res/fonts/DejaVuSansMono.ttf");
     this->updateAmmoGUI();
+    if (!this->useSoundBuffer.loadFromFile("./res/sounds/pistol1.ogg")) {
+        std::cerr << "Failed to load sound!" << std::endl;
+    }
+    this->useSound.setBuffer(this->useSoundBuffer);
 }
 
 void Pistol::use() {
@@ -20,6 +24,8 @@ void Pistol::use() {
         projectile->setWRotation(this->parent->getWRotation());
         projectile->startMove(this->rotateVector(sf::Vector2f(0, -1), projectile->getWRotation()), false);
         this->addChild(projectile);
+
+        this->useSound.play();
 
         this->ammo--;
         this->updateAmmoGUI();

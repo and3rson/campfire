@@ -37,7 +37,7 @@ int main()
     window.setKeyRepeatEnabled(false);
     window.setMouseCursorVisible(false);
 
-    window.setPosition(sf::Vector2i((videoMode.width - windowWidth) / DIV + videoMode.width, (videoMode.height - windowHeight) / DIV));
+    window.setPosition(sf::Vector2i((videoMode.width - windowWidth) / DIV /* + videoMode.width */, (videoMode.height - windowHeight) / DIV));
 
     sf::Clock frameClock;
     int frameCount = 0;
@@ -69,7 +69,7 @@ int main()
         }
     }
 
-//    reg.destroy();
+    reg.cleanUp();
 
     return 0;
 }

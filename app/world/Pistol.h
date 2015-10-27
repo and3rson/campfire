@@ -8,6 +8,8 @@
 #include "Item.h"
 #include "Projectile.h"
 
+#include <SFML/Audio.hpp>
+
 class Pistol : public Item {
 
 public:
@@ -28,6 +30,10 @@ public:
     sf::Text ammoText;
 
     void updateAmmoGUI();
+
+private:
+    sf::SoundBuffer useSoundBuffer;
+    sf::Sound useSound;
 };
 
 

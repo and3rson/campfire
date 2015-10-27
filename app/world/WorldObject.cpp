@@ -133,9 +133,24 @@ void WorldObject::setWRotation(float rotation) {
 }
 
 float WorldObject::getWRotation() {
+//    if (this->wRotation < 0) {
+//        this->wRotation = this->wRotation + M_PI * 2;
+//    }
+//    if (this->wRotation > M_PI * 2) {
+//        this->wRotation = this->wRotation - M_PI * 2;
+//    }
     return this->wRotation;
 }
 
 float WorldObject::getDistance(sf::Vector2f a, sf::Vector2f b) {
     return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
+}
+
+sf::FloatRect WorldObject::getWLightbox() {
+    return sf::FloatRect(
+        this->wPosition.x + this->oLightbox.left,
+        this->wPosition.y + this->oLightbox.top,
+        this->oLightbox.width,
+        this->oLightbox.height
+    );
 }

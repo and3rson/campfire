@@ -8,6 +8,9 @@
     "hitbox": [
         -64, -10, 64, 10
     ],
+    "lightbox": [
+        -64, -10, 64, 10
+    ],
     "texture": "fence.png",
     "animations": {
         "idle": {
