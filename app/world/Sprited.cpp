@@ -137,8 +137,8 @@ void Sprited::draw(sf::RenderWindow *window)
     hitboxRect.setOutlineColor(sf::Color::Red);
     hitboxRect.setOrigin(sf::Vector2f(wHitbox.width / 2, wHitbox.height / 2));
     hitboxRect.setSize(sf::Vector2f(wHitbox.width, wHitbox.height));
-    hitboxRect.setPosition(this->applyCameraTransformation(this->wPosition));
-    hitboxRect.setRotation(-this->camera->wRotation / M_PI * 180);
+    hitboxRect.setPosition(this->applyCameraTransformation(this->getWPosition()));
+    hitboxRect.setRotation(-this->camera->getWRotation() / M_PI * 180);
     window->draw(hitboxRect);
 #endif
 }

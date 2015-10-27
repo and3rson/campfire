@@ -28,14 +28,14 @@ int main()
     settings.antialiasingLevel = 8;
     //    settings.attributeFlags = sf::ContextSettings::Debug;
     sf::VideoMode videoMode = sf::VideoMode::getDesktopMode();
-    int windowWidth = videoMode.width / 2 - 40;
-    int windowHeight = videoMode.height / 2 - 40;
+    int windowWidth = videoMode.width / DIV - SUB;
+    int windowHeight = videoMode.height / DIV - SUB;
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "SFML App", sf::Style::Titlebar | sf::Style::Close, settings);
     window.setVerticalSyncEnabled(true);
     window.setKeyRepeatEnabled(false);
     window.setMouseCursorVisible(false);
 
-    window.setPosition(sf::Vector2i((videoMode.width - windowWidth) / 2 /*+ videoMode.width*/, (videoMode.height - windowHeight) / 2));
+    window.setPosition(sf::Vector2i((videoMode.width - windowWidth) / DIV + videoMode.width, (videoMode.height - windowHeight) / DIV));
 
     sf::Clock frameClock;
     int frameCount = 0;

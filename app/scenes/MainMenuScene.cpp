@@ -202,43 +202,6 @@ void MainMenuScene::tick()
     sf::Font font;
     int n = 0;
     sf::Vector2f previous;
-
-    for (sf::Vector2f point : points) {
-        sf::ConvexShape triangle;
-        triangle.setPointCount(3);
-        triangle.setFillColor(sf::Color(255, 255, 255, 64));
-//        triangle.setOutlineColor(sf::Color(255, 255, 255, 192));
-        triangle.setOutlineThickness(0);
-
-        if (n) {
-            triangle.setPoint(0, this->player->applyCameraTransformation(this->player->getWPosition()));
-            triangle.setPoint(1, this->player->applyCameraTransformation(point));
-//            triangle.setPoint(2, this->player->applyCameraTransformation(point + sf::Vector2f(1, 1)));
-            triangle.setPoint(2, this->player->applyCameraTransformation(previous));
-
-            this->window->draw(triangle);
-
-            sf::Vertex line[] = {
-                sf::Vertex(this->player->applyCameraTransformation(this->player->getWPosition()), sf::Color::White),
-                sf::Vertex(this->player->applyCameraTransformation(point), sf::Color::Red)
-            };
-
-            this->window->draw(line, 2, sf::Lines);
-
-//            font.loadFromFile("./res/fonts/DejaVuSansMono.ttf");
-//            char textChar[32];
-//            sprintf(textChar, "%d", n);
-//            sf::Text t(textChar, font, 16);
-//            sf::Vector2f diff = (line[1].position - line[0].position);
-//            diff.x /= 2;
-//            diff.y /= 2;
-//            t.setPosition(line[0].position + diff);
-//            t.setColor(sf::Color::Yellow);
-//            this->window->draw(t);
-        }
-        previous = point;
-        n++;
-    }
 }
 
 WorldObjectList MainMenuScene::walk(WorldObject *object) {

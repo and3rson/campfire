@@ -29,6 +29,8 @@ bool PainEffect::tick() {
         filter.setFillColor(blood);
         this->window->draw(filter);
         return true;
+    } else {
+        this->camera->rShift = sf::Vector2f(0, 0);
+        return false;
     }
-    return false;
 }

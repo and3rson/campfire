@@ -45,24 +45,18 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
 
     sortStruct.viewerPos = viewer->getWPosition();
 
-//    struct wall_t {
-//        sf::Vector2f start;
-//        sf::Vector2f end;
-////        double distance;
-//        double angles[2];
-//    };
-
     std::vector<point_t*> points;
 
     sf::Vector2f viewerPos = viewer->getWPosition();
 
     sf::Vector2u size = window->getSize();
+    int hypotenuse = (int) sqrt(pow(size.x / 2, 2) + pow(size.y / 2, 2));
 
     sf::Vector2f lines[] = {
-        viewerPos - sf::Vector2f(-size.x / 2, -size.y / 2),
-        viewerPos - sf::Vector2f(size.x / 2, -size.y / 2),
-        viewerPos - sf::Vector2f(size.x / 2, size.y / 2),
-        viewerPos - sf::Vector2f(-size.x / 2, size.y / 2)
+        viewerPos + sf::Vector2f(- hypotenuse, - hypotenuse),
+        viewerPos + sf::Vector2f(+ hypotenuse, - hypotenuse),
+        viewerPos + sf::Vector2f(+ hypotenuse, + hypotenuse),
+        viewerPos + sf::Vector2f(- hypotenuse, + hypotenuse)
     };
 
     for (int i = 0; i < 4; i++) {
@@ -142,14 +136,7 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
                     sf::Vertex(viewer->applyCameraTransformation(endPoint->coords), sf::Color::Green)
                 };
                 window->draw(line, 2, sf::Lines);
-
-//                walls.push_back(wall);
             }
-
-//            result.push_back(sf::Vector2f(hitbox.left, hitbox.top));
-//            result.push_back(sf::Vector2f(hitbox.left + hitbox.width, hitbox.top));
-//            result.push_back(sf::Vector2f(hitbox.left, hitbox.top + hitbox.height));
-//            result.push_back(sf::Vector2f(hitbox.left + hitbox.width, hitbox.top + hitbox.height));
         }
     }
 
@@ -217,25 +204,22 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
                     if (d == 1 && i == points.size() - 1) {
                         closestIntersection = first;
                     }
-                    sf::ConvexShape shape;
-                    shape.setPointCount(3);
-                    shape.setPoint(0, viewer->applyCameraTransformation(viewerPos));
-                    shape.setPoint(1, viewer->applyCameraTransformation(*last));
-                    shape.setPoint(2, viewer->applyCameraTransformation(*closestIntersection));
-                    shape.setFillColor(sf::Color(255, 255, 255, 32));
-                    shape.setOutlineColor(sf::Color(255, 255, 255, 64));
-                    shape.setOutlineThickness(1);
-                    window->draw(shape);
-//                    sf::Vertex line[] = {
-//                        sf::Vertex(viewer->applyCameraTransformation(*last), color),
-//                        sf::Vertex(viewer->applyCameraTransformation(*closestIntersection), color)
-//                    };
-//                    window->draw(line, 2, sf::Lines);
+//                    std::cerr << "DRAW " << i << std::endl;
+                    if (closestIntersection) {
+                        sf::ConvexShape shape;
+                        shape.setPointCount(3);
+                        shape.setPoint(0, viewer->applyCameraTransformation(viewerPos));
+                        shape.setPoint(1, viewer->applyCameraTransformation(*last));
+                        shape.setPoint(2, viewer->applyCameraTransformation(*closestIntersection));
+                        shape.setFillColor(sf::Color(255, 255, 255, 32));
+                        shape.setOutlineColor(sf::Color(255, 255, 255, 64));
+                        shape.setOutlineThickness(1);
+                        window->draw(shape);
+                    }
                 }
                 lastAngle = angle;
                 last = closestIntersection;
             }
-//            lastWall = wall;
         }
         points[0]->angle += M_PI * 2;
     }
