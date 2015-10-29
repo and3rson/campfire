@@ -24,7 +24,9 @@ MainMenuScene::MainMenuScene(GameEngine *engine) : AScene(engine)
 
     this->hold(this->player = new Bob(this->camera), TRACE);
     this->player->setWPosition(sf::Vector2f(400, 300));
-    this->player->arm(new Pistol(this->camera));
+    Pistol *pistol1 = new Pistol(this->camera);
+    this->hold(pistol1, TRACE);
+    this->player->arm(pistol1);
     this->player->setAsCurrent();
     this->objects.push_back(this->player);
 
@@ -40,9 +42,9 @@ MainMenuScene::MainMenuScene(GameEngine *engine) : AScene(engine)
     this->hold(this->enemy = new GenericEnemy(this->camera), TRACE);
     this->enemy->setWPosition(sf::Vector2f(200, 200));
     this->enemy->startMove(sf::Vector2f(0, -1), false);
-    Pistol *pistol = new Pistol(this->camera);
-    this->hold(pistol, TRACE);
-    this->enemy->arm(pistol);
+    Pistol *pistol2 = new Pistol(this->camera);
+    this->hold(pistol2, TRACE);
+    this->enemy->arm(pistol2);
     this->objects.push_back(this->enemy);
 
     Crate *c1 = new Crate(this->camera);
@@ -171,6 +173,8 @@ void MainMenuScene::tick()
 
     WorldObjectList all;
 
+    std::cerr << "TICK" << std::endl;
+
     for (WorldObject *top: this->objects) {
         WorldObjectList bunch = this->walk(top);
 
@@ -187,19 +191,21 @@ void MainMenuScene::tick()
                 if (! collidables.empty()) {
                     for (WorldObject *other : collidables) {
                         if (object->isCollidable() && other->isCollidable()) {
-                            bool isColliding = object->isColliding(other);
-                            bool intersects = wHitbox.intersects(other->getWHitbox());
-                            if (!isColliding && intersects) {
+//                            bool isColliding = object->isColliding(other);
+//                            bool intersects = wHitbox.intersects(other->getWHitbox());
+//                            if (!isColliding && intersects) {
+                            if (wHitbox.intersects(other->getWHitbox())) {
                                 object->collisionStarted(other);
                                 other->collisionStarted(object);
-                                object->addCollision(other);
-                                other->addCollision(object);
-                            } else if(isColliding && !intersects) {
-                                object->collisionStopped(other);
-                                other->collisionStopped(object);
-                                object->removeCollision(other);
-                                other->removeCollision(object);
                             }
+//                                object->addCollision(other);
+//                                other->addCollision(object);
+//                            } else if(isColliding && !intersects) {
+//                                object->collisionStopped(other);
+//                                other->collisionStopped(object);
+//                                object->removeCollision(other);
+//                                other->removeCollision(object);
+//                            }
                         }
                     }
                 }

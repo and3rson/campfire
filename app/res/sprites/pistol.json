@@ -9,7 +9,7 @@
         -16, -16, 16, 16
     ],
     "lightbox": [
-        -8, -8, 8, 8
+        0, 0, 0, 0
     ],
     "texture": "pistol.png",
     "animations": {

@@ -11,6 +11,7 @@ class AScene : public Registry
 {
 public:
     AScene(GameEngine *);
+    virtual std::string getType();
 
     virtual void tick() = 0;
 

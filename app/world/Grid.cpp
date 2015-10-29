@@ -83,3 +83,7 @@ void Grid::draw(sf::RenderWindow *window)
 //        window->draw(line, 2, sf::Lines);
     }
 }
+
+std::string Grid::getType() {
+    return "grid";
+}

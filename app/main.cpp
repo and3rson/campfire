@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cstdio>
 
 #include "config.h"
 
@@ -8,9 +7,7 @@
 
 #include "SteamAdapter.h"
 #include "GameEngine.h"
-#include "scenes/SplashScene.h"
 #include "scenes/MainMenuScene.h"
-#include "effects/NoiseEffect.h"
 
 using namespace std;
 
@@ -19,7 +16,7 @@ using namespace std;
 
 int main()
 {
-    Registry reg;
+    Recycler reg;
 
     SteamAdapter steamAdapter;
     if (!steamAdapter.initialize()) {
@@ -37,7 +34,7 @@ int main()
     window.setKeyRepeatEnabled(false);
     window.setMouseCursorVisible(false);
 
-    window.setPosition(sf::Vector2i((videoMode.width - windowWidth) / DIV /* + videoMode.width */, (videoMode.height - windowHeight) / DIV));
+    window.setPosition(sf::Vector2i((videoMode.width - windowWidth) / DIV + videoMode.width, (videoMode.height - windowHeight) / DIV));
 
     sf::Clock frameClock;
     int frameCount = 0;
@@ -70,6 +67,15 @@ int main()
     }
 
     reg.cleanUp();
+
+    std::cerr << "Objects lost: " << Registry::getRefCount() << std::endl;
+
+    std::cerr << "Lost objects:" << std::endl;
+
+    for (Registry *registry : Registry::getAllObjects()) {
+        std::cerr << " ! " << ((WorldObject *) registry)->getType() << std::endl;
+//        std::cerr << ((Animation *) registry)->getFullName() << std::endl;
+    }
 
     return 0;
 }

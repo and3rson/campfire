@@ -10,6 +10,7 @@ class AEffect : public Registry
 public:
     AEffect(GameEngine *engine);
     virtual bool tick() = 0;
+    virtual std::string getType();
 
 protected:
     GameEngine *engine;

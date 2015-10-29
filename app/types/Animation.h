@@ -9,10 +9,14 @@
 class Animation : public Registry
 {
 public:
-    Animation(int fps);
+    Animation(const char *, const char *, int fps);
+    virtual std::string getType();
+
+    const char *getFullName();
 
     int fps;
     std::vector<sf::Vector2i> frames;
+    char fullName[64];
 };
 
 #endif // ANIMATION_H

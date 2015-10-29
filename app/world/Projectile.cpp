@@ -1,10 +1,11 @@
-#include <GameEngine.h>
-#include <effects/PainEffect.h>
 #include "Projectile.h"
 
 Projectile::Projectile(Camera *camera) : Sprited("bullet", camera)
 {
     this->moveSpeed = 2000;
+    SoundManager::getInstance()->load("hit_flesh");
+    SoundManager::getInstance()->load("hit_wood");
+    SoundManager::getInstance()->load("hit_concrete");
 }
 
 void Projectile::moveStarted()
@@ -23,11 +24,25 @@ bool Projectile::collisionStarted(WorldObject *other) {
         return false;
     }
 
+    if (other->getType() == "projectile") {
+        return false;
+    }
+
     std::cerr << "Object " << this->getType() << " collided with " << other->getType() << std::endl;
     this->parent->removeChild(this);
     if (other->getType() == "creature" && other->getIsCurrent()) {
         GameEngine::getInstance()->setEffect(new PainEffect(GameEngine::getInstance(), this->camera, 30, 400));
     }
+
+    switch (other->getMaterial()) {
+        case NONE:break;
+        case METAL:;break;
+        case WOOD:SoundManager::getInstance()->play("hit_wood");break;
+        case GLASS:break;
+        case FLESH:SoundManager::getInstance()->play("hit_flesh");
+        case CONCRETE:SoundManager::getInstance()->play("hit_concrete");break;
+    }
+
     GameEngine::recycle(this, TRACE);
     return true;
 }

@@ -14,6 +14,7 @@ class Creature : public Sprited
 {
 public:
     Creature(const char *spriteName, Camera *camera);
+    ~Creature();
 
     virtual void update();
     virtual void draw(sf::RenderWindow *window);
@@ -22,6 +23,7 @@ public:
     virtual void moveStopped();
 
     virtual std::string getType();
+    virtual Material getMaterial();
 
     void arm(Item *item);
     void useArmedItem();

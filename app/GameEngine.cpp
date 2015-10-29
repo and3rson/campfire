@@ -1,12 +1,14 @@
 #include "GameEngine.h"
 #include "customtypes.h"
+#include "SoundManager.h"
 
 GameEngine* GameEngine::instance = 0;
-Registry GameEngine::recycler;
+Recycler GameEngine::recycler;
 
 GameEngine::GameEngine(sf::RenderWindow *window) : window(window)
 {
     Director::getInstance();
+    this->hold(SoundManager::getInstance(), TRACE);
 
 #ifdef __linux__
     this->dpy = XOpenDisplay(NULL);
@@ -47,7 +49,7 @@ void GameEngine::tick()
     int root_x, root_y, win_x, win_y;
     unsigned int mask_return;
     XQueryPointer(this->dpy, DefaultRootWindow(this->dpy), &returned, &returned, &root_x, &root_y, &win_x, &win_y, &mask_return);
-    XWarpPointer(this->dpy, None, DefaultRootWindow(this->dpy), 0, 0, 0, 0, centerX, centerY);
+    XWarpPointer(this->dpy, 0, DefaultRootWindow(this->dpy), 0, 0, 0, 0, centerX, centerY);
     XFlush(this->dpy);
 //    XEvent event;
 //    while (XPending(this->dpy)) {
@@ -128,4 +130,13 @@ void GameEngine::recycle(Registry *object, const char *a, int b, const char *c) 
 
 GameEngine::~GameEngine() {
     delete this->dpy;
+    std::cerr << "Destroying GameEngine" << std::endl;
+}
+
+std::string GameEngine::getType() {
+    return "GameEngine";
+}
+
+AScene *GameEngine::getScene() {
+    return this->scene;
 }

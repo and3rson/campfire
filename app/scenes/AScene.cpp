@@ -5,3 +5,7 @@ AScene::AScene(GameEngine *engine) : engine(engine)
 {
 
 }
+
+std::string AScene::getType() {
+    return "AScene";
+}

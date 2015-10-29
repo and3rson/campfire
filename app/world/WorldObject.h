@@ -33,11 +33,21 @@ public:
     static float getDistance(sf::Vector2f a, sf::Vector2f b);
 
     virtual void draw(sf::RenderWindow *window) = 0;
-    virtual std::string getType();
 
     virtual bool collisionStarted(WorldObject *other);
     virtual bool collisionStopped(WorldObject *other);
     virtual bool isCollidable();
+
+    enum Material {
+        NONE,
+        METAL,
+        WOOD,
+        GLASS,
+        FLESH,
+        CONCRETE
+    };
+
+    virtual Material getMaterial();
 
     sf::FloatRect getWHitbox();
     sf::FloatRect getWLightbox();
@@ -47,9 +57,9 @@ public:
     void addChild(WorldObject *other);
     void removeChild(WorldObject *other);
 
-    void addCollision(WorldObject *other);
-    void removeCollision(WorldObject *other);
-    bool isColliding(WorldObject *other);
+//    void addCollision(WorldObject *other);
+//    void removeCollision(WorldObject *other);
+//    bool isColliding(WorldObject *other);
 
     virtual bool isPickable();
 
@@ -63,7 +73,7 @@ protected:
 
     WorldObject *parent = 0;
     WorldObjectList children;
-    WorldObjectList collisions;
+//    WorldObjectList collisions;
 
     sf::FloatRect oHitbox;
     sf::FloatRect oLightbox;

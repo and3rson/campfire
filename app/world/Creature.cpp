@@ -55,6 +55,7 @@ void Creature::arm(Item *item) {
 
     this->addChild(item);
     item->setAnimation("armed", true);
+    item->armed();
 //    item->setWPosition(sf::Vector2f(0, 0));
     this->moveStopped(); // TODO: Refactor setAnimation to allow suffixes.
 }
@@ -96,7 +97,7 @@ bool Creature::collisionStarted(WorldObject *other) {
     }
 
     if (other->getType() == "projectile") {
-        this->health -= ((Projectile *)other)->getDamage();
+        this->health -= ((Projectile *) other)->getDamage();
     }
 
     if (this->health <= 0) {
@@ -109,4 +110,11 @@ bool Creature::collisionStarted(WorldObject *other) {
 
 bool Creature::isAlive() {
     return this->health > 0;
+}
+
+Creature::~Creature() {
+}
+
+WorldObject::Material Creature::getMaterial() {
+    return FLESH;
 }

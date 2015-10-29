@@ -15,3 +15,11 @@ void Fence::moveStarted() {
 void Fence::moveStopped() {
 
 }
+
+std::string Fence::getType() {
+    return "Fence";
+}
+
+WorldObject::Material Fence::getMaterial() {
+    return CONCRETE;
+}

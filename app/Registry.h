@@ -7,6 +7,7 @@
 
 
 #include <vector>
+#include <iostream>
 
 class Registry {
 public:
@@ -16,10 +17,14 @@ public:
 
     void cleanUp();
 
-    void printDebugInfo();
+    static int getRefCount();
+    static std::vector<Registry *> getAllObjects();
+
+    virtual std::string getType() = 0;
 
 private:
     std::vector<Registry *> objects;
+    static std::vector<Registry *> allObjects;
     static int refCount;
 };
 

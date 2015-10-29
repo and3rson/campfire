@@ -49,10 +49,6 @@ sf::FloatRect WorldObject::getWHitbox() {
     );
 }
 
-std::string WorldObject::getType() {
-    return "object";
-}
-
 sf::Vector2f WorldObject::rotateVector(sf::Vector2f vector, float angle) {
     float cs = cos(angle);
     float sn = sin(angle);
@@ -99,22 +95,22 @@ void WorldObject::removeChild(WorldObject *other) {
     std::cerr << "New child count: " << this->children.size() << std::endl;
 }
 
-void WorldObject::addCollision(WorldObject *other) {
-    this->collisions.push_back(other);
-}
-
-void WorldObject::removeCollision(WorldObject *other) {
-    this->collisions.erase(std::remove(this->collisions.begin(), this->collisions.end(), other));
-}
-
-bool WorldObject::isColliding(WorldObject *other) {
-    for (WorldObject *object : this->collisions) {
-        if (object == other) {
-            return true;
-        }
-    }
-    return false;
-}
+//void WorldObject::addCollision(WorldObject *other) {
+//    this->collisions.push_back(other);
+//}
+//
+//void WorldObject::removeCollision(WorldObject *other) {
+//    this->collisions.erase(std::remove(this->collisions.begin(), this->collisions.end(), other));
+//}
+//
+//bool WorldObject::isColliding(WorldObject *other) {
+//    for (WorldObject *object : this->collisions) {
+//        if (object == other) {
+//            return true;
+//        }
+//    }
+//    return false;
+//}
 
 void WorldObject::setAsCurrent() {
     this->current = true;
@@ -153,4 +149,8 @@ sf::FloatRect WorldObject::getWLightbox() {
         this->oLightbox.width,
         this->oLightbox.height
     );
+}
+
+WorldObject::Material WorldObject::getMaterial() {
+    return NONE;
 }

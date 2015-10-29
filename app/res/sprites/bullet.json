@@ -6,10 +6,10 @@
         "y": 12
     },
     "hitbox": [
-        -2, -2, 2, 2
+        -2, -2, 2, 48
     ],
     "lightbox": [
-        -2, -2, 2, 2
+        0, 0, 0, 0
     ],
     "texture": "bullet2.png",
     "animations": {

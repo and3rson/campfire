@@ -14,6 +14,8 @@ class VisibilityTracer : public Registry {
 public:
     VisibilityTracer(WorldObjectList objects);
 
+    virtual std::string getType();
+
     VectorList calculateVisibility(WorldObject *viewer, sf::RenderWindow *window, float fov = 0);
 
     struct point_t {

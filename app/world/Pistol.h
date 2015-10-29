@@ -8,8 +8,6 @@
 #include "Item.h"
 #include "Projectile.h"
 
-#include <SFML/Audio.hpp>
-
 class Pistol : public Item {
 
 public:
@@ -20,6 +18,7 @@ public:
     virtual void draw(sf::RenderWindow *window);
 
     virtual std::string getType();
+
     virtual bool isCollidable();
 
     int ammo = 12;
@@ -31,9 +30,7 @@ public:
 
     void updateAmmoGUI();
 
-private:
-    sf::SoundBuffer useSoundBuffer;
-    sf::Sound useSound;
+    virtual void armed();
 };
 
 

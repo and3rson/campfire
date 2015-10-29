@@ -15,6 +15,7 @@ class Grid : public WorldObject
 public:
     Grid(Camera *);
     virtual void draw(sf::RenderWindow *window);
+    virtual std::string getType();
 
 private:
     sf::Font font;

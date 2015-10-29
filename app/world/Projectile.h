@@ -1,10 +1,11 @@
 #ifndef PROJECTILE_H
 #define PROJECTILE_H
 
+#include <GameEngine.h>
+#include <effects/PainEffect.h>
 #include "Sprited.h"
 #include "Camera.h"
-
-//#include <SFML/Audio.hpp>
+#include <SoundManager.h>
 
 class Projectile : public Sprited
 {

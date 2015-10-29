@@ -37,3 +37,7 @@ void Crate::draw(sf::RenderWindow *window) {
 std::string Crate::getType() {
     return "crate";
 }
+
+WorldObject::Material Crate::getMaterial() {
+    return WOOD;
+}

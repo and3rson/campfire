@@ -2,17 +2,18 @@
 // Created by anderson on 09.10.15.
 //
 
+#include <SoundManager.h>
 #include "Pistol.h"
 #include "Creature.h"
 
 Pistol::Pistol(Camera *camera) : Item("pistol", camera) {
+    SoundManager::getInstance()->load("pistol1");
+    SoundManager::getInstance()->load("arm_pistol");
+//    SoundManager::getInstance()->load("drop_shell");
+
     this->holdStyle = ONE_HANDED;
     this->font.loadFromFile("./res/fonts/DejaVuSansMono.ttf");
     this->updateAmmoGUI();
-    if (!this->useSoundBuffer.loadFromFile("./res/sounds/pistol1.ogg")) {
-        std::cerr << "Failed to load sound!" << std::endl;
-    }
-    this->useSound.setBuffer(this->useSoundBuffer);
 }
 
 void Pistol::use() {
@@ -25,7 +26,8 @@ void Pistol::use() {
         projectile->startMove(this->rotateVector(sf::Vector2f(0, -1), projectile->getWRotation()), false);
         this->addChild(projectile);
 
-        this->useSound.play();
+        SoundManager::getInstance()->play("pistol1");
+//        SoundManager::getInstance()->play("drop_shell");
 
         this->ammo--;
         this->updateAmmoGUI();
@@ -64,4 +66,8 @@ void Pistol::updateAmmoGUI() {
     sprintf(text, "%d/%d", this->ammo, this->maxAmmo);
     this->ammoText = sf::Text(sf::String(text), this->font, 24);
     this->ammoText.setPosition(10, 10);
+}
+
+void Pistol::armed() {
+    SoundManager::getInstance()->play("arm_pistol");
 }

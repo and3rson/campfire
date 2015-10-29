@@ -31,6 +31,8 @@ public:
     };
 
     EHoldStyle holdStyle = ONE_HANDED;
+
+    virtual void armed();
 };
 
 

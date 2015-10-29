@@ -13,9 +13,14 @@
 #include "effects/AEffect.h"
 #include "Director.h"
 #include "GEEvent.h"
+#include "Recycler.h"
+
+#include <X11/Xlib.h>
+
+#undef None
+#undef Status
 
 #ifdef __linux__
-#include <X11/Xlib.h>
 #include <bits/stl_deque.h>
 #include <bits/stl_queue.h>
 
@@ -32,12 +37,17 @@ class GameEngine : public Registry
 private:
     GameEngine(sf::RenderWindow *window);
 public:
+    virtual ~GameEngine();
+
+    virtual std::string getType();
+
     static void initialize(sf::RenderWindow *window);
     static GameEngine* getInstance();
     void start();
     void tick();
 
     void setScene(AScene *);
+    AScene *getScene();
     void setEffect(AEffect *);
 
     sf::RenderWindow *getWindow();
@@ -47,8 +57,6 @@ public:
     static void recycle(Registry *, const char *, int, const char *);
 
 protected:
-    virtual ~GameEngine();
-
     static GameEngine* instance;
     sf::RenderWindow *window;
 
@@ -58,12 +66,10 @@ private:
     std::vector<GEEvent *> events;
     int lastX = -1, lastY = -1;
 
-    static Registry recycler;
+    static Recycler recycler;
 
 #ifdef __linux__
     Display *dpy;
-    Window root_window;
-    int grab;
 #endif
 };
 

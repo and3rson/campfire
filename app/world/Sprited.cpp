@@ -1,7 +1,7 @@
 #include <GameEngine.h>
 #include "Sprited.h"
 
-Sprited::Sprited(const char *spriteName, Camera *camera = 0) : AMovable(camera)
+Sprited::Sprited(const char *spriteName, Camera *camera = 0) : AMovable(camera), spriteName(spriteName)
 {
     std::string path = "./res/sprites/";
     path += spriteName;
@@ -22,7 +22,7 @@ Sprited::Sprited(const char *spriteName, Camera *camera = 0) : AMovable(camera)
     for (Json::ValueIterator animationsIterator = jAnimations.begin(); animationsIterator != jAnimations.end(); animationsIterator++) {
         Json::Value jAnimation = *animationsIterator;
 
-        Animation *animation = new Animation(jAnimation["fps"].asInt());
+        Animation *animation = new Animation(spriteName, animationsIterator.key().asCString(), jAnimation["fps"].asInt());
         this->hold(animation, TRACE);
 
         Json::Value jFrames = jAnimation["frames"];
@@ -160,4 +160,8 @@ std::string Sprited::getAnimationWithoutSuffix() {
         }
     }
     return std::string(result);
+}
+
+const char *Sprited::getSpriteName() {
+    return this->spriteName;
 }

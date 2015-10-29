@@ -79,6 +79,10 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
         if (object != viewer) {
             sf::FloatRect lightbox = object->getWLightbox();
 
+            if (lightbox.width == 0 && lightbox.height == 0) {
+                continue;
+            }
+
             sf::Vector2f lines[] = {
                 sf::Vector2f(lightbox.left, lightbox.top),
                 sf::Vector2f(lightbox.left + lightbox.width, lightbox.top),
@@ -165,10 +169,7 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
             if (angle > lastAngle) {
                 sf::Vector2f projectionRay = viewerPos + WorldObject::rotateVector(sf::Vector2f(3000, 0), angle);
 
-                std::cerr << viewer->getWRotation() << "///" << point->angle << std::endl;
-
 //                if (!fov || std::abs(viewer->getWRotation() - point->angle) <= fov / 2) {
-                    std::cerr << "Process2" << std::endl;
                     for (point_t *other : points) {
                         sf::Vector2f *intersection = this->getIntersection(viewerPos, projectionRay, other->coords,
                                                                            other->pair->coords);
@@ -247,4 +248,8 @@ sf::Vector2f *VisibilityTracer::getIntersection(sf::Vector2f p0, sf::Vector2f p1
         return new sf::Vector2f(i_x, i_y);
     }
     return NULL;
+}
+
+std::string VisibilityTracer::getType() {
+    return "VisibilityTracer";
 }

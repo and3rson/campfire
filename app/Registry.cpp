@@ -6,6 +6,7 @@
 #include <iostream>
 
 int Registry::refCount = 0;
+std::vector<Registry *> Registry::allObjects;
 
 Registry::Registry() {
 }
@@ -14,8 +15,9 @@ void Registry::hold(Registry *object, const char *file, int line, const char *fu
     std::cerr << file << ":" << line << ", in " << function << ": New object" << std::endl;
 
     this->objects.push_back(object);
+    Registry::allObjects.push_back(object);
     Registry::refCount++;
-    this->printDebugInfo();
+//    this->printDebugInfo();
 }
 
 Registry::~Registry() {
@@ -23,14 +25,27 @@ Registry::~Registry() {
 }
 
 void Registry::cleanUp() {
+    std::cerr << "Cleaning up registry: " << this->objects.size() << " objects to delete" << std::endl;
     while (!this->objects.empty()) {
-        delete this->objects.back();
+        Registry *objectToDelete = this->objects.back();
+        for (std::vector<Registry *>::iterator it = Registry::allObjects.begin(); it != Registry::allObjects.end(); it++) {
+            if ((*it) == objectToDelete) {
+                Registry::allObjects.erase(it);
+                break;
+            }
+        }
+
+        delete objectToDelete;
         this->objects.pop_back();
+
         Registry::refCount--;
-        this->printDebugInfo();
     }
 }
 
-void Registry::printDebugInfo() {
-    std::cerr << "Objects in registry: " << Registry::refCount << std::endl;
+int Registry::getRefCount() {
+    return Registry::refCount;
+}
+
+std::vector<Registry *> Registry::getAllObjects() {
+    return Registry::allObjects;
 }

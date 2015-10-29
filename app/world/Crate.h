@@ -17,6 +17,7 @@ public:
     virtual void draw(sf::RenderWindow *window);
 
     virtual std::string getType();
+    virtual Material getMaterial();
 
 //private:
 //    Projectile *projectile = 0;

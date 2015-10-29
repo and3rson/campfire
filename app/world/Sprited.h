@@ -22,6 +22,8 @@ public:
     virtual void update();
     virtual void draw(sf::RenderWindow *window);
 
+    const char *getSpriteName();
+
 protected:
     sf::Texture texture;
     sf::Sprite sprite;
@@ -36,6 +38,7 @@ private:
     sf::Clock clock;
     int currentFrame = 0;
     const char *currentAnimationName;
+    const char *spriteName;
 };
 
 #endif // SPRITED_H

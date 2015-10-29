@@ -13,6 +13,9 @@ class Fence : public Sprited {
 public:
     Fence(Camera *camera);
 
+    virtual std::string getType();
+    virtual Material getMaterial();
+
     virtual void moveStarted();
     virtual void moveStopped();
 };
