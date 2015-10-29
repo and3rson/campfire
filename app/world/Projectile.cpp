@@ -37,10 +37,18 @@ bool Projectile::collisionStarted(WorldObject *other) {
     switch (other->getMaterial()) {
         case NONE:break;
         case METAL:;break;
-        case WOOD:SoundManager::getInstance()->play("hit_wood");break;
+        case WOOD:
+            SoundManager::getInstance()->play("hit_wood");
+            break;
         case GLASS:break;
-        case FLESH:SoundManager::getInstance()->play("hit_flesh");
-        case CONCRETE:SoundManager::getInstance()->play("hit_concrete");break;
+        case FLESH:
+            char name[32];
+            sprintf(name, "hit_flesh_%d", (int) this->randomMax(5) + 1);
+            SoundManager::getInstance()->play(name);
+            break;
+        case CONCRETE:
+            SoundManager::getInstance()->play("hit_concrete");
+            break;
     }
 
     GameEngine::recycle(this, TRACE);

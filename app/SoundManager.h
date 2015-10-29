@@ -15,13 +15,13 @@ public:
     static SoundManager *getInstance();
 
     void load(const char *name);
-    void play(const char *name);
+    void play(std::string name);
 
     virtual std::string getType();
 
     class Sound : public Registry {
     public:
-        Sound(const char *name);
+        Sound(std::string name);
         ~Sound();
         sf::Sound *createNew();
 
@@ -34,7 +34,7 @@ public:
 private:
     static SoundManager *instance;
     SoundManager();
-    std::map<const char *, Sound *> sounds;
+    std::map<std::string, Sound *> sounds;
     std::vector<sf::Sound *> playing;
 };
 

@@ -10,19 +10,11 @@
 SoundManager *SoundManager::instance = 0;
 
 void SoundManager::load(const char *name) {
-    if (this->sounds.find(name) == this->sounds.end()) {
-        std::cerr << "Loading sound " << name << std::endl;
-        Sound *sound = new Sound(name);
-        this->hold(sound, TRACE);
-        this->sounds[name] = sound;
-    } else {
-//        std::cerr << "Sound " << name << " already loaded" << std::endl;
-    }
 }
 
-SoundManager::Sound::Sound(const char *name) {
+SoundManager::Sound::Sound(std::string name) {
     char path[128];
-    sprintf(path, "./res/sounds/%s.ogg", name);
+    sprintf(path, "./res/sounds/%s.ogg", name.c_str());
     if (this->soundBuffer.loadFromFile(path)) {
         std::cerr << "Failed to load sound!" << std::endl;
     }
@@ -31,7 +23,16 @@ SoundManager::Sound::Sound(const char *name) {
 SoundManager::Sound::~Sound() {
 }
 
-void SoundManager::play(const char *name) {
+void SoundManager::play(std::string name) {
+    if (this->sounds.find(name) == this->sounds.end()) {
+        std::cerr << "Loading sound " << name << std::endl;
+        Sound *sound = new Sound(name);
+        this->hold(sound, TRACE);
+        this->sounds[name] = sound;
+    } else {
+//        std::cerr << "Sound " << name << " already loaded" << std::endl;
+    }
+
     this->playing.erase(std::remove_if(this->playing.begin(), this->playing.end(), [] (const sf::Sound *s) {
         if (s->getStatus() == sf::SoundSource::Status::Stopped) {
             delete s;

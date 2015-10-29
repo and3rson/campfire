@@ -225,7 +225,7 @@ void MainMenuScene::tick()
     sf::Vector2f previous;
     int index = 0;
 
-    points.push_back(points.front());
+//    points.push_back(points.front());
 
     for (sf::Vector2f point : points) {
         if (index++) {
@@ -244,6 +244,13 @@ void MainMenuScene::tick()
                 sf::Vertex(this->player->applyCameraTransformation(point), sf::Color::Green)
             };
             window->draw(line, 2, sf::Lines);
+
+//            char text[32];
+//            sprintf(text, "%d", index);
+//            sf::Text t(text, this->font, 12);
+//            t.setColor(sf::Color::White);
+//            t.setPosition(this->player->applyCameraTransformation(sf::Vector2f((point.x + previous.x) / 2, (point.y + previous.y) / 2)));
+//            window->draw(t);
         }
         previous = point;
     }
@@ -254,7 +261,7 @@ void MainMenuScene::tick()
         if (!object->getIsCurrent()) {
             if (WindingNumber::cn_PnPoly(object->getWPosition(), points)) {
                 if (object->getType() == "creature") {
-                    std::cerr << "Object " << object->getType() << " is visible!" << std::endl;
+//                    std::cerr << "Object " << object->getType() << " is visible!" << std::endl;
                     float rotation = object->getWRotation();
                     float final = VisibilityTracer::getAngle(object->getWPosition(), this->player->getWPosition()) + M_PI / 2;
                     object->setWRotation(rotation + (final - rotation) / 4);

@@ -24,6 +24,15 @@ public:
     virtual int getDamage();
 
     virtual std::string getType();
+
+    float randomMax(int max)
+    {
+        #ifdef __linux__
+        return random() % max;
+        #else
+        return rand() % max;
+        #endif
+    }
 };
 
 #endif // PROJECTILE_H
