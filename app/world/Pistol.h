@@ -31,6 +31,8 @@ public:
     void updateAmmoGUI();
 
     virtual void armed();
+
+    sf::Clock timeSinceUsed;
 };
 
 

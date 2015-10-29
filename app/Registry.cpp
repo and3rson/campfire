@@ -12,7 +12,7 @@ Registry::Registry() {
 }
 
 void Registry::hold(Registry *object, const char *file, int line, const char *function) {
-    std::cerr << file << ":" << line << ", in " << function << ": New object" << std::endl;
+//    std::cerr << file << ":" << line << ", in " << function << ": New object" << std::endl;
 
     this->objects.push_back(object);
     Registry::allObjects.push_back(object);
@@ -25,7 +25,7 @@ Registry::~Registry() {
 }
 
 void Registry::cleanUp() {
-    std::cerr << "Cleaning up registry: " << this->objects.size() << " objects to delete" << std::endl;
+//    std::cerr << "Cleaning up registry: " << this->objects.size() << " objects to delete" << std::endl;
     while (!this->objects.empty()) {
         Registry *objectToDelete = this->objects.back();
         for (std::vector<Registry *>::iterator it = Registry::allObjects.begin(); it != Registry::allObjects.end(); it++) {

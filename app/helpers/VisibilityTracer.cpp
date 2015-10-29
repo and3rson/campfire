@@ -37,7 +37,7 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
     sf::Vector2f viewerPos = viewer->getWPosition();
 
     sf::Vector2u size = window->getSize();
-    int hypotenuse = (int) sqrt(pow(size.x / 2, 2) + pow(size.y / 2, 2));
+    int hypotenuse = (int) sqrt(pow(size.x / 2, 2) + pow(size.y / 2, 2)) / 3;
 
     sf::Vector2f lines[] = {
         viewerPos + sf::Vector2f(- hypotenuse, - hypotenuse),
@@ -50,8 +50,8 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
         sf::Vector2f start = lines[i];
         sf::Vector2f end = lines[(i + 1) % 4];
 
-        double angle1 = this->getAngle(viewerPos, start);
-        double angle2 = this->getAngle(viewerPos, end);
+        double angle1 = VisibilityTracer::getAngle(viewerPos, start);
+        double angle2 = VisibilityTracer::getAngle(viewerPos, end);
 
         point_t *startPoint = new point_t(start, angle1);
         point_t *endPoint = new point_t(end, angle2);
@@ -63,7 +63,7 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
             points.push_back(startPoint);
 //        }
 //        if (!fov || std::abs(viewer->getWRotation() - angle2) < fov / 2) {
-            points.push_back(endPoint);
+//            points.push_back(endPoint);
 //        }
 
 //        sf::Vertex line[] = {
@@ -94,8 +94,8 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
                 sf::Vector2f start = lines[i];
                 sf::Vector2f end = lines[(i + 1) % 4];
 
-                double angle1 = this->getAngle(viewerPos, start);
-                double angle2 = this->getAngle(viewerPos, end);
+                double angle1 = VisibilityTracer::getAngle(viewerPos, start);
+                double angle2 = VisibilityTracer::getAngle(viewerPos, end);
 
                 point_t *startPoint = new point_t(start, angle1);
                 point_t *endPoint = new point_t(end, angle2);
@@ -107,7 +107,7 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
                     points.push_back(startPoint);
 //                }
 //                if (!fov || std::abs(viewer->getWRotation() - angle2) < fov / 2) {
-                    points.push_back(endPoint);
+//                    points.push_back(endPoint);
 //                }
 
 //                sf::Vertex line[] = {
@@ -119,19 +119,19 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
         }
     }
 
-    if (fov) {
-        point_t *start = new point_t(viewerPos + WorldObject::rotateVector(sf::Vector2f(0, -300), viewer->getWRotation() - fov / 2), - fov / 2);
-        point_t *end = new point_t(viewerPos + WorldObject::rotateVector(sf::Vector2f(0, -300), viewer->getWRotation() + fov / 2), fov / 2);
-        start->pair = end;
-        end->pair = start;
-//        points.push_back(start);
-//        points.push_back(end);
-        sf::Vertex line[] = {
-            sf::Vertex(viewer->applyCameraTransformation(start->coords), sf::Color::Red),
-            sf::Vertex(viewer->applyCameraTransformation(end->coords), sf::Color::Green)
-        };
-        window->draw(line, 2, sf::Lines);
-    }
+//    if (fov) {
+//        point_t *start = new point_t(viewerPos + WorldObject::rotateVector(sf::Vector2f(0, -300), viewer->getWRotation() - fov / 2), - fov / 2);
+//        point_t *end = new point_t(viewerPos + WorldObject::rotateVector(sf::Vector2f(0, -300), viewer->getWRotation() + fov / 2), fov / 2);
+//        start->pair = end;
+//        end->pair = start;
+////        points.push_back(start);
+////        points.push_back(end);
+//        sf::Vertex line[] = {
+//            sf::Vertex(viewer->applyCameraTransformation(start->coords), sf::Color::Red),
+//            sf::Vertex(viewer->applyCameraTransformation(end->coords), sf::Color::Green)
+//        };
+//        window->draw(line, 2, sf::Lines);
+//    }
 
     std::sort(points.begin(), points.end(), sortStruct);
 
@@ -194,6 +194,12 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
                     if (closestIntersection) {
                         tracedCount++;
                         visionPoly.push_back(*closestIntersection);
+
+//                        sf::Vertex line[] = {
+//                            sf::Vertex(viewer->applyCameraTransformation(*last), sf::Color::Red),
+//                            sf::Vertex(viewer->applyCameraTransformation(*closestIntersection), sf::Color::Green)
+//                        };
+//                        window->draw(line, 2, sf::Lines);
                     }
                 }
 //                }
@@ -201,7 +207,10 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
                 last = closestIntersection;
             }
         }
-        points[0]->angle += M_PI * 2;
+
+        if (point == points.front()) {
+            points[0]->angle += M_PI * 2;
+        }
     }
 
     points.pop_back();
@@ -252,4 +261,60 @@ sf::Vector2f *VisibilityTracer::getIntersection(sf::Vector2f p0, sf::Vector2f p1
 
 std::string VisibilityTracer::getType() {
     return "VisibilityTracer";
+}
+
+//bool VisibilityTracer::filterVisibleObjects(WorldObject *viewer, WorldObjectList objects) {
+//    WorldObjectList visibleObjects;
+//
+//    sf::Vector2f viewerPos = viewer->getWPosition();
+//
+//    for (WorldObject *other : objects) {
+//        sf::Vector2f otherPos = other->getWPosition();
+//
+//    }
+//}
+//
+//float sign (fPoint p1, fPoint p2, fPoint p3)
+//{
+//    return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
+//}
+//
+//bool PointInTriangle (fPoint pt, fPoint v1, fPoint v2, fPoint v3)
+//{
+//    bool b1, b2, b3;
+//
+//    b1 = sign(pt, v1, v2) < 0.0f;
+//    b2 = sign(pt, v2, v3) < 0.0f;
+//    b3 = sign(pt, v3, v1) < 0.0f;
+//
+//    return ((b1 == b2) && (b2 == b3));
+//}
+
+bool VisibilityTracer::isPointInPoly(sf::Vector2f origin, VectorList points) {
+    int i, j = points.size() - 1;
+    bool oddNodes = false;
+
+    float x = origin.x, y = origin.y;
+
+    float polyX[points.size()];
+    float polyY[points.size()];
+
+    int c = 0;
+    for (sf::Vector2f point : points) {
+        polyX[c++] = point.x;
+        polyY[c++] = point.y;
+    }
+
+    return false;
+
+    for (i = 0; i < points.size(); i++) {
+        if ((polyY[i] < y && polyY[j] >= y || polyY[j] < y && polyY[i] >= y) && (polyX[i] <= x || polyX[j] <= x)) {
+            if (polyX[i] + (y - polyY[i]) / (polyY[j] - polyY[i]) * (polyX[j] - polyX[i]) < x) {
+                oddNodes = !oddNodes;
+            }
+        }
+        j = i;
+    }
+
+    return oddNodes;
 }

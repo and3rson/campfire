@@ -16,7 +16,7 @@ void SoundManager::load(const char *name) {
         this->hold(sound, TRACE);
         this->sounds[name] = sound;
     } else {
-        std::cerr << "Sound " << name << " already loaded" << std::endl;
+//        std::cerr << "Sound " << name << " already loaded" << std::endl;
     }
 }
 

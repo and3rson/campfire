@@ -6,6 +6,7 @@
 #include <world/GenericEnemy.h>
 #include <world/Bob.h>
 #include <helpers/VisibilityTracer.h>
+#include <helpers/WindingNumber.h>
 #include "MainMenuScene.h"
 #include "GameEngine.h"
 
@@ -41,7 +42,7 @@ MainMenuScene::MainMenuScene(GameEngine *engine) : AScene(engine)
 
     this->hold(this->enemy = new GenericEnemy(this->camera), TRACE);
     this->enemy->setWPosition(sf::Vector2f(200, 200));
-    this->enemy->startMove(sf::Vector2f(0, -1), false);
+//    this->enemy->startMove(sf::Vector2f(0, -1), false);
     Pistol *pistol2 = new Pistol(this->camera);
     this->hold(pistol2, TRACE);
     this->enemy->arm(pistol2);
@@ -55,6 +56,10 @@ MainMenuScene::MainMenuScene(GameEngine *engine) : AScene(engine)
     c2->setWPosition(sf::Vector2f(200, 300));
     this->hold(c2, TRACE);
     this->objects.push_back(c2);
+    Crate *c3 = new Crate(this->camera);
+    c3->setWPosition(sf::Vector2f(300, 250));
+    this->hold(c3, TRACE);
+    this->objects.push_back(c3);
 
     this->camera->attachTo(this->player);
 
@@ -154,10 +159,10 @@ void MainMenuScene::tick()
     static sf::Clock testClock;
 
     if (testClock.getElapsedTime().asMilliseconds() > 500 && this->enemy->isAlive()) {
-        testClock.restart();
-        this->enemy->setWRotation(this->enemy->getWRotation() + M_PI / 4);
-        this->enemy->startMove(WorldObject::rotateVector(sf::Vector2f(0, -1), this->enemy->getWRotation()), false);
-        this->enemy->useArmedItem();
+//        testClock.restart();
+//        this->enemy->setWRotation(this->enemy->getWRotation() + M_PI / 4);
+//        this->enemy->startMove(WorldObject::rotateVector(sf::Vector2f(0, -1), this->enemy->getWRotation()), false);
+//        this->enemy->useArmedItem();
     }
 
     this->camera->update();
@@ -172,8 +177,6 @@ void MainMenuScene::tick()
     int i = 0;
 
     WorldObjectList all;
-
-    std::cerr << "TICK" << std::endl;
 
     for (WorldObject *top: this->objects) {
         WorldObjectList bunch = this->walk(top);
@@ -198,6 +201,7 @@ void MainMenuScene::tick()
                                 object->collisionStarted(other);
                                 other->collisionStarted(object);
                             }
+
 //                                object->addCollision(other);
 //                                other->addCollision(object);
 //                            } else if(isColliding && !intersects) {
@@ -234,11 +238,32 @@ void MainMenuScene::tick()
             shape.setOutlineColor(sf::Color(255, 255, 255, 64));
             shape.setOutlineThickness(0);
             window->draw(shape);
+
+            sf::Vertex line[] = {
+                sf::Vertex(this->player->applyCameraTransformation(previous), sf::Color::Red),
+                sf::Vertex(this->player->applyCameraTransformation(point), sf::Color::Green)
+            };
+            window->draw(line, 2, sf::Lines);
         }
         previous = point;
     }
 
+//    points.pop_back();
+
     for (WorldObject *object : all) {
+        if (!object->getIsCurrent()) {
+            if (WindingNumber::cn_PnPoly(object->getWPosition(), points)) {
+                if (object->getType() == "creature") {
+                    std::cerr << "Object " << object->getType() << " is visible!" << std::endl;
+                    float rotation = object->getWRotation();
+                    float final = VisibilityTracer::getAngle(object->getWPosition(), this->player->getWPosition()) + M_PI / 2;
+                    object->setWRotation(rotation + (final - rotation) / 4);
+                    ((Creature *) object)->useArmedItem();
+//                    ((AMovable *) object)->moveTo(this->player->getWPosition());
+                }
+            }
+        }
+
         object->draw(this->window);
     }
 

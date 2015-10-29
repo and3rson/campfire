@@ -8,6 +8,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <Registry.h>
+#include <world/WorldObject.h>
 #include "customtypes.h"
 
 class VisibilityTracer : public Registry {
@@ -18,6 +19,10 @@ public:
 
     VectorList calculateVisibility(WorldObject *viewer, sf::RenderWindow *window, float fov = 0);
 
+//    bool filterVisibleObjects(WorldObject *viewer, WorldObjectList objects);
+
+    bool isPointInPoly(sf::Vector2f origin, VectorList points);
+
     struct point_t {
         sf::Vector2f coords;
         struct point_t *pair;
@@ -27,10 +32,11 @@ public:
         }
     };
 
+    static double getAngle(sf::Vector2f origin, sf::Vector2f other);
+
 private:
     WorldObjectList objects;
 
-    double getAngle(sf::Vector2f origin, sf::Vector2f other);
     sf::Vector2f *getIntersection(sf::Vector2f p0, sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f p3);
 };
 

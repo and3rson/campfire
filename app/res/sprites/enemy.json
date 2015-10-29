@@ -9,7 +9,7 @@
         -24, -24, 24, 24
     ],
     "lightbox": [
-        -16, -16, 16, 16
+        0, 0, 0, 0
     ],
     "texture": "enemy.png",
     "animations": {

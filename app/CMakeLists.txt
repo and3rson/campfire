@@ -57,6 +57,6 @@ set(
         GEEvent.cpp
         GEEvent.h
         customtypes.h
-        config.h effects/PainEffect.cpp effects/PainEffect.h world/Fence.cpp world/Fence.h world/GenericEnemy.cpp world/GenericEnemy.h world/Bob.cpp world/Bob.h helpers/VisibilityTracer.cpp helpers/VisibilityTracer.h Registry.cpp Registry.h SoundManager.cpp SoundManager.h Recycler.cpp Recycler.h)
+        config.h effects/PainEffect.cpp effects/PainEffect.h world/Fence.cpp world/Fence.h world/GenericEnemy.cpp world/GenericEnemy.h world/Bob.cpp world/Bob.h helpers/VisibilityTracer.cpp helpers/VisibilityTracer.h Registry.cpp Registry.h SoundManager.cpp SoundManager.h Recycler.cpp Recycler.h helpers/WindingNumber.cpp helpers/WindingNumber.h)
 
 add_executable(app ${SOURCE_FILES})

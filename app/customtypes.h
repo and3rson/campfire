@@ -10,6 +10,7 @@ class WorldObject;
 
 typedef std::vector<WorldObject *> WorldObjectList;
 typedef std::vector<sf::Vector2f> VectorList;
+typedef sf::Vector2f Point;
 
 #define LOG(s, data...) log("%s:%s, in %s: "s, __FILE__, __LINE__,  __FUNCTION__, ## data)
 

@@ -83,7 +83,6 @@ void WorldObject::addChild(WorldObject *object) {
 
 void WorldObject::removeChild(WorldObject *other) {
 //    WorldObjectList::iterator it = this->children.begin();
-    std::cerr << "Before count: " << this->children.size() << std::endl;
     for (WorldObject *object : this->children) {
         if (object == other) {
             this->children.erase(std::remove(this->children.begin(), this->children.end(), object));
@@ -92,7 +91,6 @@ void WorldObject::removeChild(WorldObject *other) {
         }
 //        it++;
     }
-    std::cerr << "New child count: " << this->children.size() << std::endl;
 }
 
 //void WorldObject::addCollision(WorldObject *other) {

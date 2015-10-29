@@ -17,6 +17,11 @@ Pistol::Pistol(Camera *camera) : Item("pistol", camera) {
 }
 
 void Pistol::use() {
+    if (timeSinceUsed.getElapsedTime().asMilliseconds() < 200) {
+        return;
+    }
+    timeSinceUsed.restart();
+
     if (this->ammo > 0) {
         Projectile *projectile = new Projectile(this->camera);
         // TODO: Move 12, -72 coordinates into JSON as some joint (e. g. "bullet_spawn_origin")
