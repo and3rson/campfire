@@ -240,8 +240,8 @@ void MainMenuScene::tick()
             window->draw(shape);
 
             sf::Vertex line[] = {
-                sf::Vertex(this->player->applyCameraTransformation(previous), sf::Color::Red),
-                sf::Vertex(this->player->applyCameraTransformation(point), sf::Color::Green)
+                sf::Vertex(this->player->applyCameraTransformation(previous), sf::Color::White),
+                sf::Vertex(this->player->applyCameraTransformation(point), sf::Color::White)
             };
             window->draw(line, 2, sf::Lines);
 

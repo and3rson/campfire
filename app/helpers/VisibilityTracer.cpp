@@ -37,7 +37,7 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
     sf::Vector2f viewerPos = viewer->getWPosition();
 
     sf::Vector2u size = window->getSize();
-    int hypotenuse = (int) sqrt(pow(size.x / 2, 2) + pow(size.y / 2, 2)) / 3;
+    int hypotenuse = (int) sqrt(pow(size.x / 2, 2) + pow(size.y / 2, 2));
 
     sf::Vector2f lines[] = {
         viewerPos + sf::Vector2f(- hypotenuse, - hypotenuse),
@@ -63,7 +63,7 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
         points.push_back(startPoint);
 //        }
 //        if (!fov || std::abs(viewer->getWRotation() - angle2) < fov / 2) {
-            points.push_back(endPoint);
+        points.push_back(endPoint);
 //        }
 
 //        sf::Vertex line[] = {
@@ -77,23 +77,16 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
 
     for (WorldObject *object : this->objects) {
         if (object != viewer) {
-            sf::FloatRect lightbox = object->getWLightbox();
+            VectorList lightbox = object->getWLightbox();
 
-            if (lightbox.width == 0 && lightbox.height == 0) {
+            if (!lightbox.size()) {
                 continue;
             }
 
-            sf::Vector2f lines[] = {
-                sf::Vector2f(lightbox.left, lightbox.top),
-                sf::Vector2f(lightbox.left + lightbox.width, lightbox.top),
-                sf::Vector2f(lightbox.left + lightbox.width, lightbox.top + lightbox.height),
-                sf::Vector2f(lightbox.left, lightbox.top + lightbox.height),
-            };
+            Point start = lightbox.back();
 
-            for (int i = 0; i < 4; i++) {
-                sf::Vector2f start = lines[i];
-                sf::Vector2f end = lines[(i + 1) % 4];
-
+            for (Point end : lightbox) {
+                std::cerr << start.x << "/" << start.y << std::endl;
                 double angle1 = VisibilityTracer::getAngle(viewerPos, start);
                 double angle2 = VisibilityTracer::getAngle(viewerPos, end);
 
@@ -107,31 +100,19 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
                 points.push_back(startPoint);
 //                }
 //                if (!fov || std::abs(viewer->getWRotation() - angle2) < fov / 2) {
-                    points.push_back(endPoint);
+                points.push_back(endPoint);
 //                }
 
-                sf::Vertex line[] = {
-                    sf::Vertex(viewer->applyCameraTransformation(startPoint->coords), sf::Color::White),
-                    sf::Vertex(viewer->applyCameraTransformation(endPoint->coords), sf::Color::White)
-                };
-                window->draw(line, 2, sf::Lines);
+                sf::CircleShape circle(5, 8);
+                circle.setOrigin(2, 2);
+                circle.setFillColor(sf::Color::Red);
+                circle.setPosition(viewer->applyCameraTransformation(start));
+                window->draw(circle);
+
+                start = end;
             }
         }
     }
-
-//    if (fov) {
-//        point_t *start = new point_t(viewerPos + WorldObject::rotateVector(sf::Vector2f(0, -300), viewer->getWRotation() - fov / 2), - fov / 2);
-//        point_t *end = new point_t(viewerPos + WorldObject::rotateVector(sf::Vector2f(0, -300), viewer->getWRotation() + fov / 2), fov / 2);
-//        start->pair = end;
-//        end->pair = start;
-////        points.push_back(start);
-////        points.push_back(end);
-//        sf::Vertex line[] = {
-//            sf::Vertex(viewer->applyCameraTransformation(start->coords), sf::Color::Red),
-//            sf::Vertex(viewer->applyCameraTransformation(end->coords), sf::Color::Green)
-//        };
-//        window->draw(line, 2, sf::Lines);
-//    }
 
     std::sort(points.begin(), points.end(), sortStruct);
 
@@ -167,11 +148,10 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
                 closestDistance = 0;
                 closestIntersection = NULL;
             }
-            double angle = point->angle + ((double) d) / 1000;
+            double angle = point->angle + ((double) d) / 10000;
             if (angle > lastAngle) {
                 sf::Vector2f projectionRay = viewerPos + WorldObject::rotateVector(sf::Vector2f(3000, 0), angle);
 
-//                if (!fov || std::abs(viewer->getWRotation() - point->angle) <= fov / 2) {
                 for (point_t *other : points) {
                     sf::Vector2f *intersection = this->getIntersection(viewerPos, projectionRay, other->coords,
                                                                        other->pair->coords);
@@ -189,7 +169,7 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
                     first = closestIntersection;
                 }
                 if (closestIntersection) {
-                    if (last) {
+                    if (!last || WorldObject::getDistance(*last, *closestIntersection) > 1) {
                         sf::Color color = sf::Color::White;
                         if (d == 1 && i == points.size() - 1) {
                             closestIntersection = first;
@@ -198,23 +178,18 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
                             tracedCount++;
                             visionPoly.push_back(*closestIntersection);
 
-//                        sf::Vertex line[] = {
-//                            sf::Vertex(viewer->applyCameraTransformation(*last), sf::Color::Red),
-//                            sf::Vertex(viewer->applyCameraTransformation(*closestIntersection), sf::Color::Green)
-//                        };
-//                        window->draw(line, 2, sf::Lines);
+//                            sf::Vertex line[] = {
+////                            sf::Vertex(viewer->applyCameraTransformation(*last), sf::Color::Red),
+//                                sf::Vertex(viewer->applyCameraTransformation(viewerPos), sf::Color::Red),
+//                                sf::Vertex(viewer->applyCameraTransformation(*closestIntersection), sf::Color::Green)};
+//                            window->draw(line, 2, sf::Lines);
                         }
+                        last = closestIntersection;
                     }
-                    last = closestIntersection;
                 }
-//                }
                 lastAngle = angle;
             }
         }
-
-//        if (point == points.front()) {
-//            points[0]->angle += M_PI * 2;
-//        }
     }
 
     visionPoly.push_back(visionPoly.front());

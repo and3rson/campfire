@@ -31,7 +31,7 @@ bool Projectile::collisionStarted(WorldObject *other) {
     std::cerr << "Object " << this->getType() << " collided with " << other->getType() << std::endl;
     this->parent->removeChild(this);
     if (other->getType() == "creature" && other->getIsCurrent()) {
-        GameEngine::getInstance()->setEffect(new PainEffect(GameEngine::getInstance(), this->camera, 30, 400));
+        GameEngine::getInstance()->setEffect(new PainEffect(GameEngine::getInstance(), this->camera, 30, 240));
     }
 
     switch (other->getMaterial()) {

@@ -140,13 +140,21 @@ float WorldObject::getDistance(sf::Vector2f a, sf::Vector2f b) {
     return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
 }
 
-sf::FloatRect WorldObject::getWLightbox() {
-    return sf::FloatRect(
-        this->wPosition.x + this->oLightbox.left,
-        this->wPosition.y + this->oLightbox.top,
-        this->oLightbox.width,
-        this->oLightbox.height
-    );
+VectorList WorldObject::getWLightbox() {
+    sf::FloatRect lightbox = this->oLightbox;
+
+    if (!lightbox.width || !lightbox.height) {
+        return VectorList();
+    }
+
+    VectorList points = {
+        this->wPosition + WorldObject::rotateVector(sf::Vector2f(lightbox.left, lightbox.top), this->wRotation),
+        this->wPosition + WorldObject::rotateVector(sf::Vector2f(lightbox.left + lightbox.width, lightbox.top), this->wRotation),
+        this->wPosition + WorldObject::rotateVector(sf::Vector2f(lightbox.left + lightbox.width, lightbox.top + lightbox.height), this->wRotation),
+        this->wPosition + WorldObject::rotateVector(sf::Vector2f(lightbox.left, lightbox.top + lightbox.height), this->wRotation)
+    };
+
+    return points;
 }
 
 WorldObject::Material WorldObject::getMaterial() {

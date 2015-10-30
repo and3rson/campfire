@@ -50,7 +50,7 @@ public:
     virtual Material getMaterial();
 
     sf::FloatRect getWHitbox();
-    sf::FloatRect getWLightbox();
+    VectorList getWLightbox();
 
     WorldObjectList getChildren();
 
