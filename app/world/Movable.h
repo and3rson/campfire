@@ -11,11 +11,11 @@
 class Camera;
 
 
-class AMovable : public WorldObject
+class Movable : public WorldObject
 {
 public:
-    AMovable(Camera *camera = 0);
-    ~AMovable();
+    Movable(Camera *camera = 0);
+    ~Movable();
     void moveTo(sf::Vector2f target);
     void startMove(sf::Vector2f vector, bool relative);
     void stopMove();

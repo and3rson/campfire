@@ -7,7 +7,7 @@
 
 #include "SteamAdapter.h"
 #include "GameEngine.h"
-#include "scenes/MainMenuScene.h"
+#include "./scenes/TestLevelScene.h"
 
 using namespace std;
 
@@ -45,7 +45,7 @@ int main()
     reg.hold(engine, TRACE);
     engine->start();
 
-    engine->setScene(new MainMenuScene(engine));
+    engine->setScene(new TestLevelScene(engine));
 //    engine->setScene(new SplashScene(engine));
 //    engine->setEffect(new NoiseEffect(engine));
 

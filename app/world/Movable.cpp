@@ -1,12 +1,12 @@
 #include "Movable.h"
 #include "Camera.h"
 
-AMovable::AMovable(Camera *camera) : WorldObject(camera)
+Movable::Movable(Camera *camera) : WorldObject(camera)
 {
     this->moveVector = NULL;
 }
 
-void AMovable::moveTo(sf::Vector2f target)
+void Movable::moveTo(sf::Vector2f target)
 {
     this->source = sf::Vector2f(this->getWPosition());
     this->target = sf::Vector2f(target);
@@ -20,7 +20,7 @@ void AMovable::moveTo(sf::Vector2f target)
     this->moveStarted();
 }
 
-void AMovable::update()
+void Movable::update()
 {
     if (this->isMoving) {
         if (this->moveVector != NULL) {
@@ -79,7 +79,7 @@ void AMovable::update()
     WorldObject::update();
 }
 
-void AMovable::startMove(sf::Vector2f vector, bool relative = false) {
+void Movable::startMove(sf::Vector2f vector, bool relative = false) {
     this->clock.restart();
     this->isMoving = true;
     this->moveVector = new sf::Vector2f(vector);
@@ -88,7 +88,7 @@ void AMovable::startMove(sf::Vector2f vector, bool relative = false) {
     this->moveStarted();
 }
 
-void AMovable::stopMove() {
+void Movable::stopMove() {
     this->isMoving = false;
     if (this->moveVector) {
         delete this->moveVector;
@@ -100,7 +100,7 @@ void AMovable::stopMove() {
     this->moveStopped();
 }
 
-AMovable::~AMovable() {
+Movable::~Movable() {
     if (this->moveVector) {
         delete this->moveVector;
     }

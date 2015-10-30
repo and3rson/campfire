@@ -12,23 +12,26 @@
 
 class GameEngine;
 
-class MainMenuScene : public AScene
+class LevelScene : public AScene
 {
 public:
-    MainMenuScene(GameEngine *);
+    LevelScene(GameEngine *);
+
     virtual void tick();
     WorldObjectList walk(WorldObject *object);
+
+protected:
+    void addObject(WorldObject *object);
+//    void removeObject(WorldObject *object);
+
+    void setControlledCreature(Creature *creature);
+    Creature *getControlledCreature();
+    void setActiveCamera(Camera *camera);
+    Camera *getActiveCamera();
 
 private:
     sf::Clock worldClock;
     sf::Clock frameClock;
-
-    sf::Sprite sprite;
-    Creature *player;
-    Creature *enemy;
-    Grid *grid;
-
-    Camera *camera;
 
     sf::Vector2f moveVector;
 
@@ -36,13 +39,16 @@ private:
 
     WorldObjectList objects;
 
+    Creature *controlledCreature;
+    Camera *activeCamera;
+
     int _dbgRandom()
     {
-    #ifdef __linux__
+        #ifdef __linux__
         return random() % 100 + 100;
-    #else
+        #else
         return rand() % 100 + 100;
-    #endif
+        #endif
     }
 
     sf::Font font;

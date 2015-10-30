@@ -13,7 +13,7 @@ SOURCES += main.cpp \
     world/Camera.cpp \
     jsoncpp/jsoncpp.cpp \
     world/Grid.cpp \
-    scenes/MainMenuScene.cpp \
+    scenes/LevelScene.cpp \
     scenes/AScene.cpp \
     scenes/SplashScene.cpp \
     effects/AEffect.cpp \
@@ -44,7 +44,7 @@ HEADERS += \
     types/Animation.h \
     world/Camera.h \
     world/Grid.h \
-    scenes/MainMenuScene.h \
+    scenes/LevelScene.h \
     scenes/AScene.h \
     scenes/SplashScene.h \
     effects/AEffect.h \

@@ -13,7 +13,7 @@
 #include "Movable.h"
 #include "Camera.h"
 
-class Sprited : public AMovable
+class Sprited : public Movable
 {
 public:
     Sprited(const char *, Camera *camera);

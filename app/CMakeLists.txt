@@ -19,8 +19,8 @@ set(
         jsoncpp/jsoncpp.cpp
         scenes/AScene.cpp
         scenes/AScene.h
-        scenes/MainMenuScene.cpp
-        scenes/MainMenuScene.h
+    scenes/LevelScene.cpp
+    scenes/LevelScene.h
         scenes/SplashScene.cpp
         scenes/SplashScene.h
         types/Animation.cpp
@@ -57,6 +57,6 @@ set(
         GEEvent.cpp
         GEEvent.h
         customtypes.h
-        config.h effects/PainEffect.cpp effects/PainEffect.h world/Fence.cpp world/Fence.h world/GenericEnemy.cpp world/GenericEnemy.h world/Bob.cpp world/Bob.h helpers/VisibilityTracer.cpp helpers/VisibilityTracer.h Registry.cpp Registry.h SoundManager.cpp SoundManager.h Recycler.cpp Recycler.h helpers/WindingNumber.cpp helpers/WindingNumber.h)
+        config.h effects/PainEffect.cpp effects/PainEffect.h world/Fence.cpp world/Fence.h world/GenericEnemy.cpp world/GenericEnemy.h world/Bob.cpp world/Bob.h helpers/VisibilityTracer.cpp helpers/VisibilityTracer.h Registry.cpp Registry.h SoundManager.cpp SoundManager.h Recycler.cpp Recycler.h helpers/WindingNumber.cpp helpers/WindingNumber.h scenes/TestLevelScene.cpp scenes/TestLevelScene.h)
 
 add_executable(app ${SOURCE_FILES})

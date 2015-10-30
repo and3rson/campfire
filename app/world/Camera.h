@@ -6,7 +6,7 @@
 class WorldObject;
 
 
-class Camera : public AMovable
+class Camera : public Movable
 {
 public:
     Camera();

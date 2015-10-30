@@ -1,7 +1,7 @@
 #include <GameEngine.h>
 #include "Sprited.h"
 
-Sprited::Sprited(const char *spriteName, Camera *camera = 0) : AMovable(camera), spriteName(spriteName)
+Sprited::Sprited(const char *spriteName, Camera *camera = 0) : Movable(camera), spriteName(spriteName)
 {
     std::string path = "./res/sprites/";
     path += spriteName;
@@ -91,7 +91,7 @@ void Sprited::setAnimation(const char *name, bool reset) {
 
 void Sprited::update()
 {
-    AMovable::update();
+    Movable::update();
 
     if (this->clock.getElapsedTime().asMilliseconds() > 1000 / this->currentAnimation->fps) {
         // Update animation

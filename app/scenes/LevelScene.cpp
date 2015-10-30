@@ -7,10 +7,10 @@
 #include <world/Bob.h>
 #include <helpers/VisibilityTracer.h>
 #include <helpers/WindingNumber.h>
-#include "MainMenuScene.h"
+#include "LevelScene.h"
 #include "GameEngine.h"
 
-MainMenuScene::MainMenuScene(GameEngine *engine) : AScene(engine)
+LevelScene::LevelScene(GameEngine *engine) : AScene(engine)
 {
     this->font.loadFromFile("./res/fonts/DejaVuSansMono.ttf");
 
@@ -19,56 +19,12 @@ MainMenuScene::MainMenuScene(GameEngine *engine) : AScene(engine)
 
     this->window = this->engine->getWindow();
 
-    this->hold(this->camera = new Camera(), TRACE);
-
-    this->hold(this->grid = new Grid(this->camera), TRACE);
-
-    this->hold(this->player = new Bob(this->camera), TRACE);
-    this->player->setWPosition(sf::Vector2f(400, 300));
-    Pistol *pistol1 = new Pistol(this->camera);
-    this->hold(pistol1, TRACE);
-    this->player->arm(pistol1);
-    this->player->setAsCurrent();
-    this->objects.push_back(this->player);
-
-    Fence *fence = new Fence(this->camera);
-    this->hold(fence, TRACE);
-    this->objects.push_back(fence);
-
-    Fence *fence2 = new Fence(this->camera);
-    this->hold(fence2, TRACE);
-    fence2->setWPosition(sf::Vector2f(128, 0));
-    this->objects.push_back(fence2);
-
-    this->hold(this->enemy = new GenericEnemy(this->camera), TRACE);
-    this->enemy->setWPosition(sf::Vector2f(200, 200));
-//    this->enemy->startMove(sf::Vector2f(0, -1), false);
-    Pistol *pistol2 = new Pistol(this->camera);
-    this->hold(pistol2, TRACE);
-    this->enemy->arm(pistol2);
-    this->objects.push_back(this->enemy);
-
-    Crate *c1 = new Crate(this->camera);
-    c1->setWPosition(sf::Vector2f(300, 400));
-    this->hold(c1, TRACE);
-    this->objects.push_back(c1);
-    Crate *c2 = new Crate(this->camera);
-    c2->setWPosition(sf::Vector2f(200, 300));
-    this->hold(c2, TRACE);
-    this->objects.push_back(c2);
-    Crate *c3 = new Crate(this->camera);
-    c3->setWPosition(sf::Vector2f(300, 250));
-    this->hold(c3, TRACE);
-    this->objects.push_back(c3);
-
-    this->camera->attachTo(this->player);
-
     this->moveVector = sf::Vector2f(0, 0);
 
     sf::Mouse::setPosition(sf::Vector2i(window->getPosition().x + window->getSize().x / 2, window->getPosition().y + window->getSize().y / 2));
 }
 
-void MainMenuScene::tick()
+void LevelScene::tick()
 {
     int msPassed = this->frameClock.getElapsedTime().asMilliseconds();
     this->frameClock.restart();
@@ -76,7 +32,7 @@ void MainMenuScene::tick()
     GEEvent *geEvent;
 
     while (geEvent = this->engine->getEvent()) {
-        this->player->setWRotation(this->player->getWRotation() + (float) geEvent->dx / 300); // Sensitivity
+        this->controlledCreature->setWRotation(this->controlledCreature->getWRotation() + (float) geEvent->dx / 300); // Sensitivity
         delete geEvent;
     }
 
@@ -103,7 +59,7 @@ void MainMenuScene::tick()
                 default:
                     break;
             }
-            this->player->startMove(this->moveVector, true);
+            this->controlledCreature->startMove(this->moveVector, true);
         } else if (event.type == sf::Event::KeyReleased) {
             switch (event.key.code) {
                 case sf::Keyboard::W:
@@ -128,13 +84,13 @@ void MainMenuScene::tick()
                     break;
             }
 
-            this->player->startMove(this->moveVector, true);
+            this->controlledCreature->startMove(this->moveVector, true);
         } else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
-            this->player->useArmedItem();
+            this->controlledCreature->useArmedItem();
         } else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right) {
-            WorldObject *dropped = this->player->dropArmedItem();
+            WorldObject *dropped = this->controlledCreature->dropArmedItem();
 
-            sf::FloatRect wPlayerHitbox = this->player->getWHitbox();
+            sf::FloatRect wPlayerHitbox = this->controlledCreature->getWHitbox();
 
             WorldObjectList::iterator it = this->objects.begin();
             for(WorldObject *object = *it; it != this->objects.end(); object = *(++it)) {
@@ -142,7 +98,7 @@ void MainMenuScene::tick()
                     std::cerr << " * picking up " << ((Item *) object)->getType() << std::endl;
                     if (wPlayerHitbox.intersects(object->getWHitbox())) {
                         std::cerr << " * picking up " << ((Item *) object)->getType() << std::endl;
-                        this->player->arm((Item *) object);
+                        this->controlledCreature->arm((Item *) object);
                         this->objects.erase(it);
                         break;
                     }
@@ -158,19 +114,16 @@ void MainMenuScene::tick()
 
     static sf::Clock testClock;
 
-    if (testClock.getElapsedTime().asMilliseconds() > 500 && this->enemy->isAlive()) {
+//    if (testClock.getElapsedTime().asMilliseconds() > 500 && this->enemy->isAlive()) {
 //        testClock.restart();
 //        this->enemy->setWRotation(this->enemy->getWRotation() + M_PI / 4);
 //        this->enemy->startMove(WorldObject::rotateVector(sf::Vector2f(0, -1), this->enemy->getWRotation()), false);
 //        this->enemy->useArmedItem();
-    }
+//    }
 
-    this->camera->update();
+    this->activeCamera->update();
 
-    this->player->update();
-
-    this->grid->update();
-    this->grid->draw(window);
+    this->controlledCreature->update();
 
     WorldObjectList collidables;
 
@@ -182,7 +135,7 @@ void MainMenuScene::tick()
         WorldObjectList bunch = this->walk(top);
 
         for (WorldObject *object: bunch) {
-            if (object != this->player) {
+            if (object != this->controlledCreature) {
                 // Do not update player again
                 object->update();
             }
@@ -220,8 +173,8 @@ void MainMenuScene::tick()
     }
 
     VisibilityTracer vt(this->objects);
-    VectorList points = vt.calculateVisibility(this->player, this->window, M_PI / 2);
-    sf::Font font;
+    VectorList points = vt.calculateVisibility(this->controlledCreature, this->window, M_PI / 2);
+//    sf::Font font;
     sf::Vector2f previous;
     int index = 0;
 
@@ -231,17 +184,17 @@ void MainMenuScene::tick()
         if (index++) {
             sf::ConvexShape shape;
             shape.setPointCount(3);
-            shape.setPoint(0, this->player->applyCameraTransformation(this->player->getWPosition()));
-            shape.setPoint(1, this->player->applyCameraTransformation(previous));
-            shape.setPoint(2, this->player->applyCameraTransformation(point));
+            shape.setPoint(0, this->controlledCreature->applyCameraTransformation(this->controlledCreature->getWPosition()));
+            shape.setPoint(1, this->controlledCreature->applyCameraTransformation(previous));
+            shape.setPoint(2, this->controlledCreature->applyCameraTransformation(point));
             shape.setFillColor(sf::Color(255, 255, 255, 32));
             shape.setOutlineColor(sf::Color(255, 255, 255, 64));
             shape.setOutlineThickness(0);
             window->draw(shape);
 
             sf::Vertex line[] = {
-                sf::Vertex(this->player->applyCameraTransformation(previous), sf::Color::White),
-                sf::Vertex(this->player->applyCameraTransformation(point), sf::Color::White)
+                sf::Vertex(this->controlledCreature->applyCameraTransformation(previous), sf::Color::White),
+                sf::Vertex(this->controlledCreature->applyCameraTransformation(point), sf::Color::White)
             };
             window->draw(line, 2, sf::Lines);
 
@@ -249,7 +202,7 @@ void MainMenuScene::tick()
 //            sprintf(text, "%d", index);
 //            sf::Text t(text, this->font, 12);
 //            t.setColor(sf::Color::White);
-//            t.setPosition(this->player->applyCameraTransformation(sf::Vector2f((point.x + previous.x) / 2, (point.y + previous.y) / 2)));
+//            t.setPosition(this->controlledCreature->applyCameraTransformation(sf::Vector2f((point.x + previous.x) / 2, (point.y + previous.y) / 2)));
 //            window->draw(t);
         }
         previous = point;
@@ -263,10 +216,10 @@ void MainMenuScene::tick()
                 if (object->getType() == "creature") {
 //                    std::cerr << "Object " << object->getType() << " is visible!" << std::endl;
                     float rotation = object->getWRotation();
-                    float final = VisibilityTracer::getAngle(object->getWPosition(), this->player->getWPosition()) + M_PI / 2;
+                    float final = VisibilityTracer::getAngle(object->getWPosition(), this->controlledCreature->getWPosition()) + M_PI / 2;
                     object->setWRotation(rotation + (final - rotation) / 4);
                     ((Creature *) object)->useArmedItem();
-//                    ((AMovable *) object)->moveTo(this->player->getWPosition());
+//                    ((Movable *) object)->moveTo(this->controlledCreature->getWPosition());
                 }
             }
         }
@@ -281,7 +234,7 @@ void MainMenuScene::tick()
     window->draw(t);
 }
 
-WorldObjectList MainMenuScene::walk(WorldObject *object) {
+WorldObjectList LevelScene::walk(WorldObject *object) {
     WorldObjectList discovered;
 
     discovered.push_back(object);
@@ -292,4 +245,27 @@ WorldObjectList MainMenuScene::walk(WorldObject *object) {
     }
 
     return discovered;
+}
+
+void LevelScene::addObject(WorldObject *object) {
+    this->objects.push_back(object);
+}
+
+//void LevelScene::removeObject(WorldObject *object) {
+//
+//}
+void LevelScene::setControlledCreature(Creature *creature) {
+    this->controlledCreature = creature;
+}
+
+void LevelScene::setActiveCamera(Camera *camera) {
+    this->activeCamera = camera;
+}
+
+Creature *LevelScene::getControlledCreature() {
+    return this->controlledCreature;
+}
+
+Camera *LevelScene::getActiveCamera() {
+    return this->activeCamera;
 }
