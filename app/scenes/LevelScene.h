@@ -33,8 +33,6 @@ private:
     sf::Clock worldClock;
     sf::Clock frameClock;
 
-    sf::Vector2f moveVector;
-
     sf::RenderWindow *window;
 
     WorldObjectList objects;

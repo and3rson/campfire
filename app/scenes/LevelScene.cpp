@@ -19,8 +19,6 @@ LevelScene::LevelScene(GameEngine *engine) : AScene(engine)
 
     this->window = this->engine->getWindow();
 
-    this->moveVector = sf::Vector2f(0, 0);
-
     sf::Mouse::setPosition(sf::Vector2i(window->getPosition().x + window->getSize().x / 2, window->getPosition().y + window->getSize().y / 2));
 }
 
@@ -43,48 +41,50 @@ void LevelScene::tick()
                 window->close();
             }
         } else if (event.type == sf::Event::KeyPressed) {
+            sf::Vector2f accelerationVector = this->controlledCreature->getAccelerationVector();
             switch (event.key.code) {
                 case sf::Keyboard::W:
-                    this->moveVector.y = -1;
+                    accelerationVector.y = -1;
                     break;
                 case sf::Keyboard::S:
-                    this->moveVector.y = 1;
+                    accelerationVector.y = 1;
                     break;
                 case sf::Keyboard::A:
-                    this->moveVector.x = -1;
+                    accelerationVector.x = -1;
                     break;
                 case sf::Keyboard::D:
-                    this->moveVector.x = 1;
+                    accelerationVector.x = 1;
                     break;
                 default:
                     break;
             }
-            this->controlledCreature->startMove(this->moveVector, true);
+            this->controlledCreature->setAccelerationVector(accelerationVector);
         } else if (event.type == sf::Event::KeyReleased) {
+            sf::Vector2f accelerationVector = this->controlledCreature->getAccelerationVector();
             switch (event.key.code) {
                 case sf::Keyboard::W:
-                    if (this->moveVector.y == -1) {
-                        this->moveVector.y = 0;
+                    if (accelerationVector.y < 0) {
+                        accelerationVector.y = 0;
                     }
                 case sf::Keyboard::S:
-                    if (this->moveVector.y == 1) {
-                        this->moveVector.y = 0;
+                    if (accelerationVector.y > 0) {
+                        accelerationVector.y = 0;
                     }
                     break;
                 case sf::Keyboard::A:
-                    if (this->moveVector.x == -1) {
-                        this->moveVector.x = 0;
+                    if (accelerationVector.x < 0) {
+                        accelerationVector.x = 0;
                     }
                 case sf::Keyboard::D:
-                    if (this->moveVector.x == 1) {
-                        this->moveVector.x = 0;
+                    if (accelerationVector.x > 0) {
+                        accelerationVector.x = 0;
                     }
                     break;
                 default:
                     break;
             }
 
-            this->controlledCreature->startMove(this->moveVector, true);
+            this->controlledCreature->setAccelerationVector(accelerationVector);
         } else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
             this->controlledCreature->useArmedItem();
         } else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right) {
@@ -108,6 +108,10 @@ void LevelScene::tick()
             if (dropped) {
                 std::cerr << " * dropped " << dropped->getType() << std::endl;
                 this->objects.push_back(dropped);
+                sf::Vector2f mV = WorldObject::rotateVector(sf::Vector2f(0, -1), this->controlledCreature->getWRotation());
+                mV.x *= 3;
+                mV.y *= 3;
+                ((Movable *) dropped)->setMomentumVector(mV);
             }
         }
     }
@@ -212,7 +216,8 @@ void LevelScene::tick()
 
     for (WorldObject *object : all) {
         if (!object->getIsCurrent()) {
-            if (WindingNumber::cn_PnPoly(object->getWPosition(), points)) {
+//            if (WindingNumber::cn_PnPoly(object->getWPosition(), points)) {
+            if (!WindingNumber::insidePolygon(points, object->getWPosition())) {
                 if (object->getType() == "creature") {
 //                    std::cerr << "Object " << object->getType() << " is visible!" << std::endl;
                     float rotation = object->getWRotation();

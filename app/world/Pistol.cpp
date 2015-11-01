@@ -7,7 +7,7 @@
 #include "Creature.h"
 
 Pistol::Pistol(Camera *camera) : Item("pistol", camera) {
-    SoundManager::getInstance()->load("pistol1");
+    SoundManager::getInstance()->load("pistol3");
     SoundManager::getInstance()->load("arm_pistol");
 //    SoundManager::getInstance()->load("drop_shell");
 
@@ -28,10 +28,13 @@ void Pistol::use() {
         projectile->setWPosition(
             sf::Vector2f(this->parent->getWPosition()) + this->rotateVector(sf::Vector2f(12, -72), this->parent->getWRotation()));
         projectile->setWRotation(this->parent->getWRotation());
-        projectile->startMove(this->rotateVector(sf::Vector2f(0, -1), projectile->getWRotation()), false);
+//        projectile->startMove(this->rotateVector(sf::Vector2f(0, -1), projectile->getWRotation()), false);
+        sf::Vector2f shootVector = sf::Vector2f(0, -1);
+        projectile->setAccelerationVector(shootVector);
+        projectile->setMomentumVector(WorldObject::rotateVector(shootVector, this->getWRotation()));
         this->addChild(projectile);
 
-        SoundManager::getInstance()->play("pistol1");
+        SoundManager::getInstance()->play("pistol3");
 //        SoundManager::getInstance()->play("drop_shell");
 
         this->ammo--;

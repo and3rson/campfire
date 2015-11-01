@@ -82,3 +82,40 @@ int WindingNumber::wn_PnPoly(Point P, VectorList VL) {
     return wn;
 }
 //===================================================================
+int WindingNumber::insidePolygon(VectorList vectors, Point p) {
+    int counter = 0;
+    int i;
+    double xinters;
+    Point p1, p2;
+
+    unsigned long n = vectors.size();
+
+    Point polygon[n];
+
+    int k = 0;
+    for(Point vector : vectors) {
+        polygon[k] = vector;
+    }
+
+    p1 = polygon[0];
+    for (i = 1; i <= n; i++) {
+        p2 = polygon[i % n];
+        if (p.y > MIN(p1.y, p2.y)) {
+            if (p.y <= MAX(p1.y, p2.y)) {
+                if (p.x <= MAX(p1.x, p2.x)) {
+                    if (p1.y != p2.y) {
+                        xinters = (p.y - p1.y) * (p2.x - p1.x) / (p2.y - p1.y) + p1.x;
+                        if (p1.x == p2.x || p.x <= xinters)
+                            counter++;
+                    }
+                }
+            }
+        }
+        p1 = p2;
+    }
+
+    if (counter % 2 == 0)
+        return (OUTSIDE);
+    else
+        return (INSIDE);
+}

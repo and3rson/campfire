@@ -31,6 +31,8 @@ public:
 
     static sf::Vector2f rotateVector(sf::Vector2f vector, float angle);
     static float getDistance(sf::Vector2f a, sf::Vector2f b);
+    static float getLength(sf::Vector2f a);
+    static sf::Vector2f normalize(sf::Vector2f a);
 
     virtual void draw(sf::RenderWindow *window) = 0;
 

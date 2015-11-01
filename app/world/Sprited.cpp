@@ -118,6 +118,8 @@ void Sprited::draw(sf::RenderWindow *window)
 
     window->draw(this->sprite);
 
+    Movable::draw(window);
+
 #ifdef DEBUG
     static sf::RectangleShape origin;
     origin.setOrigin(2, 2);

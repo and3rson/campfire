@@ -160,3 +160,15 @@ VectorList WorldObject::getWLightbox() {
 WorldObject::Material WorldObject::getMaterial() {
     return NONE;
 }
+
+float WorldObject::getLength(sf::Vector2f a) {
+    return sqrt(pow(a.x, 2) + pow(a.y, 2));
+}
+
+sf::Vector2f WorldObject::normalize(sf::Vector2f a) {
+    float length = WorldObject::getLength(a);
+    if (length == 0) {
+        return sf::Vector2f(0, 0);
+    }
+    return sf::Vector2f(a.x / length, a.y / length);
+}
