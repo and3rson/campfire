@@ -129,6 +129,9 @@ void Movable::setAccelerationVector(sf::Vector2f vector) {
 }
 
 void Movable::draw(sf::RenderWindow *window) {
+    WorldObject::draw(window);
+
+    #ifdef DEBUG
     sf::Vector2f momentumEnd = this->momentumVector;
     momentumEnd.x *= 100;
     momentumEnd.y *= 100;
@@ -158,6 +161,7 @@ void Movable::draw(sf::RenderWindow *window) {
         momentumText.setColor(sf::Color::Red);
         window->draw(momentumText);
     }
+    #endif
 }
 
 void Movable::setMomentumVector(sf::Vector2f vector) {

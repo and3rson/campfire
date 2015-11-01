@@ -6,6 +6,7 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "config.h"
 #include "WorldObject.h"
 
 class Camera;
