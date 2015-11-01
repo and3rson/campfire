@@ -37,7 +37,7 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
     sf::Vector2f viewerPos = viewer->getWPosition();
 
     sf::Vector2u size = window->getSize();
-    int hypotenuse = (int) sqrt(pow(size.x / 2, 2) + pow(size.y / 2, 2));
+    int hypotenuse = (int) sqrt(pow(size.x / 2, 2) + pow(size.y / 2, 2)) / 3;
 
     sf::Vector2f lines[] = {
         viewerPos + sf::Vector2f(- hypotenuse, - hypotenuse),
@@ -75,6 +75,8 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
 //                walls.push_back(wall);
     }
 
+
+
     for (WorldObject *object : this->objects) {
         if (object != viewer) {
             VectorList lightbox = object->getWLightbox();
@@ -103,11 +105,11 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
                 points.push_back(endPoint);
 //                }
 
-                sf::CircleShape circle(5, 8);
-                circle.setOrigin(2, 2);
-                circle.setFillColor(sf::Color::Red);
-                circle.setPosition(viewer->applyCameraTransformation(start));
-                window->draw(circle);
+//                sf::CircleShape circle(5, 8);
+//                circle.setOrigin(2, 2);
+//                circle.setFillColor(sf::Color::Red);
+//                circle.setPosition(viewer->applyCameraTransformation(start));
+//                window->draw(circle);
 
                 start = end;
             }
@@ -132,6 +134,8 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
 
     VectorList visionPoly;
 
+    points.push_back(points.front());
+
     for (point_t *point : points) {
         float closestDistance;
         sf::Vector2f *closestIntersection;
@@ -139,6 +143,9 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
         for (int d = -1; d <= 1; d++) {
             i++;
             if (d == -1 && i == 0) {
+                continue;
+            }
+            if (point == points.back() && d == 1) {
                 continue;
             }
             if (d == 0) {
@@ -190,9 +197,12 @@ VectorList VisibilityTracer::calculateVisibility(WorldObject *viewer, sf::Render
                 lastAngle = angle;
             }
         }
+        if (point == points.front()) {
+            point->angle += M_PI * 2;
+        }
     }
 
-    visionPoly.push_back(visionPoly.front());
+//    visionPoly.push_back(visionPoly.front());
 
     points.pop_back();
 

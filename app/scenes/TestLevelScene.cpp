@@ -9,6 +9,7 @@
 #include <world/Bob.h>
 #include "TestLevelScene.h"
 
+
 TestLevelScene::TestLevelScene(GameEngine *engine) : LevelScene(engine) {
     this->setActiveCamera(new Camera());
     this->hold(this->getActiveCamera(), TRACE);

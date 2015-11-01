@@ -182,42 +182,57 @@ void LevelScene::tick()
     sf::Vector2f previous;
     int index = 0;
 
-//    points.push_back(points.front());
+    points.push_back(points.front());
 
+    int max = (this->worldClock.getElapsedTime().asMilliseconds() / 500) % points.size();
+
+    sf::Vertex visionPoly[points.size()];
+
+    visionPoly[index++] = sf::Vertex(this->controlledCreature->applyCameraTransformation(this->controlledCreature->getWPosition()), sf::Color(255, 255, 255, 128));
     for (sf::Vector2f point : points) {
-        if (index++) {
-            sf::ConvexShape shape;
-            shape.setPointCount(3);
-            shape.setPoint(0, this->controlledCreature->applyCameraTransformation(this->controlledCreature->getWPosition()));
-            shape.setPoint(1, this->controlledCreature->applyCameraTransformation(previous));
-            shape.setPoint(2, this->controlledCreature->applyCameraTransformation(point));
-            shape.setFillColor(sf::Color(255, 255, 255, 32));
-            shape.setOutlineColor(sf::Color(255, 255, 255, 64));
-            shape.setOutlineThickness(0);
-            window->draw(shape);
-
-            sf::Vertex line[] = {
-                sf::Vertex(this->controlledCreature->applyCameraTransformation(previous), sf::Color::White),
-                sf::Vertex(this->controlledCreature->applyCameraTransformation(point), sf::Color::White)
-            };
-            window->draw(line, 2, sf::Lines);
-
-//            char text[32];
-//            sprintf(text, "%d", index);
-//            sf::Text t(text, this->font, 12);
-//            t.setColor(sf::Color::White);
-//            t.setPosition(this->controlledCreature->applyCameraTransformation(sf::Vector2f((point.x + previous.x) / 2, (point.y + previous.y) / 2)));
-//            window->draw(t);
-        }
-        previous = point;
+        visionPoly[index++] = sf::Vertex(this->controlledCreature->applyCameraTransformation(point), sf::Color(255, 255, 255, 32));
     }
+
+    window->draw(visionPoly, points.size(), sf::TrianglesFan);
+
+
+//    for (sf::Vector2f point : points) {
+////        if (index > max) {
+////            break;
+////        }
+//        if (index++) {
+//            sf::ConvexShape shape;
+//            shape.setPointCount(3);
+//            shape.setPoint(0, this->controlledCreature->applyCameraTransformation(this->controlledCreature->getWPosition()));
+//            shape.setPoint(1, this->controlledCreature->applyCameraTransformation(previous));
+//            shape.setPoint(2, this->controlledCreature->applyCameraTransformation(point));
+//            shape.setFillColor(sf::Color(255, 255, 255, 32));
+//            shape.setOutlineColor(sf::Color(255, 255, 255, 64));
+//            shape.setOutlineThickness(0);
+//            window->draw(shape);
+//
+//            sf::Vertex line[] = {
+//                sf::Vertex(this->controlledCreature->applyCameraTransformation(previous), sf::Color::White),
+//                sf::Vertex(this->controlledCreature->applyCameraTransformation(point), sf::Color::White)
+//            };
+//            window->draw(line, 2, sf::Lines);
+//
+////            char text[32];
+////            sprintf(text, "%d", index);
+////            sf::Text t(text, this->font, 12);
+////            t.setColor(sf::Color::White);
+////            t.setPosition(this->controlledCreature->applyCameraTransformation(sf::Vector2f((point.x + previous.x) / 2, (point.y + previous.y) / 2)));
+////            window->draw(t);
+//        }
+//        previous = point;
+//    }
 
 //    points.pop_back();
 
     for (WorldObject *object : all) {
         if (!object->getIsCurrent()) {
 //            if (WindingNumber::cn_PnPoly(object->getWPosition(), points)) {
-            if (!WindingNumber::insidePolygon(points, object->getWPosition())) {
+            if (WindingNumber::insidePolygon(points, object->getWPosition())) {
                 if (object->getType() == "creature") {
 //                    std::cerr << "Object " << object->getType() << " is visible!" << std::endl;
                     float rotation = object->getWRotation();
