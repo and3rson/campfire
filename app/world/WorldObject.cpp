@@ -172,3 +172,7 @@ sf::Vector2f WorldObject::normalize(sf::Vector2f a) {
     }
     return sf::Vector2f(a.x / length, a.y / length);
 }
+
+void WorldObject::draw(sf::RenderWindow *window) {
+
+}

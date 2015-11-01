@@ -20,6 +20,7 @@ public:
     WorldObject(Camera *camera = 0);
 
     virtual void update();
+    virtual void draw(sf::RenderWindow *window);
 
     void setWPosition(sf::Vector2f);
     sf::Vector2f getWPosition();
@@ -33,8 +34,6 @@ public:
     static float getDistance(sf::Vector2f a, sf::Vector2f b);
     static float getLength(sf::Vector2f a);
     static sf::Vector2f normalize(sf::Vector2f a);
-
-    virtual void draw(sf::RenderWindow *window) = 0;
 
     virtual bool collisionStarted(WorldObject *other);
     virtual bool collisionStopped(WorldObject *other);
